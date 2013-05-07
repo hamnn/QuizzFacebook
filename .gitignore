@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Bootstrap
 app/bootstrap*
 
@@ -12,3 +13,18 @@ web/bundles/*
 app/config/parameters.ini
 app/config/parameters.yml
 /nbproject/private/
+=======
+# Bootstrap
+app/bootstrap*
+
+# Symfony directories
+vendor/*
+*/logs/*
+*/cache/*
+web/uploads/*
+web/bundles/*
+
+# Configuration files
+app/config/parameters.ini
+app/config/parameters.yml
+>>>>>>> branch 'master' of https://github.com/hamnn/QuizzFacebook.git
