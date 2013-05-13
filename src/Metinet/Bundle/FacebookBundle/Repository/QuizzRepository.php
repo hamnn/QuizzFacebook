@@ -12,6 +12,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class QuizzRepository extends EntityRepository
 {
-    
+
+    /**
+     * Fonction qui retourne le nombre de quizz disponible
+     * @return INT Le nombre de quizz disponibles
+     */
+    public function getNombreQuizzDisponibles(){
+	return $this->_em->createQuery("SELECT COUNT(quizz.id)
+					FROM MetinetFacebookBundle:Quizz quizz")
+		->getSingleScalarResult();
+    }
     
 }
