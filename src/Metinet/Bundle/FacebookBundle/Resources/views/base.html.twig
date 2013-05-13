@@ -1,13 +1,15 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
-</html>
+{% extends "::base.html.twig" %}
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/styles.css')}}" />
+    {% block additionalStylesheets %}{% endblock %}
+{% endblock %}
+{% block body %}
+    <div id="cont">
+	{% block cont %}
+	    <div class="container">
+		{% block container %}{% endblock %}
+	    </div>
+	{% endblock %}
+    </div>
+        
+{% endblock %}

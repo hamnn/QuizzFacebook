@@ -20,7 +20,7 @@ class AppKernel extends Kernel
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\FacebookBundle\FOSFacebookBundle(),
-            new Metinet\Bundle\FacebookBundle\MetinetFacebookBundle()
+            new Metinet\Bundle\FacebookBundle\MetinetFacebookBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

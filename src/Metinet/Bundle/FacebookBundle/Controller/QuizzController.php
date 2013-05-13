@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metinet\Bundle\FacebookBundle\Entity\Quizz;
+use Metinet\Bundle\FacebookBundle\Form\Type\QuizzType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,7 +21,7 @@ class QuizzController extends Controller {
     /**
      * Lists all Quizz entities.
      *
-     * @Route("/", name="quizz")
+     * @Route("/quizz", name="quizz")
      * @Template()
      */
     public function indexAction() {
@@ -85,6 +86,7 @@ class QuizzController extends Controller {
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            //$entity->upload();
             $em->persist($entity);
             $em->flush();
 
@@ -173,15 +175,13 @@ class QuizzController extends Controller {
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Quizz entity.');
             }
-            $currentQuizz = $this->getQuizz();
-            if($entity->getId() != $currentQuizz->getId()){ 
                 // on enregistre les modifs en BDD
                 $em->remove($entity);
                 $em->flush();
-            }
+            
        // }
 
-        return $this->redirect($this->generateUrl('administration'));
+        return $this->redirect($this->generateUrl('quizz'));
     }
 
     /**
@@ -195,7 +195,7 @@ class QuizzController extends Controller {
         $allQuizz = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
         $currentQuizz = $this->getQuizz();
         foreach ($allQuizz as $oneQuizz){
-            if($oneUser->getId() != $currentQuizz->getId()) $em->remove($oneQuizz);
+            if($oneQuizz->getId() != $currentQuizz->getId()) $em->remove($oneQuizz);
         }
             
         $em->flush();
@@ -220,7 +220,7 @@ class QuizzController extends Controller {
      * 
      * @Route("/quizz_modification",name="quizz_modification");
      */
-    public function quizzModification() {
+    /*public function quizzModification() {
         if (isset($_POST['rownum'])){
             $id = $_POST['id'];
             $champ = $_POST['field'];
@@ -249,6 +249,6 @@ class QuizzController extends Controller {
             }
             
         }
-    }
+    }*/
 
 }
