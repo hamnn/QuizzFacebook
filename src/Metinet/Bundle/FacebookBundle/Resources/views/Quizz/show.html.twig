@@ -1,0 +1,93 @@
+<h1>Quizz</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+            <th>Theme</th>
+            <td>{{ entity.theme }}</td>
+        </tr>
+        <tr>
+            <th>Titre</th>
+            <td>{{ entity.title }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>{{ entity.picture }}</td>
+        </tr>
+        <tr>
+            <th>Short description</th>
+            <td>{{ entity.shortDesc }}</td>
+        </tr>
+        <tr>
+            <th>Long description</th>
+            <td>{{ entity.longDesc }}</td>
+        </tr>
+        <tr>
+            <th>Points</th>
+            <td>{{ entity.winPoints }}</td>
+        </tr>
+        <tr>
+            <th>Temps estimé</th>
+            <td>{{ entity.averageTime }}</td>
+        </tr>
+        <tr>
+            <th>< 25%</th>
+            <td>{{ entity.txtWin1 }}</td>
+        </tr>
+        <tr>
+            <th>25% à 50%</th>
+            <td>{{ entity.txtWin2 }}</td>
+        </tr>
+        <tr>
+            <th>50% à 75%</th>
+            <td>{{ entity.txtWin3 }}</td>
+        </tr>
+        <tr>
+            <th>75% à 100%</th>
+            <td>{{ entity.txtWin4 }}</td>
+        </tr>
+        <tr>
+            <th>Titre FB</th>
+            <td>{{ entity.shareWallTitle }}</td>
+        </tr>
+        <tr>
+            <th>Description FB</th>
+            <td>{{ entity.shareWallDesc }}</td>
+        </tr>
+        <tr>
+            <th>Ispromoted</th>
+            <td>{{ entity.isPromoted }}</td>
+        </tr>
+        <tr>
+            <th>Createdat</th>
+            <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
+        </tr>
+        <tr>
+            <th>State</th>
+            <td>{{ entity.state }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('index') }}">
+           Retour à la liste
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('quizz_edit', { 'id': entity.id }) }}">
+            Editer
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Supprimer</button>
+        </form>
+    </li>
+</ul>
