@@ -1,0 +1,10 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Administration{% endblock %}
+{% block body %}
+<h1 id="inscriptiontitle">Administration du site.</h1>
+
+    azerty
+    <form id="logout" action="{{ path('logout') }}" method="post">
+	<input type="submit" value="logout" />
+    </form>
+{% endblock %}
