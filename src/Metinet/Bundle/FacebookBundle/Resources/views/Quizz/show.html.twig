@@ -1,3 +1,6 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Quizz{% endblock %}
+{% block container %}
 <h1>Quizz</h1>
 
 <table class="record_properties">
@@ -80,7 +83,7 @@
         </a>
     </li>
     <li>
-        <a href="{{ path('quizz_update', { 'id': entity.id }) }}">
+        <a href="{{ path('quizz_edit', { 'id': entity.id }) }}">
             Editer
         </a>
     </li>
@@ -91,3 +94,4 @@
         </form>
     </li>
 </ul>
+{% endblock %}
