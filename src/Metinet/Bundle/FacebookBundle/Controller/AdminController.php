@@ -17,7 +17,34 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-	return array();
+	// instanciation des repositories
+	$userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+	$quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+	// on récupère les joueurs créés ces 7 derniers jours
+	$arrayJoueurs7Jours = $userRepository->getJoueursSurNDerniersJours(7);
+	// on récupère les joueurs créés ces 30 derniers jours
+	$arrayJoueurs30Jours = $userRepository->getJoueursSurNDerniersJours(30);
+	// on récupère le nombre de quizz disponibles
+	$nbQuizzDisponibles = $quizzRepository->getNombreQuizzDisponibles();
+	// on récupère le score moyen de tous les joueurs
+	$scoreMoyenJoueurs = $userRepository->getScoreMoyenDeTousLesJoueurs();
+	// on récupère le nombre total de joueurs
+	$nbTotalJoueurs = $userRepository->getNombreTotalJoueurs();
+	// on récupère le nombre de quizz en cours de jeu
+	$nbQuizzEnCours = $quizzResultRepository->getNombreQuizzEnCours();
+	// on récupère le top 3 des quizz les plus joués
+	$top3QuizzPlusPopulaires = $quizzResultRepository->getTopQuizzPopulaires(3, "DESC");
+	// on récupère le top 3 des quizz les moins joués
+	$top3QuizzMoinsPopulaires = $quizzResultRepository->getTopQuizzPopulaires(3, "ASC");
+	return array(	"arrayJoueurs7Jours"	    => $arrayJoueurs7Jours,
+			"arrayJoueurs30Jours"	    => $arrayJoueurs30Jours,
+			"nbQuizzDisponibles"	    => $nbQuizzDisponibles,
+			"scoreMoyenJoueurs"	    => $scoreMoyenJoueurs,
+			"nbTotalJoueurs"	    => $nbTotalJoueurs,
+			"nbQuizzEnCours"	    => $nbQuizzEnCours,
+			"top3QuizzPlusPopulaires"   => $top3QuizzPlusPopulaires,
+			"top3QuizzMoinsPopulaires"  => $top3QuizzMoinsPopulaires);
     }
     
     /**
