@@ -48,4 +48,17 @@ class UserRepository extends EntityRepository
 					FROM MetinetFacebookBundle:User user")
 		->getSingleScalarResult();
     }
+    
+    
+    /**
+     * Fonction qui retourne les n derniers utilisateurs enregistrés.
+     * @param INT $nbUtilisateurs Le nombre d'utilisateurs à retourner.
+     * @return ARRAY Tableau d'objets User.
+     */
+    public function getDerniersUtilisateurs($nbUtilisateurs){
+	return $this->_em->createQuery("SELECT user
+					FROM MetinetFacebookBundle:User user
+					ORDER BY user.createdAt DESC")
+		->setMaxResults($nbUtilisateurs);
+    }
 }
