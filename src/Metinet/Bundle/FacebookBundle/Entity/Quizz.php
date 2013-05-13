@@ -162,6 +162,29 @@ class Quizz
     {
         return $this->id;
     }
+    
+    /**
+     * Get quizz
+     *
+     * @return Quizz
+     */
+    public function getQuizz()
+    {
+        return $this->quizz;
+    }
+    
+    /**
+     * Set quizz
+     *
+     * @param Quizz $quizz
+     * @return Quizz
+     */
+    public function setQuizz($quizz)
+    {
+        $this->quizz = $quizz;
+    
+        return $this;
+    }
 
     /**
      * Set title
