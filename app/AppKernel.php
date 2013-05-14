@@ -21,7 +21,9 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\FacebookBundle\FOSFacebookBundle(),
             new Metinet\Bundle\FacebookBundle\MetinetFacebookBundle(),
+            new Liip\ImagineBundle\LiipImagineBundle(),
         );
+        
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             //$bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
