@@ -3,12 +3,16 @@
 namespace Metinet\Bundle\FacebookBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Quizz
  *
  * @ORM\Table(name="quizz")
  * @ORM\Entity(repositoryClass="Metinet\Bundle\FacebookBundle\Repository\QuizzRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Quizz
 {
@@ -34,6 +38,14 @@ class Quizz
      * @ORM\Column(name="picture", type="string", length=255)
      */
     private $picture;
+    
+    // propriété utilisé temporairement pour la suppression
+    private $filenameForRemove;
+    
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
 
     /**
      * @var string
@@ -162,6 +174,29 @@ class Quizz
     {
         return $this->id;
     }
+    
+    /**
+     * Get quizz
+     *
+     * @return Quizz
+     */
+    public function getQuizz()
+    {
+        return $this->quizz;
+    }
+    
+    /**
+     * Set quizz
+     *
+     * @param Quizz $quizz
+     * @return Quizz
+     */
+    public function setQuizz($quizz)
+    {
+        $this->quizz = $quizz;
+    
+        return $this;
+    }
 
     /**
      * Set title
@@ -186,28 +221,6 @@ class Quizz
         return $this->title;
     }
 
-    /**
-     * Set picture
-     *
-     * @param string $picture
-     * @return Quizz
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    /**
-     * Get picture
-     *
-     * @return string
-     */
-    public function getPicture()
-    {
-        return $this->picture;
-    }
 
     /**
      * Set shortDesc
@@ -596,5 +609,97 @@ class Quizz
     public function getTheme()
     {
         return $this->theme;
+    }
+    
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     * @return Quizz
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
+    }
+    
+     public function getAbsolutePath()
+    {
+        return null === $this->picture ? null : $this->getUploadRootDir().'/quizz'.$this->id.'.'.$this->picture;
+    }
+    public function getWebPath()
+    {
+        return null === $this->picture ? null : $this->getUploadDir().'/quizz'.$this->id.'.'.$this->picture;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__.'/../../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+        // le document/image dans la vue.
+        return 'bundles/metinetfacebook/uploads/pictures';
+    }
+    
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+        if (null !== $this->file) {
+            $this->picture = $this->file->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+        if (null === $this->file) {
+            return;
+        }
+
+        // vous devez lancer une exception ici si le fichier ne peut pas
+        // être déplacé afin que l'entité ne soit pas persistée dans la
+        // base de données comme le fait la méthode move() de UploadedFile
+        $this->file->move($this->getUploadRootDir(), 'quizz'.$this->id.'.'.$this->file->guessExtension());
+
+        unset($this->file);
+    }
+    
+    /**
+     * @ORM\PreRemove()
+     */
+    public function storeFilenameForRemove()
+    {
+        $this->filenameForRemove = $this->getAbsolutePath();
+    }
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+         if ($this->filenameForRemove) {
+            unlink($this->filenameForRemove);
+        }
     }
 }

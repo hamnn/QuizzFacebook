@@ -1,0 +1,29 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Edition Quizz{% endblock %}
+{% block container %}
+       
+        <h1>Edition Quizz</h1>
+
+<form action="{{ path('quizz_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+    {{ form_widget(edit_form) }}
+    <p>
+        <button type="submit">Editer</button>
+    </p>
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('quizz') }}">
+            Retour à la liste
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        </form>
+    </li>
+</ul>
+        
+{% endblock %}
+
