@@ -71,6 +71,22 @@
 	</tr>
     </table>
     
+    
+    <p>Les 10 derniers joueurs enregistrés</p>
+    <table>
+	<tr>
+	    <th>Nom</th><th>Prénom</th><th>Image</th><th>Lien Facebook</th>
+	</tr>
+	{% for dernierUser in array10DerniersUsers %}
+	    <tr>
+		<td>{{ dernierUser.getLastname() }}</td>
+		<td>{{ dernierUser.getFirstname() }}</td>
+		<td><img src="{{ dernierUser.getPicture() }}" /></td>
+		<td><a href="http://facebook.com/{{ dernierUser.getFbUid() }}">FB</a></td>
+	    </tr>
+	{% endfor %}
+    </table>
+    
     <form id="logout" action="{{ path('logout') }}" method="post">
 	<input type="submit" value="logout" />
     </form>
