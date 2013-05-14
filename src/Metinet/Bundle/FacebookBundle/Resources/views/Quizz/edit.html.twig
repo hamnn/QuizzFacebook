@@ -4,7 +4,7 @@
        
         <h1>Edition Quizz</h1>
 
-<form action="{{ path('quizz_edit', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+<form action="{{ path('quizz_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
     {{ form_widget(edit_form) }}
     <p>
         <button type="submit">Editer</button>

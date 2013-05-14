@@ -39,6 +39,7 @@ class Quizz
      */
     private $picture;
     
+    
     /**
      * @Assert\File(maxSize="6000000")
      */
@@ -631,11 +632,10 @@ class Quizz
         return $this->picture;
     }
     
-    public function getAbsolutePath()
+     public function getAbsolutePath()
     {
         return null === $this->picture ? null : $this->getUploadRootDir().'/'.$this->picture;
     }
-
     public function getWebPath()
     {
         return null === $this->picture ? null : $this->getUploadDir().'/'.$this->picture;
@@ -660,7 +660,7 @@ class Quizz
      */
     public function preUpload()
     {
-        if (null !== $this->file) {
+         if (null !== $this->file) {
             // faites ce que vous voulez pour générer un nom unique
             $this->picture = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
         }
@@ -672,7 +672,7 @@ class Quizz
      */
     public function upload()
     {
-        if (null === $this->file) {
+     if (null === $this->file) {
             return;
         }
 
@@ -684,13 +684,15 @@ class Quizz
 
         unset($this->file);
     }
+    
+    
 
     /**
      * @ORM\PostRemove()
      */
     public function removeUpload()
     {
-        if ($this->file == $this->getAbsolutePath()) {
+         if ($this->file == $this->getAbsolutePath()) {
             unlink($this->file);
         }
     }

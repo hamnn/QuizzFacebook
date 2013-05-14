@@ -21,7 +21,7 @@ class QuizzController extends Controller {
     /**
      * Lists all Quizz entities.
      *
-     * @Route("/quizz", name="quizz")
+     * @Route("/admin/quizz", name="quizz")
      * @Template()
      */
     public function indexAction() {
@@ -37,7 +37,7 @@ class QuizzController extends Controller {
     /**
      * Finds and displays a Quizz entity.
      *
-     * @Route("/{id}/show", name="quizz_show")
+     * @Route("/admin/{id}/showquizz", name="quizz_show")
      * @Template()
      */
     public function showAction($id) {
@@ -60,7 +60,7 @@ class QuizzController extends Controller {
     /**
      * Displays a form to create a new Quizz entity.
      *
-     * @Route("/new", name="quizz_new")
+     * @Route("/admin/newquizz", name="quizz_new")
      * @Template()
      */
     public function newAction() {
@@ -76,7 +76,7 @@ class QuizzController extends Controller {
     /**
      * Creates a new Quizz entity.
      *
-     * @Route("/create", name="quizz_create")
+     * @Route("/admin/createquizz", name="quizz_create")
      * @Template("MetinetFacebookBundle:Quizz:new.html.twig")
      */
     public function createAction(Request $request) {
@@ -102,7 +102,7 @@ class QuizzController extends Controller {
     /**
      * Displays a form to edit an existing Quizz entity.
      *
-     * @Route("/{id}/edit", name="quizz_edit")
+     * @Route("/admin/{id}/editquizz", name="quizz_edit")
      * @Template()
      */
     public function editAction($id) {
@@ -127,7 +127,7 @@ class QuizzController extends Controller {
     /**
      * Edits an existing Quizz entity.
      *
-     * @Route("/{id}/update", name="quizz_update")
+     * @Route("/admin/{id}/updatequizz", name="quizz_update")
      * @Template("MetinetFacebookBundle:Quizz:edit.html.twig")
      */
     public function updateAction(Request $request, $id) {
@@ -160,7 +160,7 @@ class QuizzController extends Controller {
     /**
      * Deletes a Quizz entity.
      *
-     * @Route("/{id}/delete", name="quizz_delete")
+     * @Route("/admin/{id}/deletequizz", name="quizz_delete")
      * 
      */
     public function deleteAction(Request $request, $id) {
@@ -187,7 +187,7 @@ class QuizzController extends Controller {
     /**
      * Deletes a Quizz entity.
      *
-     * @Route("/deleteall", name="quizz_deleteall")
+     * @Route("/admin/deleteallquizz", name="quizz_deleteall")
      * @Template()
      */
     public function deleteAllAction() {
