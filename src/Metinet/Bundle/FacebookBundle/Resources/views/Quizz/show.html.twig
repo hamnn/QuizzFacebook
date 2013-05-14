@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td>{{ entity.picture }}</td>
+            <td><img src="{{ entity.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ entity.title }}"/></td>
         </tr>
         <tr>
             <th>Short description</th>

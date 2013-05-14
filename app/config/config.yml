@@ -71,3 +71,9 @@ fos_facebook:
     secret: %fb_app_secret%
     cookie: true
     permissions: [email, publish_actions]
+    
+liip_imagine:
+    filter_sets:
+        my_thumb:
+            filters:
+                thumbnail: { size: [120, 90], mode: outbound }
