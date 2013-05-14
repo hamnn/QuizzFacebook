@@ -592,6 +592,17 @@ class Quizz
     {
         return $this->questions;
     }
+    
+    /**
+     * Fonction qui retourne la première question du quizz
+     * @return QUESTION La première question du quizz
+     */
+    public function getFirstQuestion(){
+	if(isset($this->questions[0])){
+	    return $this->questions[0];
+	}
+	return NULL;
+    }
 
     /**
      * Set theme
