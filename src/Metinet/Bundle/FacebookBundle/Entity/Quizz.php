@@ -44,6 +44,13 @@ class Quizz
      * @Assert\File(maxSize="6000000")
      */
     public $file;
+    
+    /**
+     * Variable optionnelle qui contient le nombre de fois que le quizz a été joué.
+     * Sert plus de variable de transport de données à la vue TWIG.
+     * N'apparait pas en base.
+     */
+    private $nbTimesPlayed;
 
     /**
      * @var string
@@ -630,6 +637,24 @@ class Quizz
     public function getPicture()
     {
         return $this->picture;
+    }
+    
+    /**
+     * Retourne le nombre de fois que le quizz a été joué.
+     * /!\ Variable opionelle non remplie automatiquement. Sert plus de variable de transport de données à la vue TWIG.
+     */
+    public function getNbTimesPlayed(){
+	return $this->nbTimesPlayed;
+    }
+    
+    /**
+     * Set le nombre de fois que le quizz a été joué.
+     * Sert plus de variable de transport de données à la vue TWIG.
+     * N'apparait pas en base.
+     */
+    public function setNbTimesPlayed($nbTimesPlayed){
+	$this->nbTimesPlayed = $nbTimesPlayed;
+	return $this;
     }
     
      public function getAbsolutePath()

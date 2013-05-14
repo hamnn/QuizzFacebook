@@ -46,10 +46,10 @@
 	    <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joué</th>
 	    {% for quizzPlusPop in top3QuizzPlusPopulaires %}
 		<tr>
-		    <td>{{ quizzPlusPop.getQuizz().getTitle() }}</td>
-		    <td>{{ quizzPlusPop.getQuizz().getTheme().getTitle() }}</td>
-		    <td>{{ quizzPlusPop.getQuizz().getShortDesc() }}</td>
-		    <td>{{ quizzPlusPop.nbTimesPlayed }}</td>
+		    <td>{{ quizzPlusPop.getTitle() }}</td>
+		    <td>{{ quizzPlusPop.getTheme().getTitle() }}</td>
+		    <td>{{ quizzPlusPop.getShortDesc() }}</td>
+		    <td>{{ quizzPlusPop.getNbTimesPlayed() }}</td>
 		</tr>
 	    {% endfor %}
 	</tr>
@@ -62,10 +62,10 @@
 	    <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joué</th>
 	    {% for quizzMoinsPop in top3QuizzMoinsPopulaires %}
 		<tr>
-		    <td>{{ quizzMoinsPop.getQuizz().getTitle() }}</td>
-		    <td>{{ quizzMoinsPop.getQuizz().getTheme().getTitle() }}</td>
-		    <td>{{ quizzMoinsPop.getQuizz().getShortDesc() }}</td>
-		    <td>{{ quizzMoinsPop.nbTimesPlayed }}</td>
+		    <td>{{ quizzMoinsPop.getTitle() }}</td>
+		    <td>{{ quizzMoinsPop.getTheme().getTitle() }}</td>
+		    <td>{{ quizzMoinsPop.getShortDesc() }}</td>
+		    <td>{{ quizzMoinsPop.getNbTimesPlayed() }}</td>
 		</tr>
 	    {% endfor %}
 	</tr>
