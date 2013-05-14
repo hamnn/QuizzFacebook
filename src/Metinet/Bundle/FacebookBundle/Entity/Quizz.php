@@ -39,8 +39,11 @@ class Quizz
      */
     private $picture;
     
+<<<<<<< HEAD
     // propriété utilisé temporairement pour la suppression
     private $filenameForRemove;
+=======
+>>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
     
     /**
      * @Assert\File(maxSize="6000000")
@@ -636,11 +639,19 @@ class Quizz
     
      public function getAbsolutePath()
     {
+<<<<<<< HEAD
         return null === $this->picture ? null : $this->getUploadRootDir().'/quizz'.$this->id.'.'.$this->picture;
     }
     public function getWebPath()
     {
         return null === $this->picture ? null : $this->getUploadDir().'/quizz'.$this->id.'.'.$this->picture;
+=======
+        return null === $this->picture ? null : $this->getUploadRootDir().'/'.$this->picture;
+    }
+    public function getWebPath()
+    {
+        return null === $this->picture ? null : $this->getUploadDir().'/'.$this->picture;
+>>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
     }
 
     protected function getUploadRootDir()
@@ -662,8 +673,14 @@ class Quizz
      */
     public function preUpload()
     {
+<<<<<<< HEAD
         if (null !== $this->file) {
             $this->picture = $this->file->guessExtension();
+=======
+         if (null !== $this->file) {
+            // faites ce que vous voulez pour générer un nom unique
+            $this->picture = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+>>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
         }
     }
 
@@ -673,6 +690,7 @@ class Quizz
      */
     public function upload()
     {
+<<<<<<< HEAD
         if (null === $this->file) {
             return;
         }
@@ -681,10 +699,22 @@ class Quizz
         // être déplacé afin que l'entité ne soit pas persistée dans la
         // base de données comme le fait la méthode move() de UploadedFile
         $this->file->move($this->getUploadRootDir(), 'quizz'.$this->id.'.'.$this->file->guessExtension());
+=======
+     if (null === $this->file) {
+            return;
+        }
+
+        // s'il y a une erreur lors du déplacement du fichier, une exception
+        // va automatiquement être lancée par la méthode move(). Cela va empêcher
+        // proprement l'entité d'être persistée dans la base de données si
+        // erreur il y a
+        $this->file->move($this->getUploadRootDir(), $this->picture);
+>>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
 
         unset($this->file);
     }
     
+<<<<<<< HEAD
     /**
      * @ORM\PreRemove()
      */
@@ -692,14 +722,22 @@ class Quizz
     {
         $this->filenameForRemove = $this->getAbsolutePath();
     }
+=======
+    
+>>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
 
     /**
      * @ORM\PostRemove()
      */
     public function removeUpload()
     {
+<<<<<<< HEAD
          if ($this->filenameForRemove) {
             unlink($this->filenameForRemove);
+=======
+         if ($this->file == $this->getAbsolutePath()) {
+            unlink($this->file);
+>>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
         }
     }
 }
