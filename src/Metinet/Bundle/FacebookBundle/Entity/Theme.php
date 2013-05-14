@@ -12,9 +12,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *
  * @ORM\Table(name="theme")
  * @ORM\Entity(repositoryClass="Metinet\Bundle\FacebookBundle\Repository\ThemeRepository")
+ * @ORM\HasLifecycleCallbacks
  */
-class Theme
-{
+class Theme {
+
     /**
      * @var integer
      *
@@ -38,8 +39,6 @@ class Theme
      */
     private $picture;
     
-    // propriété utilisé temporairement pour la suppression
-    private $filenameForRemove;
     
     /**
      * @Assert\File(maxSize="6000000")
@@ -65,12 +64,10 @@ class Theme
      */
     protected $quizzes;
 
-
     /**
      * Constructor
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->quizzes = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
@@ -79,8 +76,7 @@ class Theme
      *
      * @return integer
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -90,8 +86,7 @@ class Theme
      * @param string $title
      * @return Theme
      */
-    public function setTitle($title)
-    {
+    public function setTitle($title) {
         $this->title = $title;
 
         return $this;
@@ -102,98 +97,17 @@ class Theme
      *
      * @return string
      */
-    public function getTitle()
-    {
+    public function getTitle() {
         return $this->title;
     }
 
     /**
-     * Set shortDesc
-     *
-     * @param string $shortDesc
-     * @return Theme
-     */
-    public function setShortDesc($shortDesc)
-    {
-        $this->shortDesc = $shortDesc;
-
-        return $this;
-    }
-
-    /**
-     * Get shortDesc
-     *
-     * @return string
-     */
-    public function getShortDesc()
-    {
-        return $this->shortDesc;
-    }
-
-    /**
-     * Set longDesc
-     *
-     * @param string $longDesc
-     * @return Theme
-     */
-    public function setLongDesc($longDesc)
-    {
-        $this->longDesc = $longDesc;
-
-        return $this;
-    }
-
-    /**
-     * Get longDesc
-     *
-     * @return string
-     */
-    public function getLongDesc()
-    {
-        return $this->longDesc;
-    }
-
-    /**
-     * Add quizzes
-     *
-     * @param \Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes
-     * @return Theme
-     */
-    public function addQuizze(\Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes)
-    {
-        $this->quizzes[] = $quizzes;
-
-        return $this;
-    }
-
-    /**
-     * Remove quizzes
-     *
-     * @param \Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes
-     */
-    public function removeQuizze(\Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes)
-    {
-        $this->quizzes->removeElement($quizzes);
-    }
-
-    /**
-     * Get quizzes
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getQuizzes()
-    {
-        return $this->quizzes;
-    }
-    
-     /**
      * Set picture
      *
      * @param string $picture
      * @return Quizz
      */
-    public function setPicture($picture)
-    {
+    public function setPicture($picture) {
         $this->picture = $picture;
 
         return $this;
@@ -204,41 +118,37 @@ class Theme
      *
      * @return string
      */
-    public function getPicture()
-    {
+    public function getPicture() {
         return $this->picture;
     }
-    
-     public function getAbsolutePath()
-    {
-        return null === $this->picture ? null : $this->getUploadRootDir().'/theme'.$this->id.'.'.$this->picture;
-    }
-    public function getWebPath()
-    {
-        return null === $this->picture ? null : $this->getUploadDir().'/theme'.$this->id.'.'.$this->picture;
+
+    public function getAbsolutePath() {
+        return null === $this->picture ? null : $this->getUploadRootDir() . '/' . $this->picture;
     }
 
-    protected function getUploadRootDir()
-    {
+    public function getWebPath() {
+        return null === $this->picture ? null : $this->getUploadDir() . '/' . $this->picture;
+    }
+
+    protected function getUploadRootDir() {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../../../web/'.$this->getUploadDir();
+        return __DIR__ . '/../../../../../web/' . $this->getUploadDir();
     }
 
-    protected function getUploadDir()
-    {
+    protected function getUploadDir() {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
         return 'bundles/metinetfacebook/uploads/pictures';
     }
-    
+
     /**
      * @ORM\PrePersist()
      * @ORM\PreUpdate()
      */
-    public function preUpload()
-    {
+    public function preUpload() {
         if (null !== $this->file) {
-            $this->picture = $this->file->guessExtension();
+            // faites ce que vous voulez pour générer un nom unique
+            $this->picture = sha1(uniqid(mt_rand(), true)) . '.' . $this->file->guessExtension();
         }
     }
 
@@ -246,35 +156,99 @@ class Theme
      * @ORM\PostPersist()
      * @ORM\PostUpdate()
      */
-    public function upload()
-    {
+    public function upload() {
         if (null === $this->file) {
             return;
         }
 
-        // vous devez lancer une exception ici si le fichier ne peut pas
-        // être déplacé afin que l'entité ne soit pas persistée dans la
-        // base de données comme le fait la méthode move() de UploadedFile
-        $this->file->move($this->getUploadRootDir(), 'quizz'.$this->id.'.'.$this->file->guessExtension());
+        // s'il y a une erreur lors du déplacement du fichier, une exception
+        // va automatiquement être lancée par la méthode move(). Cela va empêcher
+        // proprement l'entité d'être persistée dans la base de données si
+        // erreur il y a
+        $this->file->move($this->getUploadRootDir(), $this->picture);
 
         unset($this->file);
-    }
-    
-    /**
-     * @ORM\PreRemove()
-     */
-    public function storeFilenameForRemove()
-    {
-        $this->filenameForRemove = $this->getAbsolutePath();
     }
 
     /**
      * @ORM\PostRemove()
      */
-    public function removeUpload()
-    {
-         if ($this->filenameForRemove) {
-            unlink($this->filenameForRemove);
+    public function removeUpload() {
+        if ($this->file == $this->getAbsolutePath()) {
+            unlink($this->file);
         }
     }
+
+    /**
+     * Set shortDesc
+     *
+     * @param string $shortDesc
+     * @return Theme
+     */
+    public function setShortDesc($shortDesc) {
+        $this->shortDesc = $shortDesc;
+
+        return $this;
+    }
+
+    /**
+     * Get shortDesc
+     *
+     * @return string
+     */
+    public function getShortDesc() {
+        return $this->shortDesc;
+    }
+
+    /**
+     * Set longDesc
+     *
+     * @param string $longDesc
+     * @return Theme
+     */
+    public function setLongDesc($longDesc) {
+        $this->longDesc = $longDesc;
+
+        return $this;
+    }
+
+    /**
+     * Get longDesc
+     *
+     * @return string
+     */
+    public function getLongDesc() {
+        return $this->longDesc;
+    }
+
+    /**
+     * Add quizzes
+     *
+     * @param \Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes
+     * @return Theme
+     */
+    public function addQuizze(\Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes) {
+        $this->quizzes[] = $quizzes;
+
+        return $this;
+    }
+
+    /**
+     * Remove quizzes
+     *
+     * @param \Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes
+     */
+    public function removeQuizze(\Metinet\Bundle\FacebookBundle\Entity\Quizz $quizzes) {
+        $this->quizzes->removeElement($quizzes);
+    }
+
+    /**
+     * Get quizzes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getQuizzes() {
+        return $this->quizzes;
+    }
+
 }

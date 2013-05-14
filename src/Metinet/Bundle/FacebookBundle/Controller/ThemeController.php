@@ -21,7 +21,7 @@ class ThemeController extends Controller {
     /**
      * Lists all Theme entities.
      *
-     * @Route("/theme", name="theme")
+     * @Route("/admin/theme", name="theme")
      * @Template()
      */
     public function indexAction() {
@@ -37,7 +37,7 @@ class ThemeController extends Controller {
     /**
      * Finds and displays a Theme entity.
      *
-     * @Route("/{id}/show", name="theme_show")
+     * @Route("/admin/{id}/showtheme", name="theme_show")
      * @Template()
      */
     public function showAction($id) {
@@ -60,7 +60,7 @@ class ThemeController extends Controller {
     /**
      * Displays a form to create a new Theme entity.
      *
-     * @Route("/admin/theme_new", name="theme_new")
+     * @Route("/admin/newtheme", name="theme_new")
      * @Template()
      */
     public function newAction() {
@@ -76,7 +76,7 @@ class ThemeController extends Controller {
     /**
      * Creates a new Theme entity.
      *
-     * @Route("/admin/theme_create", name="theme_create")
+     * @Route("/admin/createtheme", name="theme_create")
      * @Template("MetinetFacebookBundle:Theme:new.html.twig")
      */
     public function createAction(Request $request) {
@@ -102,7 +102,7 @@ class ThemeController extends Controller {
     /**
      * Displays a form to edit an existing Theme entity.
      *
-     * @Route("/admin/{id}/theme_edit", name="theme_edit")
+     * @Route("/admin/{id}/edittheme", name="theme_edit")
      * @Template()
      */
     public function editAction($id) {
@@ -127,7 +127,7 @@ class ThemeController extends Controller {
     /**
      * Edits an existing Theme entity.
      *
-     * @Route("/{id}/update", name="theme_update")
+     * @Route("/admin/{id}/updatetheme", name="theme_update")
      * @Template("MetinetFacebookBundle:Theme:edit.html.twig")
      */
     public function updateAction(Request $request, $id) {
@@ -160,7 +160,7 @@ class ThemeController extends Controller {
     /**
      * Deletes a Theme entity.
      *
-     * @Route("/admin/{id}/theme_delete", name="theme_delete")
+     * @Route("/admin/{id}/deletetheme", name="theme_delete")
      * 
      */
     public function deleteAction(Request $request, $id) {
@@ -187,7 +187,7 @@ class ThemeController extends Controller {
     /**
      * Deletes a Theme entity.
      *
-     * @Route("/admin/deleteall", name="theme_deleteall")
+     * @Route("/admin/deletealltheme", name="theme_deleteall")
      * @Template()
      */
     public function deleteAllAction() {

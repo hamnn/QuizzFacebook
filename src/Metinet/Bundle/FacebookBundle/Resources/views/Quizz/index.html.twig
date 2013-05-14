@@ -1,28 +1,17 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
-<<<<<<< HEAD
-{% block title %}Thème list{% endblock %}
-{% block container %}
-<h1>thème list</h1>
-=======
 {% block title %}Quizz list{% endblock %}
 {% block container %}
 <h1>Quizz list</h1>
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
 
 <table class="records_list">
     <thead>
         <tr>
             <th>Id</th>
-<<<<<<< HEAD
-=======
             <th>Theme</th>
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
             <th>Titre</th>
             <th>Image</th>
             <th>Short description</th>
             <th>Long description</th>
-<<<<<<< HEAD
-=======
             <th>Points</th>
             <th>Temps</th>
             <th>< 25%</th>
@@ -34,26 +23,12 @@
             <th>Is promoted</th>
             <th>Date création</th>
             <th>Etat</th>
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
         </tr>
     </thead>
     <tbody>
     {% for entity in entities %}
         <tr>
             <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-<<<<<<< HEAD
-            <td>{{ entity.title }}</td>
-            <td>{{ entity.picture }}</td>
-            <td>{{ entity.shortDesc }}</td>
-            <td>{{ entity.longDesc }}</td>
-            <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('theme_show', { 'id': entity.id }) }}">Voir</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('theme_edit', { 'id': entity.id }) }}">Modifier</a>
-=======
             <td>{{ entity.theme }}</td>
             <td>{{ entity.title }}</td>
             <td><img src="../../{{ entity.getWebPath() }}" alt="{{ entity.title }}"/></td>
@@ -77,7 +52,6 @@
                     </li>
                     <li>
                         <a href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a>
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
                     </li>
                 </ul>
             </td>
@@ -88,13 +62,8 @@
 
 <ul>
     <li>
-<<<<<<< HEAD
-        <a href="{{ path('theme_new') }}">
-            Créer un nouveau thème
-=======
         <a href="{{ path('quizz_new') }}">
             Créer un nouveau quizz
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
         </a>
     </li>
 </ul>

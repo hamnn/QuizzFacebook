@@ -1,7 +1,7 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
-{% block title %}Thèmeppp{% endblock %}
+{% block title %}Theme{% endblock %}
 {% block container %}
-<h1>Thème</h1>
+<h1>Theme</h1>
 
 <table class="record_properties">
     <tbody>
@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td>{{ entity.picture }}</td>
+            <td><img src="../../{{ entity.getWebPath() }}" alt="{{ entity.picture }}"/></td>
         </tr>
         <tr>
             <th>Short description</th>

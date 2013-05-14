@@ -21,11 +21,7 @@ class QuizzController extends Controller {
     /**
      * Lists all Quizz entities.
      *
-<<<<<<< HEAD
-     * @Route("/quizz", name="quizz")
-=======
      * @Route("/admin/quizz", name="quizz")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * @Template()
      */
     public function indexAction() {
@@ -41,11 +37,7 @@ class QuizzController extends Controller {
     /**
      * Finds and displays a Quizz entity.
      *
-<<<<<<< HEAD
-     * @Route("/{id}/show", name="quizz_show")
-=======
      * @Route("/admin/{id}/showquizz", name="quizz_show")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * @Template()
      */
     public function showAction($id) {
@@ -68,11 +60,7 @@ class QuizzController extends Controller {
     /**
      * Displays a form to create a new Quizz entity.
      *
-<<<<<<< HEAD
-     * @Route("/new", name="quizz_new")
-=======
      * @Route("/admin/newquizz", name="quizz_new")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * @Template()
      */
     public function newAction() {
@@ -88,11 +76,7 @@ class QuizzController extends Controller {
     /**
      * Creates a new Quizz entity.
      *
-<<<<<<< HEAD
-     * @Route("/create", name="quizz_create")
-=======
      * @Route("/admin/createquizz", name="quizz_create")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * @Template("MetinetFacebookBundle:Quizz:new.html.twig")
      */
     public function createAction(Request $request) {
@@ -118,11 +102,7 @@ class QuizzController extends Controller {
     /**
      * Displays a form to edit an existing Quizz entity.
      *
-<<<<<<< HEAD
-     * @Route("/{id}/edit", name="quizz_edit")
-=======
      * @Route("/admin/{id}/editquizz", name="quizz_edit")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * @Template()
      */
     public function editAction($id) {
@@ -147,11 +127,7 @@ class QuizzController extends Controller {
     /**
      * Edits an existing Quizz entity.
      *
-<<<<<<< HEAD
-     * @Route("/{id}/update", name="quizz_update")
-=======
      * @Route("/admin/{id}/updatequizz", name="quizz_update")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * @Template("MetinetFacebookBundle:Quizz:edit.html.twig")
      */
     public function updateAction(Request $request, $id) {
@@ -184,11 +160,7 @@ class QuizzController extends Controller {
     /**
      * Deletes a Quizz entity.
      *
-<<<<<<< HEAD
-     * @Route("/{id}/delete", name="quizz_delete")
-=======
      * @Route("/admin/{id}/deletequizz", name="quizz_delete")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * 
      */
     public function deleteAction(Request $request, $id) {
@@ -215,11 +187,7 @@ class QuizzController extends Controller {
     /**
      * Deletes a Quizz entity.
      *
-<<<<<<< HEAD
-     * @Route("/deleteall", name="quizz_deleteall")
-=======
      * @Route("/admin/deleteallquizz", name="quizz_deleteall")
->>>>>>> 461979f9aac4a33e5116b00b21a32bd448e34a87
      * @Template()
      */
     public function deleteAllAction() {
