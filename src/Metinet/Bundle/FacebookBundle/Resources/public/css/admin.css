@@ -363,3 +363,23 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
   outline: 1px dotted #666;
 }
 /* /FB CSS------------------------------------------------------- */
+
+
+/* TABLEAU / FORMULAIRE  ----------------------------------------------------------*/
+
+
+.edit, .delete{
+    display:block;
+    text-indent:-9999px;
+    width:24px;
+    height:24px;
+    
+}
+
+.delete{
+    background: url('../images/delete.png') no-repeat 0 0;
+}
+
+.edit{
+    background: url('../images/modifier') no-repeat 0 0;
+}

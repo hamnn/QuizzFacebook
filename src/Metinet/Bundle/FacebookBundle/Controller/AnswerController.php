@@ -104,6 +104,30 @@ class AnswerController extends Controller {
     }
 
     /**
+     * Edits title Answer entity.
+     *
+     * @Route("/admin/answer_ajax", name="answer_ajax")
+     * @Template("MetinetFacebookBundle:Question:show.html.twig")
+     */
+    public function AjaxAction() {
+        
+        $em = $this->getDoctrine()->getManager();
+        if(isset($_POST['id'])){
+            //On selectionne juste l'ID dans le string
+            $id = substr($_POST['id'], 6);
+            $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
+            if(isset($_POST['title'])){
+                $title = $_POST['title'];
+                $entity->setTitle($title);
+                 $em->persist($entity);
+                $em->flush();
+            }
+        }
+        
+	return new Response($title);
+    }
+
+    /**
      * Creates a new Answer entity.
      *
      * @Route("/admin/{id}/createanswer", name="answer_create")

@@ -32,5 +32,18 @@
 		$('#question').fadeOut("slow");
 	    }
 	}
+        
+        
+        // Modification en ajax du champs texte answer
+        $(".texte_edit").editable($("#aa").val(), {
+            id : 'id',
+            name : 'title',
+            select : true,
+            onblur: "submit",
+            cssclass : "ajaxedit",
+            width: '100%',
+            placeholder: "Cliquer pour modifier...",
+            tooltip : "Cliquer pour modifier..."
+        }); 
  
 })(jQuery)

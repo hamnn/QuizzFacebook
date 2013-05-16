@@ -23,16 +23,17 @@
 <ul id ="answers">
 {% for answer in answers %}
         <li>
-            <span>{{ answer.title }}</span>
+            <span id="titre_{{ answer.id }}" class="texte_edit">{{ answer.title }}</span>
             {% if answer.isCorrect == 1 %}<a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="actif">Bonne réponse</a>{% else %}<a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="actif">Mauvaise réponse</a>{% endif %}</li>
-            <a href="{{ path('answer_edit', { 'id': answer.id }) }}">
+            <a class="edit" href="{{ path('answer_edit', { 'id': answer.id }) }}">
                 Editer
             </a>
-            <a href="{{ path('answer_delete', { 'id': answer.id }) }}">
+            <a class="delete" href="{{ path('answer_delete', { 'id': answer.id }) }}">
                 Supprimer
             </a>
 {% endfor %}
 </ul>
+<input type="hidden" value="{{ path('answer_ajax') }}" name="ajaxController" id="aa"/>
 <ul class="record_actions">
     <li>
         <a href="{{ path('answer_new', { 'id': entity.id }) }}">
@@ -45,4 +46,9 @@
         </a>
     </li>
 </ul>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/bundles/metinetfacebook/js/jquery.jeditable.js')}}"></script>
+    <script src="{{ asset('/bundles/metinetfacebook/js/ajax.js')}}"></script>
 {% endblock %}
