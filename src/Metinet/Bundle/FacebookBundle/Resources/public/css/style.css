@@ -37,20 +37,25 @@ body{
 	height: 100%;
         font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
-#page{
-	position: relative;
-	width: 710px;
-	margin: 0 auto -142px; /* the bottom margin is the negative value of the footer's height */
-	/*background: gray;*/
-	background: #fff;
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
+#page {
+    position: relative;
+    width: 710px;
+    margin: 90px auto -142px;
+    background: #fff;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    box-shadow: 7px 7px 10px gray;
+    border: 1px solid #999;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 #logo{
-	background: url('../images/logo-Admin.png') no-repeat 0 0;
-	width: 400px;
-	height: 230px;
+	background: url('../images/logo.png') no-repeat 0 0;
+	width: 300px;
+	height: 175px;
 	text-indent: -9999px;
 }
 #header{
@@ -63,10 +68,10 @@ body{
 }
 #contenu{
 	position: relative;
-	top: 230px;
+	top: 175px;
 	margin-left: 20px;
 }
-.push {margin-top: 230px;}
+.push {margin-top: 175px;}
 .push, #footer{	
 	height: 142px;
 }
@@ -75,14 +80,105 @@ body{
 	margin: 0 auto;
 	width: 710px;
 }
+#preload {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #484848;
+    z-index: 9999;
+}
+#content {
+    width: 400px;
+    height: 200px;
+    position: relative;
+    top: 350px;
+    margin: 0 auto;
+}
+#preload h2 {
+    font-family: lato;
+    font-weight: 100;
+    font-size: 16px;
+    text-align: center;
+    color: #f1f1f1;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+#infoCharg {
+text-align: center;
+margin-left: -20px;
+}
+#preload p {
+    font-family: lato;
+    font-weight: 300;
+    font-size: 14px;
+    color: #8e8e8e;
+    display: inline-block;
+}
 /* /COPRS ---------------------------------------------------------*/
 /* CONTENU --------------------------------------------------------*/
-#formLogin{
-    padding-top: 40px;
-    position: relative;
-    left: 50%;
-    margin-left: -175px;
+#cadreimgUser{
+    height: 200px;
+    overflow: hidden;
 }
+.lienAccueil {
+    display: inline-block;
+    width: 200px;
+    height: 30px;
+    background: #3b5998;
+    color: #fff;
+    border: 2px solid whitesmoke;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 30px;
+    box-shadow: 3px 3px 5px gray;
+    margin-right: 22px;
+}
+.navigation {
+	position: relative;
+	/*top: 100px;
+	margin-left: 20px;*/
+	width: 460px;
+	background: #fff;
+}
+.navigation > .toggleSubMenu ul li a{
+	display: block;
+	background: white;
+}
+.navigation > .toggleSubMenu{
+	position: relative;
+}
+.navigation > .toggleSubMenu > a{
+	display: block;
+	width: 460px;
+	height: 24px;
+	background: rgba(0, 0, 0, 0.6);
+	border: 1px solid #d1d2d4;
+}
+.navigation li ul{
+	width: 460px;
+	border: 1px solid #d1d2d4;
+}
+.toggleSubMenu p {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	color: #fff;
+}
+.open a .openMenu{display: block !important;}
+.open a .closeMenu{display: none !important;}
+.closeMenu{display: block;}
+.openMenu{display: none;}
+
+#classement {
+	/*float: right;*/
+	position: relative;
+	/*top: 120px;
+	margin-left: 20px;*/
+	/*right: 20px;*/
+}
+#nbQuizz{display: inline-block;}
+/* /CONTENU-------------------------------------------------------- */
+/* FB CSS-------------------------------------------------------- */
 label{
     padding-top: 4px;
     padding-right: 6px;
@@ -94,16 +190,9 @@ label{
     /*text-align: right;*/
     color: #666666;
 }
-#connect {
-    margin-top: 25px;
-    margin-left: 115px;
-    border-radius: 5px;
-}
 table{
     margin-top: 10px;
 }
-/* /CONTENU-------------------------------------------------------- */
-/* FB CSS-------------------------------------------------------- */
 q:before,
 q:after,
 blockquote:before,
@@ -201,8 +290,15 @@ a {
   font-weight: inherit;
 }
 a:hover {
-  color: #3b5998;
-  text-decoration: underline;
+  color: #fff;
+  /*text-decoration: underline;*/
+}
+.lienAccueil:hover {
+    color: #fff;
+    box-shadow: 1px 1px 4px gray;
+    position: relative;
+    top: 2px;
+    left: 2px;
 }
 hr {
   margin: 20px 0 19px;

@@ -237,7 +237,7 @@
                     "Doctrine\\Common\\": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -314,7 +314,7 @@
                     "Doctrine\\DBAL\\": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -575,7 +575,7 @@
                     "Doctrine\\ORM\\": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -736,7 +736,7 @@
                     "Imagine": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1168,7 +1168,7 @@
                     "src/functions.php"
                 ]
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1195,12 +1195,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "a2b14c1a3e86567e78e7be646bc1d2ed8714d04e"
+                "reference": "7b2cd5c8af3fb6602eecc83fb4dac74986a97bdb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/a2b14c1a3e86567e78e7be646bc1d2ed8714d04e",
-                "reference": "a2b14c1a3e86567e78e7be646bc1d2ed8714d04e",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/7b2cd5c8af3fb6602eecc83fb4dac74986a97bdb",
+                "reference": "7b2cd5c8af3fb6602eecc83fb4dac74986a97bdb",
                 "shasum": ""
             },
             "require": {
@@ -1223,7 +1223,7 @@
                     "Liip\\ImagineBundle": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -1239,7 +1239,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2013-05-13 18:53:14"
+            "time": "2013-05-14 20:16:40"
         },
         {
             "name": "monolog/monolog",
@@ -1930,7 +1930,7 @@
                     "Twig_": "lib/"
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3"
             ],
