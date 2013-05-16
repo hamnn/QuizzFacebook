@@ -1,0 +1,15 @@
+/* 
+    Document   : admin
+    Created on : 16 mai 2013, 10:37:54
+    Author     : Mickaël
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+}
+body{
+    background: red;
+}
+
