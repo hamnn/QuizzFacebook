@@ -1,5 +1,27 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Jouer{% endblock %}
 {% block body %}
+<h1>Jouer à un quizz</h1>
+<h2>{{ quizz.getTitle() }}</h2>
+<div id="chrono" style="display:none;">
+    <ul style="list-style-type: none;">
+	<li id="min" style="display:inline-block;">0</li>
+	<li style="display:inline-block;margin-right:10px;">min</li>
+	<li id="sec" style="display:inline-block;">0</li>
+	<li style="display:inline-block;margin-right:10px;">sec</li>
+	<li id="dec" style="display:inline-block;">0</li>
+	<li style="display:inline-block;margin-right:10px;">dsec</li>
+    </ul>
+</div>
+<a href="#" id="startQuizzLink" onclick="return false;">Commencer le quizz</a>
+{% block question %}
+    <!-- Les questions vont s'afficher en AJAX ici. -->
+{% endblock %}
 
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/chrono.js' %}
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
