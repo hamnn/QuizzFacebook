@@ -56,4 +56,16 @@ class QuizzRepository extends EntityRepository
 	    return $arrayFinal;
 	}
     }
+    
+    
+    /**
+     * Fonction qui retourne un quizz au hasard.
+     * @return QUIZZ Un objet de type Quizz.
+     */
+    public function getRandomQuizz(){
+	return $this->_em->createQuery("SELECT quizz
+					FROM MetinetFacebookBundle:Quizz quizz
+					ORDER BY RAND()")
+		->setMaxResults(1);
+    }
 }

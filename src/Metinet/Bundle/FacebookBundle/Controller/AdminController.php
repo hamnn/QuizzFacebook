@@ -36,9 +36,7 @@ class AdminController extends Controller
 	// on récupère le top 3 des quizz les plus joués
 	$top3QuizzPlusPopulaires = $quizzRepository->getTopQuizzPopulaires(3, "DESC");
 	// on récupère le top 3 des quizz les moins joués
-
 	$top3QuizzMoinsPopulaires = $quizzRepository->getTopQuizzPopulaires(3, "ASC");
-
 	// on récupère les 10 derniers utilisateurs
 	$array10DerniersUsers = $userRepository->getDerniersUtilisateurs(10);
 	return array(	"arrayJoueurs7Jours"	    => $arrayJoueurs7Jours,
