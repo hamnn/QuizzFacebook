@@ -1,5 +1,8 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Quizz{% endblock %}
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/admin.css')}}" />
+{% endblock %}
 {% block container %}
 <h1>Quizz</h1>
 
@@ -75,15 +78,15 @@
 <ul id ="questions">
 {% for question in questions %}
         <li>
-            <img src="{{ question.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ question.title }}"/> 
-            <span>{{ question.title }}</span>
-            <a href="{{ path('question_show', { 'id': question.id }) }}">
+            <img class="picture" src="{{ question.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ question.title }}"/> 
+            <span class="titre">{{ question.title }}</span>
+            <a class="see" href="{{ path('question_show', { 'id': question.id }) }}">
                 Voir
             </a>
-            <a href="{{ path('question_edit', { 'id': question.id }) }}">
+            <a class="edit" href="{{ path('question_edit', { 'id': question.id }) }}" title="Editer">
                 Editer
             </a>
-            <a href="{{ path('question_delete', { 'id': question.id }) }}">
+            <a href="{{ path('question_delete', { 'id': question.id }) }}" class="delete" title="Supprimer">
                 Supprimer
             </a>
         </li>

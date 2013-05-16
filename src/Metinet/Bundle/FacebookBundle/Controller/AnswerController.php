@@ -158,63 +158,6 @@ class AnswerController extends Controller {
         );
     }
 
-    /**
-     * Displays a form to edit an existing Answer entity.
-     *
-     * @Route("/admin/{id}/editanswer", name="answer_edit")
-     * @Template()
-     */
-    public function editAction($id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Answer entity.');
-        }
-
-        $editForm = $this->createForm(new AnswerType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Edits an existing Answer entity.
-     *
-     * @Route("/admin/{id}/updateanswer", name="answer_update")
-     * @Template("MetinetFacebookBundle:Question:show.html.twig")
-     */
-    public function updateAction(Request $request, $id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Answer entity.');
-        }
-
-        $editForm = $this->createForm(new AnswerType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        
-        return array(
-            'entity' => $entity->getQuestion(),
-            'answers' => $entity->getQuestion()->getAnswers(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
 
     /**
      * Deletes a Answer entity.
