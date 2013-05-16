@@ -1,0 +1,12 @@
+<h4>{{ question.getTitle() }}</h4>
+<p><img src="{{ question.getPicture() }}" /></p>
+<table>
+    {% for answer in answers %}
+	<tr>
+	    <td>{{ answer.getTitle() }}</td>
+	</tr>
+    {% endfor %}
+
+	<input type="hidden" id="nextQuestion" value="{{ nextQuestion }}"/>
+	<input type="hidden" id="urlAjaxQuestion" value="{{ path('play_question', { 'quizzId': quizz.getId() , 'questionNumber' : nextQuestion }) }}" />
+</table>

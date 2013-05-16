@@ -2,7 +2,10 @@
 {% block title %}Administration{% endblock %}
 {% block body %}
 <h1 id="inscriptiontitle">Administration du site.</h1>
-
+<ul>
+<li><a href="{{ path('quizz') }}">Quizz</a></li>
+<li><a href="{{ path('theme') }}">Thème</a></li>
+</ul>
     <p>{{ arrayJoueurs7Jours | length -1}} joueur(s) créé(s) ces 7 derniers jours :</p>
     <table>
 	<tr>

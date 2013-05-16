@@ -50,9 +50,9 @@ class QuizzController extends Controller {
         }
 
         $deleteForm = $this->createDeleteForm($id);
-
         return array(
             'entity' => $entity,
+            'theme' => $entity->getTheme(),
             'delete_form' => $deleteForm->createView(),
         );
     }
@@ -95,7 +95,7 @@ class QuizzController extends Controller {
 
         return array(
             'entity' => $entity,
-            'form' => $form->createView(),
+            'form' => $form->createView()
         );
     }
 
@@ -212,43 +212,5 @@ class QuizzController extends Controller {
         ;
     }
 
-   
-    
-    /**
-     * 
-     * Action de modification
-     * 
-     * @Route("/quizz_modification",name="quizz_modification");
-     */
-    /*public function quizzModification() {
-        if (isset($_POST['rownum'])){
-            $id = $_POST['id'];
-            $champ = $_POST['field'];
-            $val = $_POST['value'];
-            $em = $this->getDoctrine()->getManager();
-
-            $entity = $em->getRepository('MetinetFacebookBundle:Quizz')->find($id);
-            if (!empty($champ) && isset($champ) && !empty($val)){
-                if ($champ == 'firstname'){
-                    $entity->setFirstname($val);
-                }
-                if ($champ == 'lastname'){
-                    $entity->setLastname($val);
-                }
-                if ($champ == 'year'){
-                    $entity->setPromoYear($val);
-                }
-                if ($champ == 'email'){
-                    $entity->setEmail($val);
-                }
-                
-                $em->persist($entity);
-                $em->flush();
-                
-               return new Response();
-            }
-            
-        }
-    }*/
 
 }

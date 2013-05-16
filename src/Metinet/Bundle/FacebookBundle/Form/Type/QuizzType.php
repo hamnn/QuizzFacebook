@@ -6,13 +6,21 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use Metinet\Bundle\FacebookBundle\Entity\Quizz;
 
 class QuizzType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
+        //$Connexion = $this->getDoctrine()->getEntityManager();
+        //$entities = $Connexion->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz')->findAll();
         $builder
                 ->add('title', 'text', array(
                     'label'  => 'Titre',
+                ))
+                ->add('theme', 'entity', array(
+                    'class' => 'MetinetFacebookBundle:Theme',
+                    'property' => 'title',
+                    'label'  => 'Thème',
                 ))
                 ->add('shortDesc', 'textarea', array(
                     'label'  => 'Résumé',
