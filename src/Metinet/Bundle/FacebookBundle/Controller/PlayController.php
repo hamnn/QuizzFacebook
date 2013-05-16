@@ -53,13 +53,16 @@ class PlayController extends Controller
 	    $nextQuestion = $questionNumber + 1;
 	}
 	else {
-	    $nextQuestion = ""; // on est à la fin du quizz, il n'y a plus de question suivante
+	    $nextQuestion = -2; // on est à la fin du quizz, il n'y a plus de question suivante
 	}
+
+	// on génère la vue de la question à afficher
 	$render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig",
 			    array(  "quizz"	    => $quizz,
 				    "question"	    => $question,
 				    "nextQuestion"  => $nextQuestion,
 				    "answers"	    => $arrayAnswers));
+	// on retourne l'objet reponse AJAX contenant le json de la vue de la question à afficher
 	return new Response(json_encode(array("question" => $render)));
     }
     
