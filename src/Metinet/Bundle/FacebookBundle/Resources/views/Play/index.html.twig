@@ -14,14 +14,18 @@
     </ul>
 </div>
 <a href="#" id="startQuizzLink" onclick="return false;">Commencer le quizz</a>
-{% block question %}
+<div id="question">
     <!-- Les questions vont s'afficher en AJAX ici. -->
-{% endblock %}
+    <input type="hidden" id="nextQuestion" value="{{ nextQuestion }}" />
+    <input type="hidden" id="urlAjaxQuestion" value="{{ path('play_question', { 'quizzId': quizz.getId() , 'questionNumber' : nextQuestion }) }}" />
+</div>
+
 
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@MetinetFacebookBundle/Resources/public/js/chrono.js' %}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/chrono.js'
+		    '@MetinetFacebookBundle/Resources/public/js/ajax.js'  %}
 	<script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

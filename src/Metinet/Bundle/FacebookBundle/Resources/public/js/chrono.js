@@ -12,12 +12,15 @@ function chrono(){
     compte=setTimeout('chrono()',100); //la fonction est relancée tous les 10° de secondes
 }
 
-function stopChrono(){ //fonction qui remet les compteurs à 0
+function stopChrono(){ //fonction qui arrête le chrono
     clearTimeout(compte); //arrête la fonction chrono()
 }
 
 $("#startQuizzLink").click(function(){
+    // affichage et mise en marche du chrono
     $("#chrono").fadeIn('slow');
     chrono();
     $(this).fadeOut('slow');
+    // affiche la première question
+    nextQuizzAction();
 });
