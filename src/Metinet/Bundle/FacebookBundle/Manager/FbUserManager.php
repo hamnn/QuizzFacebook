@@ -87,6 +87,16 @@ class FbUserManager
         // Cache
         return $user;
     }
+    
+    public function getUser(){
+        $currentUser = $this->facebook->getUser();
+        if($currentUser) return $currentUser;
+        else return false;
+    }
+    
+    public function api($path, $method, $attachment){ 
+        return $this->facebook->api($path, $method, $attachment);
+    }
 
 }
 ?>
