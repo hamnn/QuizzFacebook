@@ -12,4 +12,53 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    /**
+     * Fonction qui retourne un array de joueurs qui ont été créés dans les derniers $nbJours jours.
+     * @param INT $nbJours le nombre de jours où l'on compte les joueurs créés entre aujourd'hui et ce nombre de jours
+     * @return ARRAY un array d'objets user
+     */
+    public function getJoueursSurNDerniersJours($nbJours){
+	if(isset($nbJours) && $nbJours > 0){
+	    $paramArray = array();
+	    $paramArray["nbJours"] = $nbJours;
+	    return $this->_em->createQuery("SELECT user
+					    FROM MetinetFacebookBundle:User user
+					    WHERE DATEDIFF(day, user.created_at, NOW()) <= :nbJours")
+		    ->setParameters($paramArray);
+	}
+    }
+    
+    
+    /**
+     * Fonction qui retourne le score moyen de tous les joueurs
+     * @return DOUBLE Le score moyen de tous les joueurs
+     */
+    public function getScoreMoyenDeTousLesJoueurs(){
+	return $this->_em->createQuery("SELECT AVG(user.points)
+					FROM MetinetFacebookBundle:User user")
+		->getSingleScalarResult();
+    }
+    
+    /**
+     * Fonction qui retourne le nombre total de joueurs enregistrés dans la base
+     * @return INT Le nombre de total de joueurs enregistrés dans la base
+     */
+    public function getNombreTotalJoueurs(){
+	return $this->_em->createQuery("SELECT COUNT(user.id)
+					FROM MetinetFacebookBundle:User user")
+		->getSingleScalarResult();
+    }
+    
+    
+    /**
+     * Fonction qui retourne les n derniers utilisateurs enregistrés.
+     * @param INT $nbUtilisateurs Le nombre d'utilisateurs à retourner.
+     * @return ARRAY Tableau d'objets User.
+     */
+    public function getDerniersUtilisateurs($nbUtilisateurs){
+	return $this->_em->createQuery("SELECT user
+					FROM MetinetFacebookBundle:User user
+					ORDER BY user.createdAt DESC")
+		->setMaxResults($nbUtilisateurs);
+    }
 }

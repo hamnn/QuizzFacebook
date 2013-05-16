@@ -2,8 +2,94 @@
 {% block title %}Administration{% endblock %}
 {% block body %}
 <h1 id="inscriptiontitle">Administration du site.</h1>
-
-    azerty
+<ul>
+<li><a href="{{ path('quizz') }}">Quizz</a></li>
+<li><a href="{{ path('theme') }}">Thème</a></li>
+</ul>
+    <p>{{ arrayJoueurs7Jours | length -1}} joueur(s) créé(s) ces 7 derniers jours :</p>
+    <table>
+	<tr>
+	    <th>Nom</th><th>Prénom</th><th>Username</th><th>Créé le</th>
+	</tr>
+	{% for joueur in arrayJoueurs7Jours %}
+		<tr>
+		    <td>{{ joueur.getLastname() }}</td>
+		    <td>{{ joueur.getFirstname() }}</td>
+		    <td>{{ joueur.getUsername() }}</td>
+		    <td>{{ joueur.getCreatedAt() }}</td>
+		</tr>
+	{% endfor %}
+    </table>
+    
+    
+    <p>{{ arrayJoueurs30Jours | length -1}} joueur(s) créé(s) ces 30 derniers jours :</p>
+    <table>
+	<tr>
+	    <th>Nom</th><th>Prénom</th><th>Username</th><th>Créé le</th>
+	</tr>
+	{% for joueur in arrayJoueurs30Jours %}
+		<tr>
+		    <td>{{ joueur.getLastname() }}</td>
+		    <td>{{ joueur.getFirstname() }}</td>
+		    <td>{{ joueur.getUsername() }}</td>
+		    <td>{{ joueur.getCreatedAt() }}</td>
+		</tr>
+	{% endfor %}
+    </table>
+    
+    <ul>
+	<li>{{ nbQuizzDisponibles }} quizz disponibles!</li>
+	<li>Les {{ nbTotalJoueurs }} joueurs ont un score moyen de {{ scoreMoyenJoueurs }} points!</li>
+	<li>Il y a actuellement {{ nbQuizzEnCours }} quizz en cours de jeu!</li>
+    </ul>
+    
+    <p>Top 3 des quizz les plus joués</p>
+    <table>
+	<tr>
+	    <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joué</th>
+	    {% for quizzPlusPop in top3QuizzPlusPopulaires %}
+		<tr>
+		    <td>{{ quizzPlusPop.getTitle() }}</td>
+		    <td>{{ quizzPlusPop.getTheme().getTitle() }}</td>
+		    <td>{{ quizzPlusPop.getShortDesc() }}</td>
+		    <td>{{ quizzPlusPop.getNbTimesPlayed() }}</td>
+		</tr>
+	    {% endfor %}
+	</tr>
+    </table>
+    
+    
+    <p>Top 3 des quizz les moins joués</p>
+    <table>
+	<tr>
+	    <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joué</th>
+	    {% for quizzMoinsPop in top3QuizzMoinsPopulaires %}
+		<tr>
+		    <td>{{ quizzMoinsPop.getTitle() }}</td>
+		    <td>{{ quizzMoinsPop.getTheme().getTitle() }}</td>
+		    <td>{{ quizzMoinsPop.getShortDesc() }}</td>
+		    <td>{{ quizzMoinsPop.getNbTimesPlayed() }}</td>
+		</tr>
+	    {% endfor %}
+	</tr>
+    </table>
+    
+    
+    <p>Les 10 derniers joueurs enregistrés</p>
+    <table>
+	<tr>
+	    <th>Nom</th><th>Prénom</th><th>Image</th><th>Lien Facebook</th>
+	</tr>
+	{% for dernierUser in array10DerniersUsers %}
+	    <tr>
+		<td>{{ dernierUser.getLastname() }}</td>
+		<td>{{ dernierUser.getFirstname() }}</td>
+		<td><img src="{{ dernierUser.getPicture() }}" /></td>
+		<td><a href="http://facebook.com/{{ dernierUser.getFbUid() }}">FB</a></td>
+	    </tr>
+	{% endfor %}
+    </table>
+    
     <form id="logout" action="{{ path('logout') }}" method="post">
 	<input type="submit" value="logout" />
     </form>

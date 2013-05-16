@@ -12,4 +12,49 @@ use Doctrine\ORM\EntityRepository;
  */
 class QuizzRepository extends EntityRepository
 {
+
+    /**
+     * Fonction qui retourne le nombre de quizz disponible
+     * @return INT Le nombre de quizz disponibles
+     */
+    public function getNombreQuizzDisponibles(){
+	return $this->_em->createQuery("SELECT COUNT(quizz.id)
+					FROM MetinetFacebookBundle:Quizz quizz")
+		->getSingleScalarResult();
+    }
+    
+    
+    /**
+     * Fonction qui retourne le top n des quizz les plus ou moins populaires
+     * @param INT $limit Le nombre de quizz à retourner
+     * @param STRING $order L'ordre des quizz (les plus populaires ou les moins populaires). $ordre doit être "ASC" ou "DESC"
+     * @return ARRAY d'objets Quizz
+     */
+    public function getTopQuizzPopulaires($limit, $ordre){
+	if(isset($limit) && $limit > 0 && isset($ordre) && ($ordre == "ASC" || $ordre == "DESC")){
+	    // array final à retourner contenant les objets Quizz recherchés
+	    $arrayFinal = array();
+	    // requete DQL
+	    $qb = $this->_em->createQueryBuilder();
+	    $qb->select('qr')
+		    ->addSelect('COUNT(q.id) as nbTimesPlayed')
+		    ->from('MetinetFacebookBundle:QuizzResult', 'qr')
+		    ->leftJoin('qr.quizz', 'q')
+		    ->groupBy('q.id')
+		    ->orderBy('nbTimesPlayed', $ordre)
+		    ->setMaxResults($limit);
+	    $result = $qb->getQuery()->getResult();
+	    // INFOS SUR LES RETOURS DE REQUETES MIXTES : http://docs.doctrine-project.org/en/2.1/reference/dql-doctrine-query-language.html#pure-and-mixed-results
+	    
+	    // on récupère les objets Quizz à partir des objets QuizzResult de la requete et on leur set leur nbTimesPlayed
+	    foreach($result as $row){
+		$quizz = $row[0]->getQuizz();
+		$quizz->setNbTimesPlayed($row["nbTimesPlayed"]);
+		$arrayFinal[] = $quizz;
+	    }
+	    // on retourne l'array final contenant les objets Quizz avec leur nombre de fois qu'ils ont été joués
+	    return $arrayFinal;
+	}
+    }
+    
 }

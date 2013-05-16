@@ -1,0 +1,49 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Theme{% endblock %}
+{% block container %}
+<h1>Theme</h1>
+
+<table class="record_properties">
+    <tbody>
+        <tr>
+            <th>Id</th>
+            <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+            <th>Titre</th>
+            <td>{{ entity.title }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td><img src="../../{{ entity.getWebPath() }}" alt="{{ entity.picture }}"/></td>
+        </tr>
+        <tr>
+            <th>Short description</th>
+            <td>{{ entity.shortDesc }}</td>
+        </tr>
+        <tr>
+            <th>Long description</th>
+            <td>{{ entity.longDesc }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('theme') }}">
+           Retour à la liste
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('theme_edit', { 'id': entity.id }) }}">
+            Editer
+        </a>
+    </li>
+    <li>
+        <form action="{{ path('theme_delete', { 'id': entity.id }) }}" method="post">
+            {{ form_widget(delete_form) }}
+            <button type="submit">Supprimer</button>
+        </form>
+    </li>
+</ul>
+{% endblock %}

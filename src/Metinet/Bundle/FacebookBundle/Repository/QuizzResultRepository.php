@@ -12,4 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class QuizzResultRepository extends EntityRepository
 {
+    
+    /**
+     * Fonction qui retourne le nombre de quizz en cours de jeu
+     * @return INT Le nombre de quizz en cours de jeu
+     */
+    public function getNombreQuizzEnCours(){
+	return $this->_em->createQuery("SELECT COUNT(quizzResult.id)
+					FROM MetinetFacebookBundle:QuizzResult quizzResult
+					WHERE quizzResult.dateEnd IS NULL")
+		->getSingleScalarResult();
+    }
+    
 }

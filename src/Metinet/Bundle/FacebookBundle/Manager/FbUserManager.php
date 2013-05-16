@@ -36,23 +36,17 @@ class FbUserManager
             'created_at'    => $now,
         );
 
-        $query = 'INSERT INTO user (fb_uid, email, picture, firstname, lastname, created_at) VALUES (:fbUid, :email, :picture, :firstname, :lastname, :created_at);';
+        $query = 'INSERT INTO user (fb_uid, picture, firstname, lastname, created_at) VALUES (:fbUid, :picture, :firstname, :lastname, :created_at);';
         $std = $dbal->prepare($query);
 
         $std->bindParam(':fbUid', $user['fb_uid'], \PDO::PARAM_STR);
         $std->bindParam(':created_at', $user['created_at'], \PDO::PARAM_STR);
         $std->bindParam(':picture', $user['picture'], \PDO::PARAM_STR);
-        $std->bindParam(':email',  $myNull, \PDO::PARAM_NULL);
         $std->bindParam(':firstname', $myNull, \PDO::PARAM_NULL);
         $std->bindParam(':lastname', $myNull, \PDO::PARAM_NULL);
 
         $fbDatas = $this->facebook->api('/me');
         if (!empty($fbDatas)) {
-
-            if (isset($fbDatas['email'])) {
-                $user['email'] = $fbDatas['email'];
-                $std->bindParam(':email', $fbDatas['email'], \PDO::PARAM_STR);
-            }
 
             if (isset($fbDatas['first_name'])) {
                 $user['firstname'] = $fbDatas['first_name'];

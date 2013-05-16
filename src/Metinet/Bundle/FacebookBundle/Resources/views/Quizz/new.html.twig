@@ -1,0 +1,16 @@
+<h1>Nouveau Quizz</h1>
+
+<form action="{{ path('quizz_create') }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Créer</button>
+    </p>
+</form>
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('quizz') }}">
+            Retour à la liste
+        </a>
+    </li>
+</ul>
