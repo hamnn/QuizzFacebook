@@ -1,0 +1,48 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Question{% endblock %}
+{% block container %}
+<h1>Question</h1>
+
+<table class="record_properties">
+    <tbody>
+       <tr>
+            <th>Id</th>
+            <td>{{ entity.id }}</td>
+        </tr>
+        <tr>
+            <th>Titre</th>
+            <td>{{ entity.title }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td><img src="{{ entity.getWebPath() | imagine_filter('my_large', true) }}" alt="{{ entity.title }}"/></td>
+        </tr>
+    </tbody>
+</table>
+<h3>Les réponses</h3>
+<ul id ="answers">
+{% for answer in answers %}
+        <li>
+            <span>{{ answer.title }}</span>
+            {% if answer.isCorrect == 1 %}<a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="actif">Bonne réponse</a>{% else %}<a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="actif">Mauvaise réponse</a>{% endif %}</li>
+            <a href="{{ path('answer_edit', { 'id': answer.id }) }}">
+                Editer
+            </a>
+            <a href="{{ path('answer_delete', { 'id': answer.id }) }}">
+                Supprimer
+            </a>
+{% endfor %}
+</ul>
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('answer_new', { 'id': entity.id }) }}">
+            Ajouter une réponse
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('quizz_show', { 'id': entity.quizz.id }) }}">
+           Retour au quizz
+        </a>
+    </li>
+</ul>
+{% endblock %}
