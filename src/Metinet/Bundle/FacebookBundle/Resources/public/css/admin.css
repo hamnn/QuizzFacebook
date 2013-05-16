@@ -40,6 +40,7 @@ body{
 #page{
 	position: relative;
 	width: 710px;
+        top: 113px;
 	margin: 0 auto -142px; /* the bottom margin is the negative value of the footer's height */
 	/*background: gray;*/
 	background: #fff;
@@ -83,6 +84,23 @@ body{
     left: 50%;
     margin-left: -175px;
 }
+#deconnex {
+    position: absolute;
+    top: 10px;
+    display: block;
+    right: 10px;
+    border: 0;
+    background: url('../images/deconnexion.png') no-repeat 0 0;
+    text-indent: 37px;
+    height: 32px;
+    box-shadow: none;
+    cursor: pointer;
+    z-index: 10;
+    width: 35px;
+    transition: width 0.5s;
+    -webkit-transition: width 0.5s;
+}
+#deconnex:hover {width: 120px;}
 label{
     padding-top: 4px;
     padding-right: 6px;
@@ -90,7 +108,7 @@ label{
     font-weight: bold;
     line-height: 14px;
     float: left;
-    width: 110px;
+    width: 115px;
     /*text-align: right;*/
     color: #666666;
 }

@@ -1,0 +1,21 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Accueil{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/theme.css') }}" type="text/css" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/anim_cat.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+</div>
+<div id="page">
+    <div id="contenu">
+    </div>
+</div>
+{% endblock %}

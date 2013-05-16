@@ -5,7 +5,7 @@
 	{% for answer in answers %}
 	    <tr>
 		<td>
-		    <input type="checkbox" id="answer_{{ answer.getId() }}" name="answer_{{ answer.getId() }}" value="{{ answer.getId() }}" />
+		    <input type="checkbox" id="answer_{{ answer.getId() }}" name="answer[]" value="{{ answer.getId() }}" />
 		    <label for="answer_{{ answer.getId() }}">{{ answer.getTitle() }}</label>
 		</td>
 	    </tr>

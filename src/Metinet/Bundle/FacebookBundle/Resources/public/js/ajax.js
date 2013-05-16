@@ -32,6 +32,7 @@
 		$('#question').fadeOut("slow");
 	    }
 	}
+
         
         
         // Modification en ajax du champs texte answer
@@ -45,5 +46,23 @@
             placeholder: "Cliquer pour modifier...",
             tooltip : "Cliquer pour modifier..."
         }); 
+
+	
+	/**
+	 * Fonction appelée lorsque l'user a répondu à une question.
+	 * La fonction fait une requête AJAX en envoyant les données du formulaire de réponse à la question pour les enregistrer en BDD.
+	 * @param form	Le formulaire qui a envoyé la / les réponse(s) de l'user pour la question en cours.
+	 */
+	enregistrerUserAnswer = function(form){
+	    $.ajax({
+		    type : 'POST',
+		    url : $("#urlAjaxEnregistrerUserAnswer").val(),
+		    dataType: 'json',
+		    data: form.serialize(), // je sérialise les données du form, ici les $_POST
+		    success : function(data) {
+			;
+		    }
+		});
+	}
  
 })(jQuery)

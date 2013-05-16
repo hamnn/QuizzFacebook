@@ -47,17 +47,31 @@ body{
     height: 100%;
     box-shadow: 7px 7px 10px gray;
     border: 1px solid #999;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 5px;
 }
-#logo{
+#header a {
+    width: 300px;
+    height: 170px;
+    display: block;
+}
+#logo {
 	background: url('../images/logo.png') no-repeat 0 0;
 	width: 300px;
 	height: 175px;
 	text-indent: -9999px;
+        display: none;
 }
+#header a #logo{
+    -webkit-transition: -webkit-transform 0.1s ease-in-out;/* Utilisé pour la transition sur chrome et safari */
+    -moz-transition: -moz-transform 0.1s ease-in-out;/* Utilisé pour la transition sur Firefox */
+    transition: transform 0.1s ease-in-out;
+}
+#header a:hover #logo{
+    -moz-transform:rotate(7deg);
+    -webkit-transform:rotate(7deg);
+    -o-transform:rotate(7deg);
+}
+
 #header{
 	position: absolute;
 	top: 0;
@@ -68,6 +82,7 @@ body{
 }
 #contenu{
 	position: relative;
+        min-height: 350px;
 	top: 175px;
 	margin-left: 20px;
 }
@@ -83,19 +98,22 @@ body{
 #preload {
     width: 100%;
     height: 100%;
-    position: fixed;
+    position: absolute;
     background-color: #484848;
     z-index: 9999;
+    border-radius: 3px;
 }
 #content {
     width: 400px;
     height: 200px;
     position: relative;
-    top: 350px;
+    top: 190px;
     margin: 0 auto;
 }
+#content img {
+    margin-left: 45px;
+}
 #preload h2 {
-    font-family: lato;
     font-weight: 100;
     font-size: 16px;
     text-align: center;
@@ -108,17 +126,32 @@ text-align: center;
 margin-left: -20px;
 }
 #preload p {
-    font-family: lato;
     font-weight: 300;
     font-size: 14px;
     color: #8e8e8e;
     display: inline-block;
 }
+.efface{display: none;}
 /* /COPRS ---------------------------------------------------------*/
 /* CONTENU --------------------------------------------------------*/
-#cadreimgUser{
-    height: 200px;
-    overflow: hidden;
+#profiler:hover{color: #3b5998; text-decoration: underline;}
+#blocProfil{position: absolute; top: 20px; right: 20px;}
+#blocProfil h2 {
+    position: relative;
+    text-align: right;
+    top: 10px;
+    z-index: 10;
+}
+#cadreimgUser {
+    float: right;
+    position: relative;
+    padding-top: 3px;
+    padding-left: 3px;
+    width: 158px;
+    height: 158px;
+    background: #fff;
+    border: 1px solid gray;
+    border-radius: 3px;
 }
 .lienAccueil {
     display: inline-block;

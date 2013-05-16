@@ -4,32 +4,41 @@
         {{ parent() }}
         <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
 {% block body %}
 <div id='header'>
-    <h1 id="logo">YouQuizz</h1>
-</div>
-<div id="preload" style="display: none;">
-    <div id="content">
-	<img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
-	<h2>Test ta culture général !</h2>
-	<div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">100%</p></div>
-    </div>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
 </div>
 <div id="page">
+    <div id="preload">
+        <div id="content">
+            <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
+            <h2>Teste ta culture générale !</h2>
+            <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
+        </div>
+    </div>
+    {% set user = app.session.get('user') %}
+    <div id="blocProfil">
+        <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->
+            <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=square&width=150&height=150"/> 
+        </div>
+        <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
+        <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
+    </div>
     <div id="contenu">
-        {% set user = app.session.get('user') %}
-            <h2>Bonjour, {{ user.firstname }}</h2>
-            <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
-            <div id="cadreimgUser">
-                <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=large"/> 
-            </div>
+
             <p>voici les 4 derniers quizz disponibles : </p>
             <p>nous vous proposons d'essayer ce quizz : </p>
             <p>Votre classement : </p>
             <br />
             
             <a class="lienAccueil" href="#">Accèder aux classements</a>
-            <a class="lienAccueil" href="#">Accèder aux quizz</a>
+            <a class="lienAccueil" href="{{ path('theme_quizz') }}">Accèder aux quizz</a>
             <a class="lienAccueil" href="#">invite tes amis</a>
     </div>
     <div class="push"></div>
@@ -37,7 +46,8 @@
 
 
     <div id="fb-root"></div>
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src="http://connect.facebook.net/fr_FR/all.js"></script>
+    <div class="efface">
     <p>
         <input type="button"
                onclick="sendRequestViaMultiFriendSelector(); return false;"
@@ -50,6 +60,7 @@
                value="Share"
                />
     </p>
+    </div>
     <script>
       FB.init({
         appId  : '575560672464968',
