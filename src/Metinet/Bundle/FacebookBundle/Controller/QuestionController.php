@@ -35,6 +35,8 @@ class QuestionController extends Controller {
         );
     }
 
+
+    
     /**
      * Finds and displays a Question entity.
      *
@@ -42,16 +44,22 @@ class QuestionController extends Controller {
      * @Template()
      */
     public function showAction($id) {
-        $em = $this->getDoctrine()->getManager();
+        // instanciation des repositories
+	//$questionRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	// on récupère les questions du quizz
+	//$arrayQuestions = $questionRepository->getQuestionsByQuizzID($id);
 
-        $entity = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
+        $entity = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Question')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Question entity.');
         }
-
+        
+ 
+        
         $deleteForm = $this->createDeleteForm($id);
         return array(
+            'answers' => $entity->getAnswers(),
             'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         );
@@ -134,7 +142,7 @@ class QuestionController extends Controller {
      * Edits an existing Question entity.
      *
      * @Route("/admin/{id}/updatequestion", name="question_update")
-     * @Template("MetinetFacebookBundle:Question:edit.html.twig")
+     * @Template("MetinetFacebookBundle:Quizz:show.html.twig")
      */
     public function updateAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
@@ -153,13 +161,15 @@ class QuestionController extends Controller {
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('question_edit', array('id' => $id)));
+           
         }
 
         return array(
-            'entity' => $entity,
+            'entity' => $entity->getQuizz(),
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+            'theme' => $entity->getQuizz()->getTheme(),
+            'questions' => $entity->getQuizz()->getQuestions(),
         );
     }
 
@@ -167,7 +177,7 @@ class QuestionController extends Controller {
      * Deletes a Question entity.
      *
      * @Route("/admin/{id}/deletequestion", name="question_delete")
-     * 
+     * @Template("MetinetFacebookBundle:Quizz:show.html.twig")
      */
     public function deleteAction(Request $request, $id) {
         $form = $this->createDeleteForm($id);
@@ -181,13 +191,24 @@ class QuestionController extends Controller {
             if (!$entity) {
                 throw $this->createNotFoundException('Unable to find Question entity.');
             }
+            
+            $deleteForm = $this->createDeleteForm($id);
+            $editForm = $this->createForm(new QuestionType(), $entity);
+            $editForm->bind($request); 
+            
                 // on enregistre les modifs en BDD
                 $em->remove($entity);
                 $em->flush();
             
        // }
 
-        return $this->redirect($this->generateUrl('question'));
+        return array(
+            'entity' => $entity->getQuizz(),
+            'edit_form' => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+            'theme' => $entity->getQuizz()->getTheme(),
+            'questions' => $entity->getQuizz()->getQuestions(),
+        );
     }
 
     /**

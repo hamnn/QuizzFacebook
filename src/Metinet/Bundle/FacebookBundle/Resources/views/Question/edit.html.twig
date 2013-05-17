@@ -13,15 +13,9 @@
 
 <ul class="record_actions">
     <li>
-        <a href="{{ path('quizz_show', { 'id': entity.id }) }}">
+        <a href="{{ path('quizz_show', { 'id': entity.quizz.id }) }}">
             Retour au quizz
         </a>
-    </li>
-    <li>
-        <form action="{{ path('question_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button type="submit">Delete</button>
-        </form>
     </li>
 </ul>
         
