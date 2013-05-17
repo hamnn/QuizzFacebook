@@ -51,18 +51,20 @@ class PlayController extends Controller
 	// on récupère le quizz correspondant à l'id reçu
 	$quizz = $quizzRepository->find($quizzId);
 	// on récupère la question du quizz
-	$question = $quizz->getQuestion($questionNumber);
+	$question = $this->getQuizzQuestionFromQuestionNumber($questionNumber);
 	// on stocke la liste des réponses à la question pour les donner à la vue
 	$arrayAnswers = array();
 	foreach($question->getAnswers() as $answer){
 	    $arrayAnswers[] = $answer;
 	}
 	// on regarde s'il y a une question après celle-là pour savoir si on est à la fin du quizz ou non
-	if(NULL !== $quizz->getQuestion($questionNumber + 1)){
+	if(NULL !== $this->getQuizzQuestionFromQuestionNumber($questionNumber + 1)){
 	    $nextQuestion = $questionNumber + 1;
 	}
 	else {
-	    $nextQuestion = -2; // on est à la fin du quizz, il n'y a plus de question suivante
+	    // on est à la fin du quizz, il n'y a plus de question suivante.
+	    // on retourne -2 car il faut retourner un INT pour la vue et que -1 + 1 = 0 or 0 est un numéro de question valable.
+	    $nextQuestion = -2;
 	}
 
 	// on génère la vue de la question à afficher
@@ -83,6 +85,29 @@ class PlayController extends Controller
      */
     public function enregistrerUserAnswerAction(){
 	
+    }
+    
+    /**
+     * Fonction qui retourne la question N° $questionNumber si elle est présente dans le tableau de correspondance en session
+     * entre l'ordre des Questions du quizz et leur id (pour les questions du quizz dans l'ordre aléatoire).
+     * @param INT $questionNumber   Le numéro de la Question du quizz.
+     * @return QUESTION	Un objet Question si la question existe, NULL sinon.
+     */
+    private function getQuizzQuestionFromQuestionNumber($questionNumber){
+	if(isset($questionNumber) && is_numeric($questionNumber)){
+	    // instanciation des repositories
+	    $questionRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Question');
+	    // récupération de l'array de correspondance en session
+	    $session = $this->getRequest()->getSession();
+	    $arrayCorrespondanceOrdreQuestions = $session->get("arrayCorrespondanceOrdreQuestions");
+	    // si la question n° questionNumber existe dans le tableau de correspondance
+	    if(isset($arrayCorrespondanceOrdreQuestions[$questionNumber])){
+		// on récupère l'objetQuestion correspondant à la question n° questionNumber du quizz
+		$question = $questionRepository->find($arrayCorrespondanceOrdreQuestions[$questionNumber]);
+		return $question;
+	    }
+	}
+	return NULL;
     }
     
 }

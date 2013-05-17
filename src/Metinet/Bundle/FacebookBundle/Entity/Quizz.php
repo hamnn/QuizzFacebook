@@ -593,19 +593,6 @@ class Quizz
         return $this->questions;
     }
     
-    /**
-     * Fonction qui retourne une question du quizz
-     * @param INT $keyQuestion	L'indice de la question à retourner depuis la tableau de questions
-     * @return QUESTION La question du quizz correspondant à l'indice $keyQuestion
-     */
-    public function getQuestion($keyQuestion){
-	if(isset($keyQuestion) && is_numeric($keyQuestion)){
-	    if(isset($this->questions[$keyQuestion])){
-		return $this->questions[$keyQuestion];
-	    }
-	}
-	return NULL;
-    }
 
     /**
      * Set theme
