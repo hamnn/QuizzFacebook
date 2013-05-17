@@ -26,7 +26,7 @@ Accueil
       function sendRequestViaMultiFriendSelector() {
         FB.ui({method: 'apprequests',
           message: 'My Great Request'
-        }, requestCallback);
+        });
       }
       
       function postToFeed() {
@@ -38,7 +38,6 @@ Accueil
           name: 'Testing Action links',
           caption: 'Test app',
           to: '1531576941',
-          display: 'iframe',
           actions: [
             {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
           ],

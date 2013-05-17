@@ -201,9 +201,7 @@ class QuizzController extends Controller {
         $em->flush();
 
         return $this->redirect($this->generateUrl('homepage'));
-    }
-    
-    
+    }    
 
     private function createDeleteForm($id) {
         return $this->createFormBuilder(array('id' => $id))
