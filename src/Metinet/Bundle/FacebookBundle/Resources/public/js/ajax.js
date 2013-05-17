@@ -30,6 +30,7 @@
 		// on arrête le chronomètre
 		stopChrono();
 		$('#question').fadeOut("slow");
+		onQuizzEnd();
 	    }
 	}
 	
@@ -45,9 +46,32 @@
 		    dataType: 'json',
 		    data: form.serialize(), // je sérialise les données du form, ici les $_POST
 		    success : function(data) {
-			;
+			return data.reponse;
 		    }
 		});
+	}
+	
+	/**
+	 * Fonction appelée lorsque le quizz démarre.
+	 * La fonction va enregistrer la date de début du quizz.
+	 */
+	onQuizzStart = function(){
+	    $.ajax({
+		    type : 'POST',
+		    url : $("#urlAjaxOnQuizzStart").val(),
+		    dataType: 'json',
+		    success : function(data) {
+			return data.reponse;
+		    }
+		});
+	}
+	
+	
+	/**
+	 * Fonction appelée lorsque le quizz se termine
+	 */
+	onQuizzEnd = function(){
+	    
 	}
  
 })(jQuery)

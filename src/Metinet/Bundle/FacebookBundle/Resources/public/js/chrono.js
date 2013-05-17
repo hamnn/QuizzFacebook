@@ -15,12 +15,3 @@ function chrono(){
 function stopChrono(){ //fonction qui arrête le chrono
     clearTimeout(compte); //arrête la fonction chrono()
 }
-
-$("#startQuizzLink").click(function(){
-    // affichage et mise en marche du chrono
-    $("#chrono").fadeIn('slow');
-    chrono();
-    $(this).fadeOut('slow');
-    // affiche la première question
-    nextQuizzEvent();
-});

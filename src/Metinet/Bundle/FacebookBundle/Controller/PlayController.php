@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response; // réponse JSON pour l'AJAX
+use Metinet\Bundle\FacebookBundle\Entity\QuizzResult;
 
 class PlayController extends Controller
 {
@@ -66,7 +67,6 @@ class PlayController extends Controller
 	    // on retourne -2 car il faut retourner un INT pour la vue et que -1 + 1 = 0 or 0 est un numéro de question valable.
 	    $nextQuestion = -2;
 	}
-
 	// on génère la vue de la question à afficher
 	$render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig",
 			    array(  "quizz"	    => $quizz,
@@ -89,11 +89,9 @@ class PlayController extends Controller
 	    // instanciation des repositories
 	    $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
 	    $answerRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Answer');
-	    // récupération de l'user
-	    $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
-	    $userResult = $userRepository->findBy(array("fbUid" => $userFbId));
-	    $user = $userResult[0];
-	    // récupération des id des answers (on récupère les checkbox cochées du formulaire de réponse à la question)
+	    // récupération de l'user à partir de sa connection sbook
+	    $user = $this->getUserFromFacebookConnection();
+	    // récupération des ids des answers (on récupère les radio button cochés du formulaire de réponse à la question)
 	    $arrayIdAnswer = $this->getRequest()->get('answer');
 	    // pour chaque id answer récupéré, on créé un objet Answer
 	    foreach($arrayIdAnswer as $idAnswer){
@@ -108,7 +106,67 @@ class PlayController extends Controller
 	    // on retourne un json disant que l'enregistrement a été fait
 	    return new Response(json_encode(array("reponse" => "ok")));
 	}
+	// si la fonction n'a pas été appelée par AJAX, on retourne un array vide
+	return array();
     }
+    
+    
+    /**
+     * Fonction appelée en AJAX qui va enregistrer la date de début du quizz
+     * @Route("/play/enregistrer/onQuizzStart/{quizzId}", name="play_enregistrerOnQuizzStart")
+     * @Template()
+     */
+    public function onQuizzStartAction($quizzId){
+	// si la fonction a été appelée par AJAX
+	if($this->getRequest()->isXmlHttpRequest()){
+	    // instanciation des repositories
+	    $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	    // récupération des objets
+	    $quizz = $quizzRepository->find($quizzId);
+	    $user = $this->getUserFromFacebookConnection();
+	    // création d'un nouvel objet QuizzResult et assignation de ses attributs
+	    $quizzResult = new QuizzResult();
+	    $quizzResult->setDateStart(new \DateTime("now"));
+	    $quizzResult->setQuizz($quizz);
+	    $quizzResult->setUser($user);
+	    // enregistrement de l'objet QuizzResult en base
+	    $em = $this->getDoctrine()->getEntityManager();
+	    $em->persist($quizzResult);
+	    $em->flush();
+	    // on met en SESSION le quizzResult pour pouvoir le réutiliser plus tard
+	    $session = $this->getRequest()->getSession();
+	    $session->set("quizzResult", $quizzResult);
+	    // on retourne un json disant que l'enregistrement a été fait
+	    return new Response(json_encode(array("reponse" => "ok")));
+	}
+	// si la fonction n'a pas été appelée par AJAX, on retourne un array vide
+	return array();
+    }
+    
+    
+    /**
+     * Fonction appelée en AJAX qui va enregistrer la fin du quizz
+     * @Route("/play/enregistrer/onQuizzEnd/{quizzId}", name="play_enregistrerOnQuizzEnd")
+     * @Template()
+     */
+    public function onQuizzEndAction($quizzId){
+	// si la fonction a été appelée par AJAX
+	if($this->getRequest()->isXmlHttpRequest()){
+	    // instanciation des repositories
+	    $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	    $quizz = $quizzRepository->find($quizzId);
+	    // on récupère le QuizzResult en SESSION
+	    $session = $this->getRequest()->getSession();
+	    $quizzResult = $session->get("quizzResult");
+	    $quizzResult->setDateEnd(new \DateTime("now"));
+	    
+	    // on retourne un json disant que l'enregistrement a été fait
+	    return new Response(json_encode(array("reponse" => "ok")));
+	}
+	// si la fonction n'a pas été appelée par AJAX, on retourne un array vide
+	return array();
+    }
+    
     
     /**
      * Fonction qui retourne la question N° $questionNumber si elle est présente dans le tableau de correspondance en session
@@ -131,6 +189,40 @@ class PlayController extends Controller
 	    }
 	}
 	return NULL;
+    }
+    
+    
+    /**
+     * Fonction qui retourne un onjet User correspondant à l'utilisateur qui joue au quizz avec sa connection Facebook
+     * @return USER Un objet User
+     */
+    private function getUserFromFacebookConnection(){
+	// instanciation des repositories
+	$userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+	// récupération de l'user à partir de sa connection sbook
+	$userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
+	$userResult = $userRepository->findBy(array("fbUid" => $userFbId));
+	$user = $userResult[0];
+	return $user;
+    }
+    
+    
+    /**
+     * Fonction qui retourne le pourcentage de bonnes réponses au quizz obtenu par l'user.
+     * @param QUIZZ $quizz  Le quizz dont on doir calculer le nombre de bonnes réponses
+     * @param USER $user    L'user qui a répondu au quizz
+     * @return DOUBLE	    Le pourcentage de bonnes réponses au quizz fait par l'user
+     */
+    private function getPourcentageBonnesReponses($quizz, $user){
+	// instanciation des repositories
+	$answerRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Answer');
+	// initialisation du pourcentage
+	$pourcentage = 0;
+	$nbQuestions = count($quizz->getQuestions);
+	foreach($quizz->getQuestions() as $question){
+	    $answer = $answerRepository->getUserAnswer($question, $user);
+	    // à continuer ....
+	}
     }
     
 }
