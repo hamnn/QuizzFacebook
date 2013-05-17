@@ -74,7 +74,19 @@
 <h3>Les questions</h3>
 <ul id ="questions">
 {% for question in questions %}
-        <li><img src="{{ question.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ question.title }}"/> <span>{{ question.title }}</span></li>
+        <li>
+            <img src="{{ question.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ question.title }}"/> 
+            <span>{{ question.title }}</span>
+            <a href="{{ path('question_show', { 'id': question.id }) }}">
+                Voir
+            </a>
+            <a href="{{ path('question_edit', { 'id': question.id }) }}">
+                Editer
+            </a>
+            <a href="{{ path('question_delete', { 'id': question.id }) }}">
+                Supprimer
+            </a>
+        </li>
 {% endfor %}
 </ul>
 <ul class="record_actions">
