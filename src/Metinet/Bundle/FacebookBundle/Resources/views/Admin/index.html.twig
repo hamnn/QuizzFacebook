@@ -9,6 +9,9 @@
     <h1 id="logo">YouQuizz-administration</h1>
 </div>
 <div id="page">
+    <form id="logout" action="{{ path('logout') }}" method="post">
+        <input id="deconnex" type="submit" value="Se déconnecter" />
+    </form>
     <div id="contenu">
         <ul>
             <li><a href="{{ path('quizz') }}">Quizz</a></li>
@@ -97,10 +100,6 @@
                 </tr>
             {% endfor %}
         </table>
-
-        <form id="logout" action="{{ path('logout') }}" method="post">
-            <input type="submit" value="Se déconnecter" />
-        </form>
     </div>
     <div class="push"></div>
 </div>
