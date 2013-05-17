@@ -8,6 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metinet\Bundle\FacebookBundle\Entity\Quizz;
+use Metinet\Bundle\FacebookBundle\Entity\Question;
 use Metinet\Bundle\FacebookBundle\Form\Type\QuizzType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +29,10 @@ class QuizzController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
-
+        
         return array(
             'entities' => $entities,
+            
         );
     }
 
@@ -41,16 +43,22 @@ class QuizzController extends Controller {
      * @Template()
      */
     public function showAction($id) {
-        $em = $this->getDoctrine()->getManager();
+        // instanciation des repositories
+	//$questionRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	// on récupère les questions du quizz
+	//$arrayQuestions = $questionRepository->getQuestionsByQuizzID($id);
 
-        $entity = $em->getRepository('MetinetFacebookBundle:Quizz')->find($id);
+        $entity = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz')->find($id);
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Quizz entity.');
         }
-
+        
+ 
+        
         $deleteForm = $this->createDeleteForm($id);
         return array(
+            'questions' => $entity->getQuestions(),
             'entity' => $entity,
             'theme' => $entity->getTheme(),
             'delete_form' => $deleteForm->createView(),
@@ -154,6 +162,34 @@ class QuizzController extends Controller {
             'entity' => $entity,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
+        );
+    }
+    
+    /**
+     * Edits state Quizz entity.
+     *
+     * @Route("/admin/{id}/ispromotedquizz", name="quizz_ispromoted")
+     * @Template("MetinetFacebookBundle:Quizz:index.html.twig")
+     */
+    public function isPromotedAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('MetinetFacebookBundle:Quizz')->find($id);
+        $ispromoted = $entity->getIsPromoted();
+        if ($ispromoted == 1){
+            $entity->setIsPromoted(0);
+        }else{
+            $entity->setIsPromoted(1);
+        }
+        
+        $em->persist($entity);
+        $em->flush();
+            
+        $entities = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
+        
+        return array(
+            'entities' => $entities,
+            
         );
     }
 

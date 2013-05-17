@@ -690,7 +690,7 @@ class Quizz
     {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
-        return 'bundles/metinetfacebook/uploads/pictures';
+        return 'bundles/metinetfacebook/uploads/pictures/quizz';
     }
     
     /**

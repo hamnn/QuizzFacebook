@@ -1,0 +1,15 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Edition Quizz{% endblock %}
+{% block container %}
+
+<h1>Nouvelle question</h1>
+
+<form action="{{ path('question_create', { 'id': id_quizz }) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Créer</button>
+    </p>
+</form>
+
+
+{% endblock %}
