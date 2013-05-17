@@ -1,12 +1,25 @@
 <h4>{{ question.getTitle() }}</h4>
 <p><img src="{{ question.getPicture() }}" /></p>
-<table>
-    {% for answer in answers %}
-	<tr>
-	    <td>{{ answer.getTitle() }}</td>
-	</tr>
-    {% endfor %}
+<form id="questionForm" name="questionForm" method="POST" action="#" onsubmit="return false;">
+    <table>
+	{% for answer in answers %}
+	    <tr>
+		<td>
+		    <input type="checkbox" id="answer_{{ answer.getId() }}" name="answer_{{ answer.getId() }}" value="{{ answer.getId() }}" />
+		    <label for="answer_{{ answer.getId() }}">{{ answer.getTitle() }}</label>
+		</td>
+	    </tr>
+	{% endfor %}
 
-	<input type="hidden" id="nextQuestion" value="{{ nextQuestion }}"/>
-	<input type="hidden" id="urlAjaxQuestion" value="{{ path('play_question', { 'quizzId': quizz.getId() , 'questionNumber' : nextQuestion }) }}" />
-</table>
+	    <input type="hidden" id="nextQuestion" value="{{ nextQuestion }}"/>
+	    <input type="hidden" id="urlAjaxQuestion" value="{{ path('play_question', { 'quizzId': quizz.getId() , 'questionNumber' : nextQuestion }) }}" />
+    </table>
+    <!-- Div pour les messages d'erreur du formulaire -->
+    <div id="errorQuestion" style="display:none;"></div>
+    <br />
+    <input type="submit" value="Valider" />
+</form>
+    
+{% javascripts '@MetinetFacebookBundle/Resources/public/js/form.js' %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}

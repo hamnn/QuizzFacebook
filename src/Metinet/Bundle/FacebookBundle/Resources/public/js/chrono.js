@@ -22,5 +22,5 @@ $("#startQuizzLink").click(function(){
     chrono();
     $(this).fadeOut('slow');
     // affiche la première question
-    nextQuizzAction();
+    nextQuizzEvent();
 });

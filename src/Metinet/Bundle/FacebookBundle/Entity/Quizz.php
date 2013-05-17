@@ -593,19 +593,6 @@ class Quizz
         return $this->questions;
     }
     
-    /**
-     * Fonction qui retourne une question du quizz
-     * @param INT $keyQuestion	L'indice de la question à retourner depuis la tableau de questions
-     * @return QUESTION La question du quizz correspondant à l'indice $keyQuestion
-     */
-    public function getQuestion($keyQuestion){
-	if(isset($keyQuestion) && is_numeric($keyQuestion)){
-	    if(isset($this->questions[$keyQuestion])){
-		return $this->questions[$keyQuestion];
-	    }
-	}
-	return NULL;
-    }
 
     /**
      * Set theme
@@ -690,7 +677,7 @@ class Quizz
     {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
-        return 'bundles/metinetfacebook/uploads/pictures';
+        return 'bundles/metinetfacebook/uploads/pictures/quizz';
     }
     
     /**

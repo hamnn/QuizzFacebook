@@ -1,25 +1,34 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Administration{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
+{% endblock %}
 {% block body %}
-<h1 id="inscriptiontitle">Administration du site.</h1>
+<div id='header'>
+    <h1 id="logo">YouQuizz-administration</h1>
+</div>
+<div id="page">
+    <div id="contenu">
+        {% if error %}
+            <div>{{ error.message }}</div>
+        {% endif %}
+        <form id="formLogin" action="{{ path('login_check') }}" method="post">
+            <label for="username">Identifiant :</label>
+            <input type="text" id="username" name="_username" value="{{ last_username }}" /><br />
 
-    {% if error %}
-	<div>{{ error.message }}</div>
-    {% endif %}
+            <label for="password">Mot de passe :</label>
+            <input type="password" id="password" name="_password" /><br />
 
-    <form action="{{ path('login_check') }}" method="post">
-	<label for="username">Login :</label>
-	<input type="text" id="username" name="_username" value="{{ last_username }}" />
+            {#
+                Si vous voulez controler l'URL vers laquelle l'utilisateur est redirigé en cas de succès
+                (plus de détails ci-dessous)
+                <input type="hidden" name="_target_path" value="/account" />
+            #}
 
-	<label for="password">Mot de passe :</label>
-	<input type="password" id="password" name="_password" />
-
-	{#
-	    Si vous voulez controler l'URL vers laquelle l'utilisateur est redirigé en cas de succès
-	    (plus de détails ci-dessous)
-	    <input type="hidden" name="_target_path" value="/account" />
-	#}
-
-	<button type="submit">login</button>
-    </form>
+            <button id="connect" type="submit">Se connecter</button>
+        </form>
+    </div>
+    <div class="push"></div>
+</div>
 {% endblock %}

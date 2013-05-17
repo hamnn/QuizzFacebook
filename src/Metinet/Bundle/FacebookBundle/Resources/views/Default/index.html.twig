@@ -1,6 +1,41 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Accueil{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <h1 id="logo">YouQuizz</h1>
+</div>
+<div id="preload" style="display: none;">
+    <div id="content">
+	<img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
+	<h2>Test ta culture général !</h2>
+	<div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">100%</p></div>
+    </div>
+</div>
+<div id="page">
+    <div id="contenu">
+        {% set user = app.session.get('user') %}
+            <h2>Bonjour, {{ user.firstname }}</h2>
+            <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
+            <div id="cadreimgUser">
+                <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=large"/> 
+            </div>
+            <p>voici les 4 derniers quizz disponibles : </p>
+            <p>nous vous proposons d'essayer ce quizz : </p>
+            <p>Votre classement : </p>
+            <br />
+            
+            <a class="lienAccueil" href="#">Accèder aux classements</a>
+            <a class="lienAccueil" href="#">Accèder aux quizz</a>
+            <a class="lienAccueil" href="#">invite tes amis</a>
+    </div>
+    <div class="push"></div>
+</div>
 
-Accueil
-<body>
+
     <div id="fb-root"></div>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <p>
@@ -51,4 +86,4 @@ Accueil
         FB.ui(obj, callback);
       }
         </script>
-    </body>
+{% endblock %}
