@@ -66,4 +66,14 @@ class PlayController extends Controller
 	return new Response(json_encode(array("question" => $render)));
     }
     
+    
+    /**
+     * Fonction appelée en AJAX qui va enregistrer la réponse de l'user
+     * @Route("/play/user/{userFbId}/answer/{answerId}", name="play_question")
+     * @Template()
+     */
+    public function enregistrerUserAnswerAction(){
+	
+    }
+    
 }
