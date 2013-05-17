@@ -88,13 +88,25 @@ class PlayController extends Controller
 	if($this->getRequest()->isXmlHttpRequest()){
 	    // instanciation des repositories
 	    $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+	    $answerRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Answer');
 	    // récupération de l'user
 	    $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
-	    $user = $userRepository->findBy(array("fbUid" => $userFbId));
-	    // récupération des answers
-	    $request = $this->getRequest();
-	   // $params = $request->request->get
-	    var_dump($params);die();
+	    $userResult = $userRepository->findBy(array("fbUid" => $userFbId));
+	    $user = $userResult[0];
+	    // récupération des id des answers (on récupère les checkbox cochées du formulaire de réponse à la question)
+	    $arrayIdAnswer = $this->getRequest()->get('answer');
+	    // pour chaque id answer récupéré, on créé un objet Answer
+	    foreach($arrayIdAnswer as $idAnswer){
+		$answer = $answerRepository->find($idAnswer);
+		// on ajoute l'objet Answer à l'User
+		$user->addAnswer($answer);
+	    }
+	    // on merge l'User en BDD pour enregistrer ses réponses au quizz
+	    $em = $this->getDoctrine()->getEntityManager();
+	    $em->persist($user);
+            $em->flush();
+	    // on retourne un json disant que l'enregistrement a été fait
+	    return new Response(json_encode(array("reponse" => "ok")));
 	}
     }
     
