@@ -15,8 +15,9 @@ $("#questionForm").submit(function(){
 	}
     })
     
-    // si le joueur a choisi au moins une réponse, on fait la prochaine action du quizz
+    // si le joueur a choisi au moins une réponse, on enregistre sa/ses réponse(s) et on fait la prochaine action du quizz
     if(hasAnswered){
+	enregistrerUserAnswer($(this));
 	nextQuizzEvent();
     }
     // si le joueur n'a choisi aucune réponse, on affiche le message d'erreur
@@ -24,6 +25,6 @@ $("#questionForm").submit(function(){
 	$("#errorQuestion").html('Vous devez choisir au moins une réponse');
 	$("#errorQuestion").fadeIn('slow');
     }
-    // on évite que le formulaire se soumette
+    // on évite que le formulaire se soumette de lui même
     return false;
 });

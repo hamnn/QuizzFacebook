@@ -42,7 +42,7 @@ class PlayController extends Controller
      * Va chercher la question N° questionNumber du quizz correspondant à l'id reçu
      * et l'affiche pour que le joueur puisse répondre.
      * CETTE FONCTION EST APPELLÉE EN AJAX
-     * @Route("/play/{quizzId}/{questionNumber}", name="play_question")
+     * @Route("/play/quizz/{quizzId}/question/{questionNumber}", name="play_question")
      * @Template()
      */
     public function questionAction($quizzId, $questionNumber){
@@ -79,12 +79,35 @@ class PlayController extends Controller
     
     
     /**
-     * Fonction appelée en AJAX qui va enregistrer la réponse de l'user
-     * @Route("/play/user/{userFbId}/answer/{answerId}", name="play_enregistrerUserAnswer")
+     * Fonction appelée en AJAX qui va enregistrer la réponse de l'user pour la question du quizz à laquelle il vient de répondre
+     * @Route("/play/enregistrer/userAnswer", name="play_enregistrerUserAnswer")
      * @Template()
      */
     public function enregistrerUserAnswerAction(){
-	
+	// si la fonction a été appelée par AJAX
+	if($this->getRequest()->isXmlHttpRequest()){
+	    // instanciation des repositories
+	    $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+	    $answerRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Answer');
+	    // récupération de l'user
+	    $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
+	    $userResult = $userRepository->findBy(array("fbUid" => $userFbId));
+	    $user = $userResult[0];
+	    // récupération des id des answers (on récupère les checkbox cochées du formulaire de réponse à la question)
+	    $arrayIdAnswer = $this->getRequest()->get('answer');
+	    // pour chaque id answer récupéré, on créé un objet Answer
+	    foreach($arrayIdAnswer as $idAnswer){
+		$answer = $answerRepository->find($idAnswer);
+		// on ajoute l'objet Answer à l'User
+		$user->addAnswer($answer);
+	    }
+	    // on merge l'User en BDD pour enregistrer ses réponses au quizz
+	    $em = $this->getDoctrine()->getEntityManager();
+	    $em->persist($user);
+            $em->flush();
+	    // on retourne un json disant que l'enregistrement a été fait
+	    return new Response(json_encode(array("reponse" => "ok")));
+	}
     }
     
     /**
