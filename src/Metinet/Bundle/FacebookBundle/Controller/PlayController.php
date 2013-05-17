@@ -21,10 +21,19 @@ class PlayController extends Controller
 	$quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
 	// on récupère le quizz correspondant à l'id reçu
 	$quizz = $quizzRepository->find($quizzId);
-	// on récupère la première question du quizz
-	$firstQuestion = $quizz->getQuestion(0);
+	// on créé un tableau de correspondance entre les ids des Questions et leur numéro de question pour pouvoir mélanger l'ordre des questions
+	// la key de l'array est le numéro de question, la value de l'array est l'id de la Question
+	$arrayCorrespondanceOrdreQuestions = array();
+	foreach($quizz->getQuestions() as $question){
+	    $arrayCorrespondanceOrdreQuestions[] = $question->getId();
+	}
+	// on mélange l'array de correspondance pour avoir un ordre de déroulement des questions aléatoire
+	shuffle($arrayCorrespondanceOrdreQuestions);
+	// on enregistre l'array de correspondance dans une variable de session
+	// pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
+	$session = $this->getRequest()->getSession();
+	$session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
 	return array(	"quizz"		=> $quizz,
-			"firstQuestion"	=> $firstQuestion,
 			"nextQuestion"	=> 0);
     }
     
@@ -69,7 +78,7 @@ class PlayController extends Controller
     
     /**
      * Fonction appelée en AJAX qui va enregistrer la réponse de l'user
-     * @Route("/play/user/{userFbId}/answer/{answerId}", name="play_question")
+     * @Route("/play/user/{userFbId}/answer/{answerId}", name="play_enregistrerUserAnswer")
      * @Template()
      */
     public function enregistrerUserAnswerAction(){
