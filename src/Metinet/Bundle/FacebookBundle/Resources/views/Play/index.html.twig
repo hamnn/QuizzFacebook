@@ -20,6 +20,7 @@
     <input type="hidden" id="urlAjaxQuestion" value="{{ path('play_question', { 'quizzId': quizz.getId() , 'questionNumber' : nextQuestion }) }}" />
 </div>
 
+<input type="hidden" id="urlAjaxEnregistrerUserAnswer" value="{{ path('play_enregistrerUserAnswer') }}" />
 
 {% endblock %}
 {% block javascripts %}

@@ -42,7 +42,7 @@ class PlayController extends Controller
      * Va chercher la question N° questionNumber du quizz correspondant à l'id reçu
      * et l'affiche pour que le joueur puisse répondre.
      * CETTE FONCTION EST APPELLÉE EN AJAX
-     * @Route("/play/{quizzId}/{questionNumber}", name="play_question")
+     * @Route("/play/quizz/{quizzId}/question/{questionNumber}", name="play_question")
      * @Template()
      */
     public function questionAction($quizzId, $questionNumber){
@@ -79,12 +79,23 @@ class PlayController extends Controller
     
     
     /**
-     * Fonction appelée en AJAX qui va enregistrer la réponse de l'user
-     * @Route("/play/user/{userFbId}/answer/{answerId}", name="play_enregistrerUserAnswer")
+     * Fonction appelée en AJAX qui va enregistrer la réponse de l'user pour la question du quizz à laquelle il vient de répondre
+     * @Route("/play/enregistrer/userAnswer", name="play_enregistrerUserAnswer")
      * @Template()
      */
     public function enregistrerUserAnswerAction(){
-	
+	// si la fonction a été appelée par AJAX
+	if($this->getRequest()->isXmlHttpRequest()){
+	    // instanciation des repositories
+	    $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+	    // récupération de l'user
+	    $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
+	    $user = $userRepository->findBy(array("fbUid" => $userFbId));
+	    // récupération des answers
+	    $request = $this->getRequest();
+	   // $params = $request->request->get
+	    var_dump($params);die();
+	}
     }
     
     /**
