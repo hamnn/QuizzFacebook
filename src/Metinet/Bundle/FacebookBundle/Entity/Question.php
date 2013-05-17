@@ -3,12 +3,16 @@
 namespace Metinet\Bundle\FacebookBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Question
  *
  * @ORM\Table(name="question")
  * @ORM\Entity(repositoryClass="Metinet\Bundle\FacebookBundle\Repository\QuestionRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Question
 {
@@ -34,6 +38,11 @@ class Question
      * @ORM\Column(name="picture", type="string", length=255)
      */
     private $picture;
+    
+    /**
+     * @Assert\File(maxSize="6000000")
+     */
+    public $file;
 
     /**
      * @ORM\ManyToOne(targetEntity="Quizz", inversedBy="questions")
@@ -165,5 +174,88 @@ class Question
     public function getAnswers()
     {
         return $this->answers;
+    }
+    
+    /**
+     * Retourne le nombre de fois que le quizz a été joué.
+     * /!\ Variable opionelle non remplie automatiquement. Sert plus de variable de transport de données à la vue TWIG.
+     */
+    public function getNbTimesPlayed(){
+	return $this->nbTimesPlayed;
+    }
+    
+    /**
+     * Set le nombre de fois que le quizz a été joué.
+     * Sert plus de variable de transport de données à la vue TWIG.
+     * N'apparait pas en base.
+     */
+    public function setNbTimesPlayed($nbTimesPlayed){
+	$this->nbTimesPlayed = $nbTimesPlayed;
+	return $this;
+    }
+    
+     public function getAbsolutePath()
+    {
+        return null === $this->picture ? null : $this->getUploadRootDir().'/'.$this->picture;
+    }
+    public function getWebPath()
+    {
+        return null === $this->picture ? null : $this->getUploadDir().'/'.$this->picture;
+    }
+
+    protected function getUploadRootDir()
+    {
+        // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
+        return __DIR__.'/../../../../../web/'.$this->getUploadDir();
+    }
+
+    protected function getUploadDir()
+    {
+        // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
+        // le document/image dans la vue.
+        return 'bundles/metinetfacebook/uploads/pictures/question';
+    }
+    
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function preUpload()
+    {
+         if (null !== $this->file) {
+            // faites ce que vous voulez pour générer un nom unique
+            $this->picture = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
+        }
+    }
+
+    /**
+     * @ORM\PostPersist()
+     * @ORM\PostUpdate()
+     */
+    public function upload()
+    {
+     if (null === $this->file) {
+            return;
+        }
+
+        // s'il y a une erreur lors du déplacement du fichier, une exception
+        // va automatiquement être lancée par la méthode move(). Cela va empêcher
+        // proprement l'entité d'être persistée dans la base de données si
+        // erreur il y a
+        $this->file->move($this->getUploadRootDir(), $this->picture);
+
+        unset($this->file);
+    }
+    
+    
+
+    /**
+     * @ORM\PostRemove()
+     */
+    public function removeUpload()
+    {
+         if ($this->file == $this->getAbsolutePath()) {
+            unlink($this->file);
+        }
     }
 }

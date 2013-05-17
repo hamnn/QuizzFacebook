@@ -76,4 +76,7 @@ liip_imagine:
     filter_sets:
         my_thumb:
             filters:
-                thumbnail: { size: [120, 90], mode: outbound }
+                thumbnail: { size: [120, 90], mode: outbound, cache_type: public, cache_expires: 2 weeks }
+        my_large:
+            filters:
+                thumbnail: { size: [260, 240], mode: outbound, cache_type: public, cache_expires: 2 weeks }

@@ -10,19 +10,10 @@
             <th>Theme</th>
             <th>Titre</th>
             <th>Image</th>
-            <th>Short description</th>
-            <th>Long description</th>
-            <th>Points</th>
-            <th>Temps</th>
-            <th>< 25%</th>
-            <th>25% à 50%</th>
-            <th>50% à 75%</th>
-            <th>75% à 100%</th>
-            <th>Titre FB</th>
-            <th>Description FB</th>
-            <th>Is promoted</th>
-            <th>Date création</th>
             <th>Etat</th>
+            <th>Voir</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
         </tr>
     </thead>
     <tbody>
@@ -31,29 +22,14 @@
             <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
             <td>{{ entity.theme.title }}</td>
             <td>{{ entity.title }}</td>
-            <td><img src="{{ entity.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ entity.title }}"/></td>
-            <td>{{ entity.shortDesc }}</td>
-            <td>{{ entity.longDesc }}</td>
-            <td>{{ entity.winPoints }}</td>
-            <td>{{ entity.averageTime }}</td>
-            <td>{{ entity.txtWin1 }}</td>
-            <td>{{ entity.txtWin2 }}</td>
-            <td>{{ entity.txtWin3 }}</td>
-            <td>{{ entity.txtWin4 }}</td>
-            <td>{{ entity.shareWallTitle }}</td>
-            <td>{{ entity.shareWallDesc }}</td>
-            <td>{{ entity.isPromoted }}</td>
-            <td>{% if entity.createdAt %}{{ entity.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
-            <td>{{ entity.state }}</td>
+            <td><img src="{{ entity.getWebPath() | imagine_filter('my_thumb', true) }}" alt="{{ entity.title }}"/></td>
+            <td>{% if entity.isPromoted == 1 %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}" id="actif">Activé</a>{% else %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}" id="actif">Desactivé</a>{% endif %}</td>
+            <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a<</td>
+            <td><a href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a></td>
             <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a>
-                    </li>
-                </ul>
+                <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
+                    <button type="submit">Supprimer</button>
+                </form>
             </td>
         </tr>
     {% endfor %}
@@ -64,6 +40,11 @@
     <li>
         <a href="{{ path('quizz_new') }}">
             Créer un nouveau quizz
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('admin_index') }}">
+            Retour administration
         </a>
     </li>
 </ul>

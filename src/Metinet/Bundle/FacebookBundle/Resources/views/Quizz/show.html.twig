@@ -19,7 +19,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td><img src="{{ entity.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ entity.title }}"/></td>
+            <td><img src="{{ entity.getWebPath() | imagine_filter('my_large', true) }}" alt="{{ entity.title }}"/></td>
         </tr>
         <tr>
             <th>Short description</th>
@@ -62,20 +62,21 @@
             <td>{{ entity.shareWallDesc }}</td>
         </tr>
         <tr>
-            <th>Ispromoted</th>
-            <td>{{ entity.isPromoted }}</td>
+            <th>Activé</th>
+            <td>{% if entity.isPromoted == 1 %}Oui{% else %}Non{% endif %}</td>
         </tr>
         <tr>
             <th>Createdat</th>
             <td>{{ entity.createdAt|date('Y-m-d H:i:s') }}</td>
         </tr>
-        <tr>
-            <th>State</th>
-            <td>{{ entity.state }}</td>
-        </tr>
     </tbody>
 </table>
-
+<h3>Les questions</h3>
+<ul id ="questions">
+{% for question in questions %}
+        <li><img src="{{ question.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ question.title }}"/> <span>{{ question.title }}</span></li>
+{% endfor %}
+</ul>
 <ul class="record_actions">
     <li>
         <a href="{{ path('quizz') }}">
@@ -85,6 +86,11 @@
     <li>
         <a href="{{ path('quizz_edit', { 'id': entity.id }) }}">
             Editer
+        </a>
+    </li>
+    <li>
+        <a href="{{ path('question_new', { 'id': entity.id }) }}">
+            Ajouter une question
         </a>
     </li>
     <li>
