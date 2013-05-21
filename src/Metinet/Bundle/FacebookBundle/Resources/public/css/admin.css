@@ -606,6 +606,7 @@ table .headerSortUp.purple, table .headerSortDown.purple {
 
 .delete{
     background: url('../images/delete.png') no-repeat 0 0;
+    border:none;
 }
 
 #actif{
