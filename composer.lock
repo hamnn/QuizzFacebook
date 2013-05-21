@@ -261,7 +261,7 @@
                     "email": "kontakt@beberlei.de"
                 },
                 {
-                    "name": "Johannes M. Schmitt",
+                    "name": "Johannes Schmitt",
                     "email": "schmittjoh@gmail.com",
                     "homepage": "https://github.com/schmittjoh",
                     "role": "Developer of wrapped JMSSerializerBundle"
@@ -1195,12 +1195,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/liip/LiipImagineBundle.git",
-                "reference": "7b2cd5c8af3fb6602eecc83fb4dac74986a97bdb"
+                "reference": "v0.10.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/7b2cd5c8af3fb6602eecc83fb4dac74986a97bdb",
-                "reference": "7b2cd5c8af3fb6602eecc83fb4dac74986a97bdb",
+                "url": "https://api.github.com/repos/liip/LiipImagineBundle/zipball/v0.10.0",
+                "reference": "v0.10.0",
                 "shasum": ""
             },
             "require": {
@@ -1208,7 +1208,8 @@
                 "php": ">=5.3.2",
                 "symfony/filesystem": ">=2.0.16.0,>=2.0,<3.0",
                 "symfony/finder": ">=2.0.16.0,>=2.0,<3.0",
-                "symfony/framework-bundle": ">=2.0.16.0,>=2.0,<3.0"
+                "symfony/framework-bundle": ">=2.0.16.0,>=2.0,<3.0",
+                "symfony/options-resolver": ">=2.0.16.0,>=2.0,<3.0"
             },
             "require-dev": {
                 "symfony/yaml": ">=2.0.16.0,>=2.0,<3.0",
@@ -1239,7 +1240,7 @@
                 "image",
                 "imagine"
             ],
-            "time": "2013-05-14 20:16:40"
+            "time": "2013-05-17 08:18:26"
         },
         {
             "name": "monolog/monolog",
