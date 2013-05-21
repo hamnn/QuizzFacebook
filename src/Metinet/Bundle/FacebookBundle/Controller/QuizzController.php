@@ -237,15 +237,26 @@ class QuizzController extends Controller {
         $em->flush();
 
         return $this->redirect($this->generateUrl('homepage'));
-    }
-    
-    
+    }    
 
     private function createDeleteForm($id) {
         return $this->createFormBuilder(array('id' => $id))
                         ->add('id', 'hidden')
                         ->getForm()
         ;
+    }
+    
+    
+    
+    /**
+     * Fonction qui affiche la page de détail d'un quizz avec possibilité de jouer à ce quizz
+     * @Route("/front/quizz/details/{quizzId}", name="quizz_frontDetails")
+     * @Template()
+     */
+    public function detailsAction($quizzId){
+	// instanciation des repositories
+        $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	$quizz = $quizzRepository->find($quizzId);
     }
 
 

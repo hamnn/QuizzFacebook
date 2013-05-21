@@ -56,9 +56,15 @@ class UserRepository extends EntityRepository
      * @return ARRAY Tableau d'objets User.
      */
     public function getDerniersUtilisateurs($nbUtilisateurs){
-	return $this->_em->createQuery("SELECT user
-					FROM MetinetFacebookBundle:User user
-					ORDER BY user.createdAt DESC")
-		->setMaxResults($nbUtilisateurs);
+	$result = $this->_em->createQuery(  "SELECT user
+					    FROM MetinetFacebookBundle:User user
+					    ORDER BY user.createdAt DESC")
+		->setMaxResults($nbUtilisateurs)
+		->getResult();
+	$arrayFinal = array();
+	foreach($result as $row){
+	    $arrayFinal[] = $row;
+	}
+	return $arrayFinal;
     }
 }
