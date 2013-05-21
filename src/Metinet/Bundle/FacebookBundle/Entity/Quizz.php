@@ -137,9 +137,9 @@ class Quizz
     private $createdAt;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="state", type="integer")
+     * @ORM\Column(name="state", type="boolean")
      */
     private $state;
 
@@ -167,7 +167,6 @@ class Quizz
         $this->quizzResults = new \Doctrine\Common\Collections\ArrayCollection();
         $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->createdAt = new \DateTime();
-        $this->state = 0;
     }
 
     /**
