@@ -42,7 +42,7 @@ body{
     width: 710px;
     margin: 90px auto -142px;
     background: #fff;
-    min-height: 100%;
+    min-height: 450px;
     height: auto !important;
     height: 100%;
     box-shadow: 7px 7px 10px gray;
@@ -82,8 +82,8 @@ body{
 }
 #contenu{
 	position: relative;
-        /*min-height: 350px;*/
-	/*top: 175px;*/
+        min-height: 350px;
+	top: 175px;
 	margin-left: 20px;
 }
 .push {margin-top: 175px;}

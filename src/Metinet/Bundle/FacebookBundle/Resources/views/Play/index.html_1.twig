@@ -37,11 +37,11 @@
          <p>nous vous proposons d'essayer ce quizz : </p>
             {% for quizzPromoted in quizzEnAvant %}
                     <div id="cadreDescQuizz">
-                        <img id="5" src="{{ asset('/bundles/metinetfacebook/images/testQuizzimg.png') }}" alt="" />
-                        <!-- <img src="{{ quizzPromoted.picture }}" /> -->
+                        <a href="#"><div id="5" class="hover"></div></a>
+                        <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
                         <a class="desc" id="desc5" href="#">
                             <h3 class="desc" id="desc5">
-                                <p style="font-size: 25px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
+                                <p style="font-size: 25px; margin-top: -15px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
                                 <p>{{ quizzPromoted.shortDesc }}</p>
                             </h3>
                         </a>                 
@@ -51,11 +51,12 @@
             <p>voici les 4 derniers quizz disponibles : </p>
             {% for quizzLast in derniersQuizz %}
                      <div id="cadreDesc4Quizz">
-                        <img id="{{ loop.index }}" src="{{ quizzLast.picture }}" />
+                        <a href="#"><div id="{{ loop.index }}" class="hover"></div></a>
+                        <img id="{{ loop.index }}" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzLast.picture }}" />
                         <a class="desc" id="desc{{ loop.index }}" href="#">
                             <h3 class="desc" id="desc{{ loop.index }}">
-                                <p style="font-size: 17px; font-weight: bold;">{{ quizzLast.title }}</p><br />
-                                <p>{{ quizzLast.shortDesc }}</p>
+                                <p style="font-size: 17px; margin-top: -20px; font-weight: bold;">{{ quizzLast.title }}</p><br />
+                                <p  style="margin-top: -20px;">{{ quizzLast.shortDesc }}</p>
                             </h3>
                         </a>                 
                     </div>
