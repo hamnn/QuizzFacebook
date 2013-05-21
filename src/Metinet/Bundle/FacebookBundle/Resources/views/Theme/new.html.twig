@@ -4,6 +4,7 @@
         {{ parent() }}
         <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
 {% endblock %}
+{% block container %}
 <h1>Nouveau Theme</h1>
 
 <form action="{{ path('theme_create') }}" method="post" {{ form_enctype(form) }}>
@@ -20,3 +21,4 @@
         </a>
     </li>
 </ul>
+{% endblock %}
