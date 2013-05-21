@@ -23,6 +23,31 @@ class QuizzRepository extends EntityRepository
 		->getSingleScalarResult();
     }
     
+    /**
+     * Fonction qui retourne le quizz mis en avant
+     * @return string Le nom,image et description du quizz
+     */
+    public function getPromotedQuizz($limit){
+        if(isset($limit) && $limit > 0){
+            return $this->_em->createQuery("SELECT quizz.title, quizz.picture, quizz.shortDesc 
+                                            FROM MetinetFacebookBundle:Quizz quizz
+                                            WHERE quizz.isPromoted=1")
+                    ->setMaxResults($limit)->getResult();
+        }
+    }
+    
+    /**
+     * Fonction qui retourne les derniers quizz publiés
+     * @return string Le nom,image et description courte du quizz
+     */
+    public function getLastQuizz($limit){
+        if(isset($limit) && $limit > 0){
+            return $this->_em->createQuery("SELECT quizz.title, quizz.picture, quizz.shortDesc 
+                                            FROM MetinetFacebookBundle:Quizz quizz
+                                            ORDER BY quizz.id")
+                    ->setMaxResults($limit)->getResult();
+        }
+    }
     
     /**
      * Fonction qui retourne le top n des quizz les plus ou moins populaires
@@ -56,5 +81,7 @@ class QuizzRepository extends EntityRepository
 	    return $arrayFinal;
 	}
     }
+    
+
     
 }
