@@ -72,6 +72,18 @@ class Quizz
      * @ORM\Column(name="win_points", type="integer")
      */
     private $winPoints;
+    
+    /**
+     * @var float
+     *
+     */
+    private $pourcentage;
+    
+    /**
+     * @var integer
+     *
+     */
+    private $nbParticipation;
 
     /**
      * @var integer
@@ -478,9 +490,32 @@ class Quizz
     {
         return $this->isPromoted;
     }
+    
+    /**
+     * Set nbParticipation
+     *
+     * @param integer $nbParticipation
+     * @return Quizz
+     */
+    public function setNbParticipation($nbParticipation)
+    {
+        $this->nbParticipation = $nbParticipation;
+
+        return $this;
+    }
 
     /**
-     * Set createdAt
+     * Get nbParticipation
+     *
+     * @return integer
+     */
+    public function getnbParticipation()
+    {
+        return $this->nbParticipation;
+    }
+
+    /**
+     * Set nbParticipation
      *
      * @param \DateTime $createdAt
      * @return Quizz
@@ -718,5 +753,28 @@ class Quizz
          if ($this->file == $this->getAbsolutePath()) {
             unlink($this->file);
         }
+    }
+    
+    /**
+     * Set pourcentage
+     *
+     * @param float $pourcentage
+     * @return Quizz
+     */
+    public function setPourcentage($pourcentage)
+    {
+        $this->pourcentage = $pourcentage;
+
+        return $this;
+    }
+
+    /**
+     * Get pourcentage
+     *
+     * @return float
+     */
+    public function getPourcentage()
+    {
+        return $this->pourcentage;
     }
 }

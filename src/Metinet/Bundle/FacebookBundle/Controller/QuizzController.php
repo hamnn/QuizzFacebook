@@ -29,12 +29,21 @@ class QuizzController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
+        $quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+        
+        foreach($entities as $entity){
+            
+            $tableau = $quizzResultRepository->getReussiteQuizz($entity->getId());
+            
+            $entity->setPourcentage($tableau['total']);
+            $entity->setNbParticipation($tableau['nombre']);
+        }
         
         return array(
             'entities' => $entities,
-            
         );
     }
+
 
     /**
      * Finds and displays a Quizz entity.
