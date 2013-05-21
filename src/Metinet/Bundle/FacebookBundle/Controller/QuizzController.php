@@ -245,6 +245,19 @@ class QuizzController extends Controller {
                         ->getForm()
         ;
     }
+    
+    
+    
+    /**
+     * Fonction qui affiche la page de détail d'un quizz avec possibilité de jouer à ce quizz
+     * @Route("/front/quizz/details/{quizzId}", name="quizz_frontDetails")
+     * @Template()
+     */
+    public function detailsAction($quizzId){
+	// instanciation des repositories
+        $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	$quizz = $quizzRepository->find($quizzId);
+    }
 
 
 }

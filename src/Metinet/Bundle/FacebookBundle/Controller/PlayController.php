@@ -11,29 +11,41 @@ use Metinet\Bundle\FacebookBundle\Entity\QuizzResult;
 class PlayController extends Controller {
 
     /**
+     * PAGE DE DÉTAIL D'UN QUIZZ
      * Va chercher le quizz correspondant à l'id reçu et l'affiche pour commencer une partie
-     * @Route("/play{quizzId}", name="play_index")
+     * @Route("/play/{quizzId}", name="play_index")
      * @Template()
      */
     public function indexAction($quizzId) {
         // instanciation des repositories
         $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
         // on récupère le quizz correspondant à l'id reçu
         $quizz = $quizzRepository->find($quizzId);
-        // on créé un tableau de correspondance entre les ids des Questions et leur numéro de question pour pouvoir mélanger l'ordre des questions
-        // la key de l'array est le numéro de question, la value de l'array est l'id de la Question
-        $arrayCorrespondanceOrdreQuestions = array();
-        foreach ($quizz->getQuestions() as $question) {
-            $arrayCorrespondanceOrdreQuestions[] = $question->getId();
-        }
-        // on mélange l'array de correspondance pour avoir un ordre de déroulement des questions aléatoire
-        shuffle($arrayCorrespondanceOrdreQuestions);
-        // on enregistre l'array de correspondance dans une variable de session
-        // pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
-        $session = $this->getRequest()->getSession();
-        $session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
-        return array(	"quizz"		=> $quizz,
-			"nextQuestion"	=> 0);
+	// on regarde si l'user a déjà joué à ce quizz
+	$hasPlayedThisQuizz = $quizzResultRepository->hasPlayedThisQuizz($quizz, $this->getUserFromFacebookConnection());
+	// si l'user a déjà joué au quizz, on retourne sur la page de détails du quizz via son controlleur
+	if($hasPlayedThisQuizz){
+	    return $this->forward('MetinetFacebookBundle:Quizz:details', array(
+			'quizzId'  => $quizz->getId()));
+	}
+	// l'user n'a pas déjà joué au quizz, on init le quizz et on affiche la vue pour le démarrer
+	else {
+	    // on créé un tableau de correspondance entre les ids des Questions et leur numéro de question pour pouvoir mélanger l'ordre des questions
+	    // la key de l'array est le numéro de question, la value de l'array est l'id de la Question
+	    $arrayCorrespondanceOrdreQuestions = array();
+	    foreach ($quizz->getQuestions() as $question) {
+		$arrayCorrespondanceOrdreQuestions[] = $question->getId();
+	    }
+	    // on mélange l'array de correspondance pour avoir un ordre de déroulement des questions aléatoire
+	    shuffle($arrayCorrespondanceOrdreQuestions);
+	    // on enregistre l'array de correspondance dans une variable de session
+	    // pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
+	    $session = $this->getRequest()->getSession();
+	    $session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
+	}
+        return array(	"quizz"			=> $quizz,
+			"nextQuestion"		=> 0);
     }
 
     /**
