@@ -48,6 +48,7 @@ body{
     box-shadow: 7px 7px 10px gray;
     border: 1px solid #999;
     border-radius: 5px;
+    margin-bottom: 50px;
 }
 #header a {
     width: 300px;

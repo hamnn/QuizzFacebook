@@ -1,5 +1,9 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Theme{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
+{% endblock %}
 {% block container %}
 <h1>Theme</h1>
 
