@@ -21,12 +21,15 @@
 </div>
 
 <input type="hidden" id="urlAjaxEnregistrerUserAnswer" value="{{ path('play_enregistrerUserAnswer') }}" />
+<input type="hidden" id="urlAjaxOnQuizzStart" value="{{ path('play_enregistrerOnQuizzStart', { 'quizzId' : quizz.getId() }) }}" />
+<input type="hidden" id="urlAjaxOnQuizzEnd" value="{{ path('play_enregistrerOnQuizzEnd', { 'quizzId' : quizz.getId() }) }}" />
 
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/chrono.js'
-		    '@MetinetFacebookBundle/Resources/public/js/ajax.js'  %}
+		    '@MetinetFacebookBundle/Resources/public/js/ajax.js'
+		    '@MetinetFacebookBundle/Resources/public/js/scripts.js'  %}
 	<script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}

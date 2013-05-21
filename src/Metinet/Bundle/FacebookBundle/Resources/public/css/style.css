@@ -47,10 +47,7 @@ body{
     height: 100%;
     box-shadow: 7px 7px 10px gray;
     border: 1px solid #999;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-radius: 5px;
 }
 #header a {
     width: 300px;
@@ -85,6 +82,7 @@ body{
 }
 #contenu{
 	position: relative;
+        min-height: 350px;
 	top: 175px;
 	margin-left: 20px;
 }
@@ -136,9 +134,24 @@ margin-left: -20px;
 .efface{display: none;}
 /* /COPRS ---------------------------------------------------------*/
 /* CONTENU --------------------------------------------------------*/
-#cadreimgUser{
-    height: 200px;
-    overflow: hidden;
+#profiler:hover{color: #3b5998; text-decoration: underline;}
+#blocProfil{position: absolute; top: 20px; right: 20px;}
+#blocProfil h2 {
+    position: relative;
+    text-align: right;
+    top: 10px;
+    z-index: 10;
+}
+#cadreimgUser {
+    float: right;
+    position: relative;
+    padding-top: 3px;
+    padding-left: 3px;
+    width: 158px;
+    height: 158px;
+    background: #fff;
+    border: 1px solid gray;
+    border-radius: 3px;
 }
 .lienAccueil {
     display: inline-block;
@@ -153,50 +166,6 @@ margin-left: -20px;
     box-shadow: 3px 3px 5px gray;
     margin-right: 22px;
 }
-.navigation {
-	position: relative;
-	/*top: 100px;
-	margin-left: 20px;*/
-	width: 460px;
-	background: #fff;
-}
-.navigation > .toggleSubMenu ul li a{
-	display: block;
-	background: white;
-}
-.navigation > .toggleSubMenu{
-	position: relative;
-}
-.navigation > .toggleSubMenu > a{
-	display: block;
-	width: 460px;
-	height: 24px;
-	background: rgba(0, 0, 0, 0.6);
-	border: 1px solid #d1d2d4;
-}
-.navigation li ul{
-	width: 460px;
-	border: 1px solid #d1d2d4;
-}
-.toggleSubMenu p {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	color: #fff;
-}
-.open a .openMenu{display: block !important;}
-.open a .closeMenu{display: none !important;}
-.closeMenu{display: block;}
-.openMenu{display: none;}
-
-#classement {
-	/*float: right;*/
-	position: relative;
-	/*top: 120px;
-	margin-left: 20px;*/
-	/*right: 20px;*/
-}
-#nbQuizz{display: inline-block;}
 /* /CONTENU-------------------------------------------------------- */
 /* FB CSS-------------------------------------------------------- */
 label{

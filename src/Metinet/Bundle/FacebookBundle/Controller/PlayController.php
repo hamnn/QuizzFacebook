@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response; // réponse JSON pour l'AJAX
+use Metinet\Bundle\FacebookBundle\Entity\QuizzResult;
 
 class PlayController extends Controller {
 
@@ -62,7 +63,6 @@ class PlayController extends Controller {
             // on retourne -2 car il faut retourner un INT pour la vue et que -1 + 1 = 0 or 0 est un numéro de question valable.
             $nextQuestion = -2;
         }
-
         // on génère la vue de la question à afficher
         $render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig", array("quizz" => $quizz,
             "question" => $question,
@@ -82,15 +82,104 @@ class PlayController extends Controller {
         if ($this->getRequest()->isXmlHttpRequest()) {
             // instanciation des repositories
             $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
-            // récupération de l'user
-            $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
-            $user = $userRepository->findBy(array("fbUid" => $userFbId));
-            // récupération des answers
-            $request = $this->getRequest();
-            // $params = $request->request->get
-            var_dump($params);
-            die();
+            $answerRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Answer');
+            // récupération de l'user à partir de sa connection sbook
+            $user = $this->getUserFromFacebookConnection();
+            // récupération des ids des answers (on récupère les radio button cochés du formulaire de réponse à la question)
+            $arrayIdAnswer = $this->getRequest()->get('answer');
+            // pour chaque id answer récupéré, on créé un objet Answer
+            foreach ($arrayIdAnswer as $idAnswer) {
+                $answer = $answerRepository->find($idAnswer);
+                // on ajoute l'objet Answer à l'User
+                $user->addAnswer($answer);
+            }
+            // on merge l'User en BDD pour enregistrer ses réponses au quizz
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($user);
+            $em->flush();
+            // on retourne un json disant que l'enregistrement a été fait
+            return new Response(json_encode(array("reponse" => "ok")));
         }
+        // si la fonction n'a pas été appelée par AJAX, on retourne un array vide
+        return array();
+    }
+
+    /**
+     * Fonction appelée en AJAX qui va enregistrer la date de début du quizz
+     * @Route("/play/enregistrer/onQuizzStart/{quizzId}", name="play_enregistrerOnQuizzStart")
+     * @Template()
+     */
+    public function onQuizzStartAction($quizzId) {
+        // si la fonction a été appelée par AJAX
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            // instanciation des repositories
+            $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+            // récupération des objets
+            $quizz = $quizzRepository->find($quizzId);
+            $user = $this->getUserFromFacebookConnection();
+            // création d'un nouvel objet QuizzResult et assignation de ses attributs
+            $quizzResult = new QuizzResult();
+            $quizzResult->setDateStart(new \DateTime("now"));
+            $quizzResult->setQuizz($quizz);
+            $quizzResult->setUser($user);
+            // enregistrement de l'objet QuizzResult en base
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($quizzResult);
+            $em->flush();
+            // on met en SESSION l'id du quizzResult pour pouvoir le réutiliser plus tard
+            $session = $this->getRequest()->getSession();
+            $session->set("quizzResultId", $quizzResult->getId());
+            // on retourne un json disant que l'enregistrement a été fait
+            return new Response(json_encode(array("reponse" => "ok")));
+        }
+        // si la fonction n'a pas été appelée par AJAX, on retourne un array vide
+        return array();
+    }
+
+    /**
+     * Fonction appelée en AJAX qui va enregistrer la fin du quizz
+     * @Route("/play/enregistrer/onQuizzEnd/{quizzId}", name="play_enregistrerOnQuizzEnd")
+     * @Template()
+     */
+    public function onQuizzEndAction($quizzId) {
+        // si la fonction a été appelée par AJAX
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            // instanciation des repositories
+            $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+            $quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+            // récupération du quizz
+            $quizz = $quizzRepository->find($quizzId);
+            // on récupère l'id du QuizzResult en SESSION pour le regénérer
+            $session = $this->getRequest()->getSession();
+            $quizzResult = $quizzResultRepository->find($session->get("quizzResultId"));
+            // on set la date de fin du quizz
+            $quizzResult->setDateEnd(new \DateTime("now"));
+            // on set le pourcentage de bonnes réponses
+            $quizzResult->setAverage($this->getPourcentageBonnesReponses($quizz, $quizzResult->getUser()));
+            // on set les points de bonnes réponses en prenant en compte les bonus / malus
+            $quizzResult->setWinPoints($this->getWinPointsWithBonusOrMalus($quizz, $quizzResult));
+            // on récupère le message de fin de quizz en fonction du nombre de bonnes réponses
+            $txtWin = $this->getTxtWin($quizz, $quizzResult->getAverage());
+            // on récupère l'user pour lui ajouter ses points et incrémenter son nombre de quizz
+            $user = $quizzResult->getUser();
+            $user->setPoints($user->getPoints() + $quizzResult->getWinPoints());
+            $user->setNbQuizz($user->getNbQuizz() + 1);
+            // enregistrement des objets en base
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($quizzResult);
+            $em->persist($user);
+            $em->flush();
+            // on nettoie les variables de session utilisées pour jouer au quizz
+            $session->remove("arrayCorrespondanceOrdreQuestions");
+            $session->remove("quizzResultId");
+            // on génère la vue de la fin du quizz
+            $render = $this->renderView("MetinetFacebookBundle:Play:quizzEnd.html.twig", array("quizzResult" => $quizzResult,
+                "txtWin" => $txtWin));
+            // on retourne l'objet reponse AJAX contenant le json de la vue de la fin du quizz
+            return new Response(json_encode(array("quizzEnd" => $render)));
+        }
+        // si la fonction n'a pas été appelée par AJAX, on retourne un array vide
+        return array();
     }
 
     /**
@@ -135,24 +224,112 @@ class PlayController extends Controller {
         //On récupère tous les quizz_results en fonction du user_id et du quizz_id
         $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
         $quizzResults = $quizzRepository->findBy(array("user" => $user->getId(), 'quizz' => $quizzId));
-        
+
         foreach ($quizzResults as $oneQuizzresult) {
             //Si on trouve un résultat dans la base de donnée qui est supérieur au résultat en cours on sort de la boucle.
             // => on est pas dans le cas d'un meilleur score
-            if ($oneQuizzresult->getWinPoints() > $quizzResult){
+            if ($oneQuizzresult->getWinPoints() > $quizzResult) {
                 $highScore = false;
                 break;
             }
-                
         }
 
-        if (!$highScore)return NULL;
-        $response = $facebook->api( '/100000481617990/notifications', 'POST', array(
-'template' => 'Coucou tu veux voir ma bite ?',
-'href' => 'path/to/message/?id=1465341905',
-'access_token' => "575560672464968|YiKfCuPGRy5WwCgkWxO_vYkKmrg"
-) );
+        if (!$highScore)
+            return NULL;
+        $response = $facebook->api('/100000481617990/notifications', 'POST', array(
+            'template' => 'Coucou tu veux voir ma bite ?',
+            'href' => 'path/to/message/?id=1465341905',
+            'access_token' => "575560672464968|YiKfCuPGRy5WwCgkWxO_vYkKmrg"
+                ));
         exit;
+    }
+
+    /**
+     * Fonction qui retourne un onjet User correspondant à l'utilisateur qui joue au quizz avec sa connection Facebook
+     * @return USER Un objet User
+     */
+    private function getUserFromFacebookConnection() {
+        // instanciation des repositories
+        $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+        // récupération de l'user à partir de sa connection sbook
+        $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
+        $userResult = $userRepository->findBy(array("fbUid" => $userFbId));
+        $user = $userResult[0];
+        return $user;
+    }
+
+    /**
+     * Fonction qui retourne le pourcentage (entre 0 et 1) de bonnes réponses au quizz obtenu par l'user.
+     * @param QUIZZ $quizz  Le quizz dont on doit calculer le nombre de bonnes réponses
+     * @param USER $user    L'user qui a répondu au quizz
+     * @return DOUBLE	    Le pourcentage de bonnes réponses au quizz fait par l'user (pourcentage entre 0 et 1)
+     */
+    private function getPourcentageBonnesReponses($quizz, $user) {
+        // instanciation des repositories
+        $answerRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Answer');
+        // initialisation des variables
+        $pourcentageBonnesReponses = 0;
+        $nbQuestions = count($quizz->getQuestions());
+        $reponsesJustes = 0;
+        // on récupère toutes les réponses de l'user
+        foreach ($quizz->getQuestions() as $question) {
+            $answer = $answerRepository->getUserAnswer($question, $user);
+            // si la réponse de l'user est correcte, on incrémente le nombre de réponses justes
+            if ($answer->getIsCorrect()) {
+                $reponsesJustes++;
+            }
+        }
+        // on calcul le pourcentage de réponses justes par rapport au nombre de questions posées
+        $pourcentageBonnesReponses = $reponsesJustes / $nbQuestions;
+        // on retourne le pourcentage de réponses justes qui est un double compris entre 0 et 1
+        return $pourcentageBonnesReponses;
+    }
+
+    /**
+     * Fonction qui va calculer le nombre de points obtenus au quizz en fonction des bonnes réponses,
+     * du temps de réponse et des bonus / malus qui en découlent.
+     * @param QUIZZ $quizz Le quizz auquel on vient de jouer.
+     * @param QUIZZRESULT Le résultat du quizz auquel on vient de jouer.
+     * @return INT  Le nombre de points obtenus.
+     */
+    private function getWinPointsWithBonusOrMalus($quizz, $quizzResult) {
+        $winPoints = 0;
+        // calcul des winPoints en fonction des réponses justes
+        $winPoints = $quizz->getWinPoints() * $quizzResult->getAverage();
+        // détermination des bonus / malus
+        $tempsReponseEnSecondes = $quizzResult->getDateEnd()->getTimestamp() - $quizzResult->getDateStart()->getTimestamp();
+        // si l’utilisateur répond à toutes les questions avant le temps moyen et obtient au moins 75% de bonnes réponses
+        if ($tempsReponseEnSecondes <= $quizz->getAverageTime() && $quizzResult->getAverage() >= 0.75) {
+            // il gagne un bonus de points équivalent à 25% des points à gagner sur le quizz.
+            $winPoints += $quizz->getWinPoints() * 0.25;
+        }
+        // si l’utilisateur répond aux questions après le temps imparti
+        elseif ($tempsReponseEnSecondes > $quizz->getAverageTime()) {
+            //  un malus vient s’appliquer équivalent à 15% des points à gagner sur le quizz.
+            $winPoints -= $quizz->getWinPoints() * 0.15;
+        }
+        // on retourne les points gagnés (en INT) avec leurs bonus / malus
+        return intval($winPoints);
+    }
+
+    /**
+     * Fonction qui retourne le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
+     * @param QUIZZ $quizz	Le quizz auquel l'user vient de jouer.
+     * @param FLOAT $average	Le pourcentage (entre 0 et 1) de bonnes réponses au quizz.
+     * @return STRING	Le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
+     */
+    private function getTxtWin($quizz, $average) {
+        $txtWin = "";
+        if ($average >= 0 && $average <= 0.25) {
+            $txtWin = $quizz->getTxtWin1();
+        } elseif ($average >= 0.26 && $average <= 0.50) {
+            $txtWin = $quizz->getTxtWin2();
+        } elseif ($average >= 0.51 && $average <= 0.75) {
+            $txtWin = $quizz->getTxtWin3();
+        } elseif ($average >= 0.76 && $average <= 1) {
+            $txtWin = $quizz->getTxtWin4();
+        }
+        return $txtWin;
     }
 
 }

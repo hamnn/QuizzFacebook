@@ -211,6 +211,18 @@ class ThemeController extends Controller {
                         ->getForm()
         ;
     }
+    
+    
+    /**
+     * Displays a form to create a new Theme entity.
+     *
+     * @Route("/theme", name="theme_quizz")
+     * @Template()
+     */
+    public function accueilThemeAction() {
+
+        return array();
+    }
 
    
     

@@ -1,0 +1,63 @@
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Accueil{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/theme.css') }}" type="text/css" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/anim_cat.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+</div>
+<div id="page">
+    <div id="contenu">     
+        <div id="nav">
+            <ul class="navigation">
+                <h2>Choisissez votre Quizz parmi nos thèmes :</h2>
+                <li class="toggleSubMenu"><span>Séries TV</span>
+                    <ul class="subMenu" id="menu1">
+                        <li><a href="quizz.html" title="quizz">quizz1</a></li>
+                        <li><a href="#" title="quizz">quizz2</a></li>
+                    </ul>
+
+                </li>			
+                <li class="toggleSubMenu"><span>Célébrité</span>
+                    <ul class="subMenu" id="menu2">
+                        <li><a href="#" title="quizz">quizz1</a></li>
+                        <li><a href="#" title="quizz">quizz2</a></li>
+                    </ul>
+                </li>
+                <li class="toggleSubMenu"><span>Séries TV</span>
+                    <ul class="subMenu" id="menu3">
+                        <li><a href="#" title="quizz">quizz1</a></li>
+                        <li><a href="#" title="quizz">quizz2</a></li>
+                    </ul>
+                </li>
+                <li class="toggleSubMenu"><span>Célébrité</span>
+                    <ul class="subMenu" id="menu4">
+                        <li><a href="#" title="quizz">quizz1</a></li>
+                        <li><a href="#" title="quizz">quizz2</a></li>
+                    </ul>
+                </li>
+                <li class="toggleSubMenu"><span>Séries TV</span>
+                    <ul class="subMenu" id="menu5">
+                        <li><a href="#" title="quizz">quizz1</a></li>
+                        <li><a href="#" title="quizz">quizz2</a></li>
+                    </ul>
+                </li>
+                <li class="toggleSubMenu"><span>Célébrité</span>
+                    <ul class="subMenu" id="menu6">
+                        <li><a href="#" title="quizz">quizz1</a></li>
+                        <li><a href="#" title="quizz">quizz2</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

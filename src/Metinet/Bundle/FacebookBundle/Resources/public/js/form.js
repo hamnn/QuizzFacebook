@@ -5,26 +5,26 @@
 $("#questionForm").submit(function(){
     // variable pour voir si le joueur a choisi au moins une réponse
     var hasAnswered = false;
-    // récupération de toutes les checkboxes
-    var checkboxes = $(this).find(":checkbox");
-    // on parcours toutes les checkboxes
-    checkboxes.each(function(){
-	// si une checkbox est cochée, on met hasAnswered à true;
+    // récupération de tous les radio buttons
+    var radios = $(this).find(":radio");
+    // on parcours tous les radio buttons
+    radios.each(function(){
+	// si un radio button est coché, on met hasAnswered à true;
 	if($(this).is(':checked')){
 	    hasAnswered = true;
 	}
     })
     
-    // si le joueur a choisi au moins une réponse, on enregistre sa/ses réponse(s) et on fait la prochaine action du quizz
+    // si le joueur a choisi une réponse, on enregistre sa réponse et on fait la prochaine action du quizz
     if(hasAnswered){
 	enregistrerUserAnswer($(this));
 	nextQuizzEvent();
     }
     // si le joueur n'a choisi aucune réponse, on affiche le message d'erreur
     else{
-	$("#errorQuestion").html('Vous devez choisir au moins une réponse');
+	$("#errorQuestion").html('Vous devez choisir une réponse');
 	$("#errorQuestion").fadeIn('slow');
     }
-    // on évite que le formulaire se soumette de lui même
+    // on évite que le formulaire se soumette lui même
     return false;
 });
