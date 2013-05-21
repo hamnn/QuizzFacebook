@@ -15,7 +15,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td><img src="../../{{ entity.getWebPath() }}" alt="{{ entity.picture }}"/></td>
+            <td><img src="{{ image('@MetinetFacebookBundle/Resources/public/uploads/pictures/theme/' ~ entity.picture).resize(200,200) }}" alt="{{ entity.picture }}"/></td>
         </tr>
         <tr>
             <th>Short description</th>

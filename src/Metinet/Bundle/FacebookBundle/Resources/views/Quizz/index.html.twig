@@ -22,7 +22,7 @@
             <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
             <td>{{ entity.theme.title }}</td>
             <td>{{ entity.title }}</td>
-            <td><img src="{{ entity.getWebPath() | imagine_filter('my_thumb', true) }}" alt="{{ entity.title }}"/></td>
+            <td><img src="{{ image(entity.getAbsolutePath()).resize(100,100) }}" alt="{{ entity.picture }}"/></td>
             <td>{% if entity.isPromoted == 1 %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}" id="actif">Activé</a>{% else %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}" id="actif">Desactivé</a>{% endif %}</td>
             <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a<</td>
             <td><a href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a></td>

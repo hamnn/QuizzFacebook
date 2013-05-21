@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td><img src="{{ entity.getWebPath() | imagine_filter('my_large', true) }}" alt="{{ entity.title }}"/></td>
+            <td><img src="{{ image('@MetinetFacebookBundle/Resources/public/uploads/pictures/question/' ~ entity.picture).resize(200,200) }}" alt="{{ entity.title }}"/></td>
         </tr>
     </tbody>
 </table>

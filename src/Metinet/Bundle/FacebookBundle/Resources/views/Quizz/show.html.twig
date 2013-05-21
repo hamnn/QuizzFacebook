@@ -22,7 +22,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td><img src="{{ entity.getWebPath() | imagine_filter('my_large', true) }}" alt="{{ entity.title }}"/></td>
+            <td><img src="{{ image(entity.getAbsolutePath()).resize(200,200) }}" alt="{{ entity.picture }}"/></td>
         </tr>
         <tr>
             <th>Short description</th>
@@ -78,7 +78,7 @@
 <ul id ="questions">
 {% for question in questions %}
         <li>
-            <img class="picture" src="{{ question.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ question.title }}"/> 
+            <img class="picture" src="{{ image(question.getAbsolutePath()).resize(100,100) }}" alt="{{ question.picture }}"/> 
             <span class="titre">{{ question.title }}</span>
             <a class="see" href="{{ path('question_show', { 'id': question.id }) }}">
                 Voir

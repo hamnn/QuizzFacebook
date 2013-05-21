@@ -18,7 +18,7 @@
         <tr>
             <td><a href="{{ path('theme_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
             <td>{{ entity.title }}</td>
-            <td><img src="../../{{ entity.getWebPath() }}" alt="{{ entity.title }}"/></td>
+            <td><img src="{{ image(entity.getAbsolutePath()).resize(100,100) }}" alt="{{ entity.picture }}"/></td>
             <td>{{ entity.shortDesc }}</td>
             <td>{{ entity.longDesc }}</td>
             <td>
