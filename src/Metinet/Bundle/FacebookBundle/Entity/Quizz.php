@@ -506,7 +506,7 @@ class Quizz
     /**
      * Set state
      *
-     * @param integer $state
+     * @param boolean $state
      * @return Quizz
      */
     public function setState($state)
@@ -519,7 +519,7 @@ class Quizz
     /**
      * Get state
      *
-     * @return integer
+     * @return boolean
      */
     public function getState()
     {
