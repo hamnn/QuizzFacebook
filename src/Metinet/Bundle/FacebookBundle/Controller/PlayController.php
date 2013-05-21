@@ -32,8 +32,8 @@ class PlayController extends Controller {
         // pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
         $session = $this->getRequest()->getSession();
         $session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
-        return array("quizz" => $quizz,
-            "nextQuestion" => 0);
+        return array(	"quizz"		=> $quizz,
+			"nextQuestion"	=> 0);
     }
 
     /**
@@ -64,10 +64,11 @@ class PlayController extends Controller {
             $nextQuestion = -2;
         }
         // on génère la vue de la question à afficher
-        $render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig", array("quizz" => $quizz,
-            "question" => $question,
-            "nextQuestion" => $nextQuestion,
-            "answers" => $arrayAnswers));
+        $render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig",
+	    array(  "quizz"	    => $quizz,
+		    "question"	    => $question,
+		    "nextQuestion"  => $nextQuestion,
+		    "answers"	    => $arrayAnswers));
         // on retourne l'objet reponse AJAX contenant le json de la vue de la question à afficher
         return new Response(json_encode(array("question" => $render)));
     }
@@ -173,8 +174,9 @@ class PlayController extends Controller {
             $session->remove("arrayCorrespondanceOrdreQuestions");
             $session->remove("quizzResultId");
             // on génère la vue de la fin du quizz
-            $render = $this->renderView("MetinetFacebookBundle:Play:quizzEnd.html.twig", array("quizzResult" => $quizzResult,
-                "txtWin" => $txtWin));
+            $render = $this->renderView("MetinetFacebookBundle:Play:quizzEnd.html.twig",
+		array(	"quizzResult"	=> $quizzResult,
+			"txtWin"	=> $txtWin));
             // on retourne l'objet reponse AJAX contenant le json de la vue de la fin du quizz
             return new Response(json_encode(array("quizzEnd" => $render)));
         }
