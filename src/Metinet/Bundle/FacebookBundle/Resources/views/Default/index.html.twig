@@ -9,6 +9,9 @@
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
 	<script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' %}
+	<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
 {% block body %}
 <div id='header'>
@@ -30,10 +33,35 @@
         <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
         <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
     </div>
-    <div id="contenu">
-
+    <div id="contenu"
+         <p>nous vous proposons d'essayer ce quizz : </p>
+            {% for quizzPromoted in quizzEnAvant %}
+                    <div id="cadreDescQuizz">
+                        <img id="5" src="{{ asset('/bundles/metinetfacebook/images/testQuizzimg.png') }}" alt="" />
+                        <!-- <img src="{{ quizzPromoted.picture }}" /> -->
+                        <a class="desc" id="desc5" href="#">
+                            <h3 class="desc" id="desc5">
+                                <p style="font-size: 25px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
+                                <p>{{ quizzPromoted.shortDesc }}</p>
+                            </h3>
+                        </a>                 
+                    </div>
+            {% endfor %}
+        <div id="LAstQuizz">
             <p>voici les 4 derniers quizz disponibles : </p>
-            <p>nous vous proposons d'essayer ce quizz : </p>
+            {% for quizzLast in derniersQuizz %}
+                     <div id="cadreDesc4Quizz">
+                        <img id="{{ loop.index }}" src="{{ quizzLast.picture }}" />
+                        <a class="desc" id="desc{{ loop.index }}" href="#">
+                            <h3 class="desc" id="desc{{ loop.index }}">
+                                <p style="font-size: 17px; font-weight: bold;">{{ quizzLast.title }}</p><br />
+                                <p>{{ quizzLast.shortDesc }}</p>
+                            </h3>
+                        </a>                 
+                    </div>
+            {% endfor %}
+         </div>
+            
             <p>Votre classement : </p>
             <br />
             

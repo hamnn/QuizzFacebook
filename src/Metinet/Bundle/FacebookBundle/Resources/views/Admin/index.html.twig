@@ -49,8 +49,13 @@
         </table>
 
         <ul>
-            <li>{{ nbQuizzDisponibles }} quizz disponibles!</li>
-            <li>Les {{ nbTotalJoueurs }} joueurs ont un score moyen de {{ scoreMoyenJoueurs }} points!</li>
+            <li>{{ nbQuizzDisponibles }} quizz disponibles !</li>
+            {% if nbTotalJoueurs == 1 %}
+                <li>Le joueur a un score moyen de {{ scoreMoyenJoueurs }} points!</li>
+            {% endif %}
+            {% if nbTotalJoueurs > 1 %}
+                <li>Les {{ nbTotalJoueurs }} joueurs ont un score moyen de {{ scoreMoyenJoueurs }} points!</li>
+            {% endif %}
             <li>Il y a actuellement {{ nbQuizzEnCours }} quizz en cours de jeu!</li>
         </ul>
 
