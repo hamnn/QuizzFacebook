@@ -12,4 +12,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class AnswerRepository extends EntityRepository
 {
+    
+    /**
+     * Fonction qui retourne une Answer à la Question répondue par l'User
+     * @param QUESTION $question
+     * @param USER $user 
+     * @return ANSWER Objet Answer
+     */
+    public function getUserAnswer($question, $user){
+	$paramArray = array();
+	$paramArray["question"] = $question;
+	$paramArray["user"] = $user;
+	// requete DQL
+	$result = $this->_em->createQuery("SELECT answer
+					FROM MetinetFacebookBundle:Answer answer
+					LEFT JOIN answer.users user
+					WHERE answer.question = :question
+					AND user = :user")
+		->setParameters($paramArray)
+		->getResult();
+	return $result[0];
+    }
 }

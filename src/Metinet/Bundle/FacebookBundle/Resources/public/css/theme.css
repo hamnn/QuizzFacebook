@@ -82,8 +82,8 @@ body{
 }
 #contenu{
 	position: relative;
-        min-height: 350px;
-	top: 175px;
+        /*min-height: 350px;*/
+	/*top: 175px;*/
 	margin-left: 20px;
 }
 .push {margin-top: 175px;}
@@ -169,15 +169,6 @@ margin-left: -20px;
 .open a .closeMenu{display: none !important;}
 .closeMenu{display: block;}
 .openMenu{display: none;}
-
-#classement {
-	/*float: right;*/
-	position: relative;
-	/*top: 120px;
-	margin-left: 20px;*/
-	/*right: 20px;*/
-}
-#nbQuizz{display: inline-block;}
 /* /CONTENU-------------------------------------------------------- */
 /* FB CSS-------------------------------------------------------- */
 label{
