@@ -11,7 +11,7 @@ class PlayController extends Controller {
 
     /**
      * Va chercher le quizz correspondant à l'id reçu et l'affiche pour commencer une partie
-     * @Route("/play/{quizzId}", name="play_index")
+     * @Route("/play{quizzId}", name="play_index")
      * @Template()
      */
     public function indexAction($quizzId) {
@@ -77,19 +77,20 @@ class PlayController extends Controller {
      * @Route("/play/enregistrer/userAnswer", name="play_enregistrerUserAnswer")
      * @Template()
      */
-    public function enregistrerUserAnswerAction(){
-	// si la fonction a été appelée par AJAX
-	if($this->getRequest()->isXmlHttpRequest()){
-	    // instanciation des repositories
-	    $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
-	    // récupération de l'user
-	    $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
-	    $user = $userRepository->findBy(array("fbUid" => $userFbId));
-	    // récupération des answers
-	    $request = $this->getRequest();
-	   // $params = $request->request->get
-	    var_dump($params);die();
-	}
+    public function enregistrerUserAnswerAction() {
+        // si la fonction a été appelée par AJAX
+        if ($this->getRequest()->isXmlHttpRequest()) {
+            // instanciation des repositories
+            $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+            // récupération de l'user
+            $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
+            $user = $userRepository->findBy(array("fbUid" => $userFbId));
+            // récupération des answers
+            $request = $this->getRequest();
+            // $params = $request->request->get
+            var_dump($params);
+            die();
+        }
     }
 
     /**
@@ -117,27 +118,41 @@ class PlayController extends Controller {
     }
 
     /**
-     * @Route("/play/notification/{quizzId}/", name="play_friendNotification")
+     * @Route("/play/notification/{quizzId}/{quizzResult}", name="play_friendNotificationAction")
      * @Template()
      */
+    public function friendNotificationAction($quizzId, $quizzResult) {
 
-    private function friendNotification($quizzId) {
+        $highScore = true;
 
-        echo "coucou";
-        exit;/*
         //On récupère l'ID Facebook de l'utilisateur en cours
         $fbUserId = $this->container->get('metinet.manager.fbuser')->getUser();
-        var_dump($fbUserId);
-        exit;
 
         //On récupère l'utilisateur correspondant à cet ID fb
         $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
-        $user = $userRepository->findByfb_uid($fbUserId);
+        $user = $userRepository->findOneBy(array("fbUid" => $fbUserId));
+
+        //On récupère tous les quizz_results en fonction du user_id et du quizz_id
+        $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+        $quizzResults = $quizzRepository->findBy(array("user" => $user->getId(), 'quizz' => $quizzId));
         
-        $quizzResults = $user->getQuizzResults();
-        var_dump($quizzResults);
+        foreach ($quizzResults as $oneQuizzresult) {
+            //Si on trouve un résultat dans la base de donnée qui est supérieur au résultat en cours on sort de la boucle.
+            // => on est pas dans le cas d'un meilleur score
+            if ($oneQuizzresult->getWinPoints() > $quizzResult){
+                $highScore = false;
+                break;
+            }
+                
+        }
+
+        if (!$highScore)return NULL;
+        $response = $facebook->api( '/100000481617990/notifications', 'POST', array(
+'template' => 'Coucou tu veux voir ma bite ?',
+'href' => 'path/to/message/?id=1465341905',
+'access_token' => "575560672464968|YiKfCuPGRy5WwCgkWxO_vYkKmrg"
+) );
         exit;
-  */      
     }
 
 }
