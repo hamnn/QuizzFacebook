@@ -133,9 +133,9 @@ class PlayController extends Controller
 	    $em = $this->getDoctrine()->getEntityManager();
 	    $em->persist($quizzResult);
 	    $em->flush();
-	    // on met en SESSION le quizzResult pour pouvoir le réutiliser plus tard
+	    // on met en SESSION l'id du quizzResult pour pouvoir le réutiliser plus tard
 	    $session = $this->getRequest()->getSession();
-	    $session->set("quizzResult", $quizzResult);
+	    $session->set("quizzResultId", $quizzResult->getId());
 	    // on retourne un json disant que l'enregistrement a été fait
 	    return new Response(json_encode(array("reponse" => "ok")));
 	}
@@ -154,14 +154,38 @@ class PlayController extends Controller
 	if($this->getRequest()->isXmlHttpRequest()){
 	    // instanciation des repositories
 	    $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	    $quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+	    // récupération du quizz
 	    $quizz = $quizzRepository->find($quizzId);
-	    // on récupère le QuizzResult en SESSION
+	    // on récupère l'id du QuizzResult en SESSION pour le regénérer
 	    $session = $this->getRequest()->getSession();
-	    $quizzResult = $session->get("quizzResult");
+	    $quizzResult = $quizzResultRepository->find($session->get("quizzResultId"));
+	    // on set la date de fin du quizz
 	    $quizzResult->setDateEnd(new \DateTime("now"));
-	    
-	    // on retourne un json disant que l'enregistrement a été fait
-	    return new Response(json_encode(array("reponse" => "ok")));
+	    // on set le pourcentage de bonnes réponses
+	    $quizzResult->setAverage($this->getPourcentageBonnesReponses($quizz, $quizzResult->getUser()));
+	    // on set les points de bonnes réponses en prenant en compte les bonus / malus
+	    $quizzResult->setWinPoints($this->getWinPointsWithBonusOrMalus($quizz, $quizzResult));
+	    // on récupère le message de fin de quizz en fonction du nombre de bonnes réponses
+	    $txtWin = $this->getTxtWin($quizz, $quizzResult->getAverage());
+	    // on récupère l'user pour lui ajouter ses points et incrémenter son nombre de quizz
+	    $user = $quizzResult->getUser();
+	    $user->setPoints($user->getPoints() + $quizzResult->getWinPoints());
+	    $user->setNbQuizz($user->getNbQuizz() + 1);
+	    // enregistrement des objets en base
+	    $em = $this->getDoctrine()->getEntityManager();
+	    $em->persist($quizzResult);
+	    $em->persist($user);
+	    $em->flush();
+	    // on nettoie les variables de session utilisées pour jouer au quizz
+	    $session->remove("arrayCorrespondanceOrdreQuestions");
+	    $session->remove("quizzResultId");
+	    // on génère la vue de la fin du quizz
+	    $render = $this->renderView("MetinetFacebookBundle:Play:quizzEnd.html.twig",
+				array(	"quizzResult"	=> $quizzResult,
+					"txtWin"	=> $txtWin));
+	    // on retourne l'objet reponse AJAX contenant le json de la vue de la fin du quizz
+	    return new Response(json_encode(array("quizzEnd" => $render)));
 	}
 	// si la fonction n'a pas été appelée par AJAX, on retourne un array vide
 	return array();
@@ -208,21 +232,81 @@ class PlayController extends Controller
     
     
     /**
-     * Fonction qui retourne le pourcentage de bonnes réponses au quizz obtenu par l'user.
-     * @param QUIZZ $quizz  Le quizz dont on doir calculer le nombre de bonnes réponses
+     * Fonction qui retourne le pourcentage (entre 0 et 1) de bonnes réponses au quizz obtenu par l'user.
+     * @param QUIZZ $quizz  Le quizz dont on doit calculer le nombre de bonnes réponses
      * @param USER $user    L'user qui a répondu au quizz
-     * @return DOUBLE	    Le pourcentage de bonnes réponses au quizz fait par l'user
+     * @return DOUBLE	    Le pourcentage de bonnes réponses au quizz fait par l'user (pourcentage entre 0 et 1)
      */
     private function getPourcentageBonnesReponses($quizz, $user){
 	// instanciation des repositories
 	$answerRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Answer');
-	// initialisation du pourcentage
-	$pourcentage = 0;
-	$nbQuestions = count($quizz->getQuestions);
+	// initialisation des variables
+	$pourcentageBonnesReponses = 0;
+	$nbQuestions = count($quizz->getQuestions());
+	$reponsesJustes = 0;
+	// on récupère toutes les réponses de l'user
 	foreach($quizz->getQuestions() as $question){
 	    $answer = $answerRepository->getUserAnswer($question, $user);
-	    // à continuer ....
+	    // si la réponse de l'user est correcte, on incrémente le nombre de réponses justes
+	    if($answer->getIsCorrect()){
+		$reponsesJustes++;
+	    }
 	}
+	// on calcul le pourcentage de réponses justes par rapport au nombre de questions posées
+	$pourcentageBonnesReponses = $reponsesJustes / $nbQuestions;
+	// on retourne le pourcentage de réponses justes qui est un double compris entre 0 et 1
+	return $pourcentageBonnesReponses;
     }
     
+    
+    /**
+     * Fonction qui va calculer le nombre de points obtenus au quizz en fonction des bonnes réponses,
+     * du temps de réponse et des bonus / malus qui en découlent.
+     * @param QUIZZ $quizz Le quizz auquel on vient de jouer.
+     * @param QUIZZRESULT Le résultat du quizz auquel on vient de jouer.
+     * @return INT  Le nombre de points obtenus.
+     */
+    private function getWinPointsWithBonusOrMalus($quizz, $quizzResult){
+	$winPoints = 0;
+	// calcul des winPoints en fonction des réponses justes
+	$winPoints = $quizz->getWinPoints() * $quizzResult->getAverage();
+	// détermination des bonus / malus
+	$tempsReponseEnSecondes = $quizzResult->getDateEnd()->getTimestamp() - $quizzResult->getDateStart()->getTimestamp();
+	// si l’utilisateur répond à toutes les questions avant le temps moyen et obtient au moins 75% de bonnes réponses
+	if($tempsReponseEnSecondes <= $quizz->getAverageTime() && $quizzResult->getAverage() >= 0.75){
+	    // il gagne un bonus de points équivalent à 25% des points à gagner sur le quizz.
+	    $winPoints += $quizz->getWinPoints() * 0.25;
+	}
+	// si l’utilisateur répond aux questions après le temps imparti
+	elseif($tempsReponseEnSecondes > $quizz->getAverageTime()){
+	    //  un malus vient s’appliquer équivalent à 15% des points à gagner sur le quizz.
+	    $winPoints -= $quizz->getWinPoints() * 0.15;
+	}
+	// on retourne les points gagnés (en INT) avec leurs bonus / malus
+	return intval($winPoints);
+    }
+    
+    
+    /**
+     * Fonction qui retourne le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
+     * @param QUIZZ $quizz	Le quizz auquel l'user vient de jouer.
+     * @param FLOAT $average	Le pourcentage (entre 0 et 1) de bonnes réponses au quizz.
+     * @return STRING	Le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
+     */
+    private function getTxtWin($quizz, $average){
+	$txtWin = "";
+	if($average >= 0 && $average <= 0.25){
+	    $txtWin = $quizz->getTxtWin1();
+	}
+	elseif($average >= 0.26 && $average <= 0.50){
+	    $txtWin = $quizz->getTxtWin2();
+	}
+	elseif($average >= 0.51 && $average <= 0.75){
+	    $txtWin = $quizz->getTxtWin3();
+	}
+	elseif($average >= 0.76 && $average <= 1){
+	    $txtWin = $quizz->getTxtWin4();
+	}
+	return $txtWin;
+    }
 }

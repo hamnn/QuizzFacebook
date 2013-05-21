@@ -71,7 +71,15 @@
 	 * Fonction appelée lorsque le quizz se termine
 	 */
 	onQuizzEnd = function(){
-	    
+	    $.ajax({
+		    type : 'POST',
+		    url : $("#urlAjaxOnQuizzEnd").val(),
+		    dataType: 'json',
+		    success : function(data) {
+			$('#question').html(data.quizzEnd);
+			$('#question').fadeIn("slow");
+		    }
+		});
 	}
  
 })(jQuery)

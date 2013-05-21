@@ -18,16 +18,7 @@
     <div id="errorQuestion" style="display:none;"></div>
 </form>
     
-{% javascripts '@MetinetFacebookBundle/Resources/public/js/form.js'
-		'@MetinetFacebookBundle/Resources/public/js/scripts.js' %}
+{% javascripts '@MetinetFacebookBundle/Resources/public/js/form.js' output='js/form.js'
+		'@MetinetFacebookBundle/Resources/public/js/scripts.js' output='js/scripts.js' %}
     <script type="text/javascript" src="{{ asset_url }}"></script>
-    <script type="text/javascript">
-    /**
-     * Lorsque l'on choisi une réponse
-     */
-    $("#questionForm .answerRadio").change(function(){
-	// on soumet le formulaire
-	$(this).closest('form').submit();
-    });
-    </script>
 {% endjavascripts %}

@@ -11,3 +11,12 @@ $("#startQuizzLink").click(function(){
     // affiche la première question
     nextQuizzEvent();
 });
+
+
+/**
+ * Lorsque l'on choisi une réponse
+ */
+$("#questionForm .answerRadio").change(function(){
+    // on soumet le formulaire
+    $(this).closest('form').submit();
+});

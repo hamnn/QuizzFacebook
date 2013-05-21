@@ -22,13 +22,15 @@ class AnswerRepository extends EntityRepository
     public function getUserAnswer($question, $user){
 	$paramArray = array();
 	$paramArray["question"] = $question;
-	$paramArray["quizz"] = $quizz;
+	$paramArray["user"] = $user;
 	// requete DQL
-	return $this->_em->createQuery("SELECT answer
+	$result = $this->_em->createQuery("SELECT answer
 					FROM MetinetFacebookBundle:Answer answer
-					WHERE answer.question LIKE :question
-					AND answer.users LIKE :user")
+					LEFT JOIN answer.users user
+					WHERE answer.question = :question
+					AND user = :user")
 		->setParameters($paramArray)
 		->getResult();
+	return $result[0];
     }
 }
