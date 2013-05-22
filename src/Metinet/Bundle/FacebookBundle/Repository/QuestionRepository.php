@@ -12,5 +12,17 @@ use Doctrine\ORM\EntityRepository;
  */
 class QuestionRepository extends EntityRepository
 {
-    
+    /**
+     * Fonction qui retourne le nombre de questions du quizz envoyé en paramètres.
+     * @param QUIZZ $quizz Le quizz dont on veut savoir le nimbre de questions.
+     * @return INT Le nombre de questions du quizz.
+     */
+    public function getNombreQuestionsPourQuizz($quizz){
+	$paramArray = array("quizz" => $quizz);
+	return $this->_em->createQuery("SELECT COUNT(question.id)
+					FROM MetinetFacebookBundle:Question question
+					WHERE question.quizz = :quizz")
+		->setParameters($paramArray)
+		->getSingleScalarResult();
+    }
 }

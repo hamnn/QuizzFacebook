@@ -329,6 +329,25 @@ class Quizz
     {
         return $this->averageTime;
     }
+    
+    /**
+     * Fonction qui retourne le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
+     * @param FLOAT $average	Le pourcentage (entre 0 et 1) de bonnes réponses au quizz.
+     * @return STRING	Le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
+     */
+    public function getTxtWin($average) {
+        $txtWin = "";
+        if ($average >= 0 && $average <= 0.25) {
+            $txtWin = $this->getTxtWin1();
+        } elseif ($average >= 0.26 && $average <= 0.50) {
+            $txtWin = $this->getTxtWin2();
+        } elseif ($average >= 0.51 && $average <= 0.75) {
+            $txtWin = $this->getTxtWin3();
+        } elseif ($average >= 0.76 && $average <= 1) {
+            $txtWin = $this->getTxtWin4();
+        }
+        return $txtWin;
+    }
 
     /**
      * Set txtWin1

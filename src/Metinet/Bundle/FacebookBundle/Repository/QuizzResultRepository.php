@@ -79,4 +79,58 @@ class QuizzResultRepository extends EntityRepository
 	return FALSE;
     }
     
+    /**
+     * Fonction qui retourne le nombre de points gagnés sur ce quizz par cet user.
+     * @param QUIZZ $quizz.
+     * @param USER $user.
+     * @return INT Le nombre de points gagnés sur ce quizz par cet user.
+     */
+    public function getWinPoints($quizz, $user){
+	$paramArray = array(	"quizz"	=> $quizz,
+				"user"	=> $user);
+	return $this->_em->createQuery("SELECT quizzResult.winPoints
+					FROM MetinetFacebookBundle:QuizzResult quizzResult
+					WHERE quizzResult.quizz = :quizz
+					AND quizzResult.user = :user")
+		->setParameters($paramArray)
+		->getSingleScalarResult();
+    }
+    
+    /**
+     * Fonction qui retourne l'objet QuizzResult pour l'objet quizz et l'objet user donné.
+     * @param Quizz $quizz  L'objet quizz dont on cherche le QuizzResult avec L'user donné.
+     * @param User $user    L'objet user dont on cherche le QuizzResult avec le quizz donné.
+     * @return QuizzResult  L'objet QuizzResult que l'on cherche, NULL si l'objet n'a pas été trouvé.
+     */
+    public function getQuizzResultFromQuizzAndUser($quizz, $user){
+	$quizzResultResult = $this->findBy(array("quizz" => $quizz, "user" => $user));
+	if(isset($quizzResultResult[0])){
+	    return $quizzResultResult[0];
+	}
+	return NULL;
+    }
+    
+    
+    /**
+     * Fonction qui retourne les n meilleurs joueurs pour le quizz choisi (requete par rapport au score obtenu sur ce quizz).
+     * @param QUIZZ $quizz Le quizz dont on souhaite avoir les meilleurs joueurs.
+     * @param INT $nbUsers Le nombre d'objets User à retourner.
+     * @return ARRAY Un tableau d'objets User.
+     */
+    public function getBestQuizzUsers($quizz, $nbUsers){
+	$paramArray = array("quizz" => $quizz);
+	$result = $this->_em->createQuery(  "SELECT quizzResult
+					    FROM MetinetFacebookBundle:QuizzResult quizzResult
+					    WHERE quizzResult.quizz = :quizz
+					    ORDER BY quizzResult.winPoints DESC")
+		->setParameters($paramArray)
+		->setMaxResults($nbUsers)
+		->getResult();
+	$arrayFinal = array();
+	foreach($result as $row){
+	    $arrayFinal[] = $row->getUser();
+	}
+	return $arrayFinal;
+    }
+    
 }

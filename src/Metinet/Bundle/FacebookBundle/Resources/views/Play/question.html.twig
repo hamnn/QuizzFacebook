@@ -1,5 +1,5 @@
-<h4>{{ question.getTitle() }}</h4>
-<p><img src="{{ question.getPicture() }}" /></p>
+<h4>{{ question.getTitle() }} ({{ twigQuestionNumber }}/{{ twigNbQuestions }})</h4>
+<p><img src="{{ asset('uploads/pictures/question/' ~ question.getPicture()) }}" /></p>
 <form id="questionForm" name="questionForm" method="POST" action="#" onsubmit="return false;">
     <table>
 	{% for answer in answers %}

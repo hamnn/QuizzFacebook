@@ -3,6 +3,7 @@
 {% block body %}
 <h1>Jouer à un quizz</h1>
 <h2>{{ quizz.getTitle() }}</h2>
+<img src="{{ asset('uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
 <div id="chrono" style="display:none;">
     <ul style="list-style-type: none;">
 	<li id="min" style="display:inline-block;">0</li>
