@@ -83,5 +83,40 @@
 		    }
 		});
 	}
+        
+        /**
+	 * Fonction appelée lorsque l'on clique sur le bouton d'ajout de réponses
+	 * et qui affiche le formulaire d'enregistrement d'une reponse
+	 */
+	AjaxAddAnswer = function() {
+	    $.ajax({
+		    type : 'POST',
+		    url : $("#bb").val(),
+		    dataType: 'html',
+		    success : function(data) {
+                        if($('#answers li').length != 0){
+                            $('#answers li:last').after(data);
+                        }else{
+                            $('#answers').html(data);
+                        }
+                        $('.answercheck').before("<span class='state' id='nonactif' title='Réponse fausse'></span>")
+                        $('.state').click(function(){
+                            if($(this).attr('id') == 'nonactif'){
+                                $(this).attr({
+                                    id: 'actif',
+                                    title: 'Réponse juste'
+                                });
+                                $('.answercheck').attr('checked', 'checked');
+                            }else{
+                                $(this).attr({
+                                    id: 'nonactif',
+                                    title: 'Réponse fausse'
+                                });
+                                $('.answercheck').removeAttr('checked');
+                            }
+                        })
+                    }
+		});
+	}
  
 })(jQuery)

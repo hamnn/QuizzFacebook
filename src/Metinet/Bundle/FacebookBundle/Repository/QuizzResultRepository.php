@@ -47,7 +47,11 @@ class QuizzResultRepository extends EntityRepository
                 $nb++;
             }
             //Calcul du total arrondi à 2 décimal
-            $total = round(($addition / $nb)*100, 2);
+            if($nb != 0){
+                $total = round(($addition / $nb)*100, 2);
+            }else{
+                $total = 0;
+            }
         return array(
             'total' => $total,
             'nombre' => $nb

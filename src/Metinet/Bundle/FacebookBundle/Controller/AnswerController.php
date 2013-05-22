@@ -66,7 +66,12 @@ class AnswerController extends Controller {
     public function newAction($id) {
         $entity = new Answer();
         $form = $this->createForm(new AnswerType(), $entity);
-
+        $em = $this->getDoctrine()->getManager();
+        $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
+        $answers = $question->getAnswers();
+        foreach($answers as $answer){
+          echo'a';
+        }
         return array(
             'entity' => $entity,
             'id_question' => $id,
