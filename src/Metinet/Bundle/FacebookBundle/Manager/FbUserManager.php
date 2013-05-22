@@ -110,24 +110,6 @@ class FbUserManager
     public function api($path, $method, $attachment){ 
         return $this->facebook->api($path, $method, $attachment);
     }
-    
-    public function getUserFriends($fbId)
-    {
-        try {
-            // Méthode 1
-            $lstFriends = $this->facebook->api('/'.$fbId."/friends");
-
-            // Méthode 2
-            //$myQuery = "SELECT uid2 FROM friend WHERE uid1=me()";
-            //$lstFriends = $this->facebook->api( "/fql?q=" . urlencode($myQuery) );
-
-            return $lstFriends;
-        }
-        catch (Exception $e) {
-            echo "Erreur API FB ".$e;
-            return null;
-        }
-    }
 
 }
 ?>
