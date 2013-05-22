@@ -18,14 +18,15 @@
 <h3>Les 10 meilleurs joueurs du quizz</h3>
 <table>
     <tr>
-	<th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
+	<th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
     </tr>
     {% for bestUser in arrayBestUsers %}
 	<tr>
 	    <td>{{ loop.index }}</td>
 	    <td>{{ bestUser.getLastName() }}</td>
 	    <td>{{ bestUser.getFirstName() }}</td>
-	    <td>{{ bestUser.getWinPointsForThisQuizz() }}</td>
+	    <td>{{ bestUser.getWinPointsForThisQuizz() }} pts</td>
+	    <td>{{ bestUser.getTimeForThisQuizz() }} sec</td>
 	</tr>
     {% endfor %}
 </table>
@@ -34,14 +35,15 @@
 <h3>Classement des amis qui ont joué à ce quizz</h3>
 <table>
     <tr>
-	<th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
+	<th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
     </tr>
     {% for friend in arrayFriends %}
     <tr>
 	<td>{{ loop.index }}</td>
 	<td>{{ friend.getLastName() }}</td>
 	<td>{{ friend.getFirstName() }}</td>
-	<td>{{ friend.getWinPointsForThisQuizz() }}</td>
+	<td>{{ friend.getWinPointsForThisQuizz() }} pts</td>
+	<td>{{ friend.getTimeForThisQuizz() }} sec</td>
     </tr>
     {% endfor %}
 </table>
