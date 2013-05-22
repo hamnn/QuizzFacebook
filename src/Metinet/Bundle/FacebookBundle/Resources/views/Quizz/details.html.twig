@@ -3,7 +3,7 @@
 {% block body %}
 <h1>Détails d'un quizz</h1>
 <h2>{{ quizz.getTitle() }}</h2>
-<img src="{{ asset('uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
+<img src="{{ image(quizz.getAbsolutePath()).resize(100,100) }}" />
 <p>{{ nbQuestions }} questions</p>
 <p>{{ quizz.getLongDesc() }}</p>
 
