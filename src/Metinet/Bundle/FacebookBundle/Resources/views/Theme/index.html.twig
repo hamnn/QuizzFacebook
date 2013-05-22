@@ -13,8 +13,11 @@
             <th>Id</th>
             <th>Titre</th>
             <th>Image</th>
-            <th>Short description</th>
-            <th>Long description</th>
+            <th>Résumé</th>
+            <th>Description</th>
+            <th>Voir</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
         </tr>
     </thead>
     <tbody>
@@ -25,15 +28,12 @@
             <td><img src="{{ image(entity.getAbsolutePath()).resize(100,100) }}" alt="{{ entity.picture }}"/></td>
             <td>{{ entity.shortDesc }}</td>
             <td>{{ entity.longDesc }}</td>
+            <td><a class="see" href="{{ path('theme_show', { 'id': entity.id }) }}">Voir</a></td>
+            <td><a class="edit" href="{{ path('theme_edit', { 'id': entity.id }) }}">Modifier</a></td>
             <td>
-                <ul>
-                    <li>
-                        <a href="{{ path('theme_show', { 'id': entity.id }) }}">Voir</a>
-                    </li>
-                    <li>
-                        <a href="{{ path('theme_edit', { 'id': entity.id }) }}">Modifier</a>
-                    </li>
-                </ul>
+                <form action="{{ path('theme_delete', { 'id': entity.id }) }}" method="post">
+                    <button class="delete" type="submit">Supprimer</button>
+                </form>
             </td>
         </tr>
     {% endfor %}
