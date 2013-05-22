@@ -208,4 +208,12 @@ class QuizzResult
     {
         return $this->quizz;
     }
+    
+    /**
+     * Fonction qui retourne l'interval en secondes entre la date de début de quizz et la date de fin de quizz.
+     * @return INT L'interval entre la date de début de quizz et la date de fin de quizz en secondes.
+     */
+    public function getTimeIntervalEnSecondes(){
+	return $this->getDateEnd()->getTimestamp() - $this->getDateStart()->getTimestamp();
+    }
 }

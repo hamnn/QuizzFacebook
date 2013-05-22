@@ -1,5 +1,5 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
-{% block title %}Quizz list{% endblock %}
+{% block title %}Liste des Quizz{% endblock %}
 {% block stylesheets %}
 <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/admin.css')}}" />
 {% endblock %}
@@ -9,7 +9,7 @@
 </div>
 <div id="page">
     <div id="contenu"> 
-        <h1>Quizz list</h1>
+        <h1>Liste des Quizz</h1>
 
         <table class="records_list">
             <thead>
@@ -18,13 +18,13 @@
                     <th>Theme</th>
                     <th>Titre</th>
                     <th>Image</th>
-                    <th>Mis en avant</th>
+                    <th>Favoris</th>
                     <th>Réussite %</th>
-                    <th>Participations</th>
+                    <th>Nb joué</th>
                     <th>Etat</th>
-                    <th>Voir</th>
-                    <th>Modifier</th>
-                    <th>Supprimer</th>
+                    <th class="efface">Voir</th>
+                    <th class="efface">Modifier</th>
+                    <th class="efface">Supprimer</th>
                 </tr>
             </thead>
             <tbody>
@@ -38,11 +38,11 @@
                         <td>{{ entity.pourcentage }}</td>
                         <td>{{ entity.nbParticipation }}</td>
                         <td>{% if entity.state == 1 %}<a class="state" href="{{ path('quizz_state', { 'id': entity.id }) }}" id="actif">Activé</a>{% else %}<a class="state" href="{{ path('quizz_state', { 'id': entity.id }) }}" id="nonactif">Desactivé</a>{% endif %}</td>
-                        <td><a class="see" href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a<</td>
-                        <td><a class="edit" href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a></td>
-                        <td>
+                        <td class="trio begin"><a title="Voir" class="see" href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a<</td>
+                        <td class="trio"><a title="Modifier" class="edit" href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a></td>
+                        <td class="trio last">
                             <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
-                                <button class="delete" type="submit">Supprimer</button>
+                                <button title="Supprimer" class="delete" type="submit">Supprimer</button>
                             </form>
                         </td>
                     </tr>

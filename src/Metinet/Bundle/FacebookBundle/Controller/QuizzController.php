@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Quizz controller.
  *
  */
-class QuizzController extends Controller {
+class QuizzController extends MetinetController {
 
     /**
      * Lists all Quizz entities.
@@ -312,8 +312,118 @@ class QuizzController extends Controller {
     public function detailsAction($quizzId){
 	// instanciation des repositories
         $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	$userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+	$questionRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Question');
 	$quizz = $quizzRepository->find($quizzId);
+	// récupération du classement des amis
+	$arrayFriendsRank = $this->getFriendsRank($quizz);
+	// récupération du classement des 10 meilleurs joueurs du quizz
+	$arrayBestUsers = $this->getBestQuizzUsers($quizz, 10);
+	// récupération de l'user
+	$user = $this->getUserFromFacebookConnection();
+	// on precise si l'user a déjà joué à ce quizz
+	$hasPlayedThisQuizz = $quizzResultRepository->hasPlayedThisQuizz($quizz, $user);
+	// si l'user a joué à ce quizz, on lui transmet son score et son temps de réponse
+	$txtWin = "";
+	$dateEnd = "";
+	if($hasPlayedThisQuizz){
+	    $quizzResult = $quizzResultRepository->getQuizzResultFromQuizzAndUser($quizz, $user);
+	    $user->setWinPointsForThisQuizz($quizzResult->getWinPoints());
+	    $user->setTimeForThisQuizz($quizzResult->getTimeIntervalEnSecondes());
+	    $txtWin = $quizz->getTxtWin($quizzResult->getAverage());
+	    $dateEnd = $quizzResult->getDateEnd()->format('Y-m-d H:i:s');
+	}
+	// on récupère le fb_app_id depuis parameters.yml
+	$fbAppId = $this->container->getParameter('fb_app_id');
+	// on récupère le nombre de questions pour le quizz
+	$nbQuestions = $questionRepository->getNombreQuestionsPourQuizz($quizz);
+	return array(	"quizz"			=> $quizz,
+			"user"			=> $user,
+			"txtWin"		=> $txtWin,
+			"dateEnd"		=> $dateEnd,
+			"arrayFriends"		=> $arrayFriendsRank["arrayFriends"],
+			"arrayFriendsADefier"	=> $arrayFriendsRank["arrayFriendsADefier"],
+			"arrayBestUsers"	=> $arrayBestUsers,
+			"hasPlayedThisQuizz"	=> $hasPlayedThisQuizz,
+			"fbAppId"		=> $fbAppId,
+			"nbQuestions"		=> $nbQuestions);
     }
 
+    
+    /**
+     * Fonction qui retourne un array 2D qui contient 2 arrays : un array d'objets User qui sont les amis de l'user qui ont joué au quizz,
+     * un array d'amis à défier qui n'ont pas déjà joués à ce quizz.
+     * Les amis qui ont joués sont classés par score décroissant.
+     * @param type $quizz
+     * @return ARRAY contenant	- un array d'objets User qui sont les amis de l'user qui ont joués à ce quizz
+     *				- un array d'array contenent les amis Facebook qui n'ont pas joué au quizz, pour les défier
+     */
+    private function getFriendsRank($quizz){
+	// instanciation des repositories
+	$userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+	// récupération de l'user et de ses amis
+	$user = $this->getUserFromFacebookConnection();
+	$userFriends = $this->container->get('metinet.manager.fbuser')->getUserFriends($user->getFbUid());
+	// tableau d'amis classés pour ce quizz
+	$arrayFinal = array();
+	$arrayFriends = array(); // tableau des amis (objets User) qui ont joué au quizz classé par score
+	$arrayFriendsADefier = array(); // tableau des amis (pas d'objets User) qui n'ont pas joué au quizz
+	// on parcours les amis de l'user
+	foreach($userFriends['data'] as $userFriend){
+	    // $userFriend = array(2) { 'name' => string(12) "Prénom Nom" 'id' => string(10) "1250139621" } id est le fbId
+	    // on créé un objet User pour chaque ami de l'user
+	    $friend = $userRepository->getUserFromFbId($userFriend['id']);
+	    // si l'ami existe dans la base
+	    if(NULL !== $friend){
+		// si l'ami a déjà joué au quizz
+		if($quizzResultRepository->hasPlayedThisQuizz($quizz, $friend)){
+		    // on l'ajoute au tableau des amis qui ont joués au quizz. on triera le tableau quand on aura parcouru tous les amis
+		    $quizzResultFriend = $quizzResultRepository->getQuizzResultFromQuizzAndUser($quizz, $friend);
+		    $friend->setWinPointsForThisQuizz($quizzResultFriend->getWinPoints());
+		    $friend->setTimeForThisQuizz($quizzResultFriend->getTimeIntervalEnSecondes());
+		    $arrayFriends[] = $friend;
+		}
+		// l'ami n'a pas joué au quizz, on le garde pour lui afficher un bouton défier qui publiera un message sur son mur
+		else {
+		    $arrayFriendsADefier[] = $userFriend;
+		}
+	    }
+	    // l'ami n'existe pas dans la base, on le garde pour lui afficher un bouton défier qui publiera un message sur son mur
+	    else {
+		$arrayFriendsADefier[] = $userFriend;
+	    }
+	}
+	// tri des amis par leur score DESC puis par leur temps de réponse DESC
+	usort($arrayFriends, array($this, "sortUsersByScoreDESCAndByAnsweringTimeDESC"));
+	// ajout des array de Friends, des scores et des amis à défier à l'aaray final à retourner
+	$arrayFinal["arrayFriends"] = $arrayFriends;
+	$arrayFinal["arrayFriendsADefier"] = $arrayFriendsADefier;
+	return $arrayFinal;
+    }
 
+    
+    /**
+     * Fonction qui retourne un array d'Users qui sont les n meilleurs joueurs du quizz choisi.
+     * @param QUIZZ $quizz Le quizz dont on souhaite avoir les meilleurs joueurs.
+     * @param INT $nbUsers Le nombre d'User à retourner.
+     * @return ARRAY Un array d'objets User.
+     */
+    private function getBestQuizzUsers($quizz, $nbUsers){
+	// instanciation des repositories
+	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+	// récupération des users par leur score DESC
+	$arrayUsers = $quizzResultRepository->getBestQuizzUsers($quizz, $nbUsers);
+	// pour chaque user, on va leur attribuer leur score et leur temps de jeu pour ce quizz pour pouvoir les trier
+	foreach($arrayUsers as $user){
+	    $quizzResult = $quizzResultRepository->getQuizzResultFromQuizzAndUser($quizz, $user);
+	    $user->setWinPointsForThisQuizz($quizzResult->getWinPoints());
+	    $user->setTimeForThisQuizz($quizzResult->getTimeIntervalEnSecondes());
+	}
+	// tri des users par leur score DESC puis par leur temps de réponse DESC
+	usort($arrayUsers, array($this, "sortUsersByScoreDESCAndByAnsweringTimeDESC"));
+	// on retourne le tableau des meilleurs joueurs pour ce quizz
+	return $arrayUsers;
+    }
 }

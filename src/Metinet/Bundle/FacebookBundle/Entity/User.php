@@ -62,6 +62,24 @@ class User
      * @ORM\Column(name="points", type="float", nullable=true)
      */
     private $points;
+    
+    
+    /**
+     * Variable qui contient le score de l'user pour le quizz en cours de consultation (en non en cours de jeu).
+     * Utilisé pour lister les amis en fonction de leur score sur ce quizz.
+     * N'apparait pas en BDD.
+     * @var type INT
+     */
+    private $winPointsForThisQuizz;
+    
+    
+    /**
+     * Variable qui contient le temps de réponse en secondes au quizz en cours de consultation
+     * Utilisé pour lister les amis en fonction de leur score sur ce quizz.
+     * N'apparait pas en BDD.
+     * @var type INT
+     */
+    private $timeForThisQuizz;
 
     /**
      * @var float
@@ -261,6 +279,51 @@ class User
     {
         return $this->points;
     }
+    
+    /**
+     * Variable qui contient le score de l'user pour le quizz en cours de consultation (en non en cours de jeu).
+     * Utilisé pour lister les amis en fonction de leur score sur ce quizz.
+     * N'apparait pas en BDD.
+     * @param INT $scoreForThisQuizz 
+     * @return USER L'objet User utilisé
+     */
+    public function setWinPointsForThisQuizz($winPointsForThisQuizz){
+	$this->winPointsForThisQuizz = $winPointsForThisQuizz;
+	return $this;
+    }
+    
+    /**
+     * Variable qui contient le score de l'user pour le quizz en cours de consultation (en non en cours de jeu).
+     * Utilisé pour lister les amis en fonction de leur score sur ce quizz.
+     * N'apparait pas en BDD.
+     * @return INT scoreForThisQuizz
+     */
+    public function getWinPointsForThisQuizz(){
+	return $this->winPointsForThisQuizz;
+    }
+    
+    
+    /**
+     * Variable qui contient le temps de réponse en secondes au quizz en cours de consultation
+     * Utilisé pour lister les amis en fonction de leur score sur ce quizz.
+     * N'apparait pas en BDD.
+     * @param INT $scoreForThisQuizz 
+     * @return USER L'objet User utilisé
+     */
+    public function setTimeForThisQuizz($timeForThisQuizz){
+	$this->timeForThisQuizz = $timeForThisQuizz;
+	return $this;
+    }
+    
+    /**
+     * Variable qui contient le temps de réponse en secondes au quizz en cours de consultation
+     * Utilisé pour lister les amis en fonction de leur score sur ce quizz.
+     * N'apparait pas en BDD.
+     * @return INT scoreForThisQuizz
+     */
+    public function getTimeForThisQuizz(){
+	return $this->timeForThisQuizz;
+    }
 
     /**
      * Set averageTime
@@ -418,5 +481,13 @@ class User
     public function getAnswers()
     {
         return $this->answers;
+    }
+    
+    /**
+     * Fonction qui va mettre à jour la moyenne de temps de réponse aux quizz de l'user.
+     * @param INT $timeToAdd Le nouveau temps en secondes à ajouter à la moyenne.
+     */
+    public function updateAverageTime($timeToAdd){
+	$this->setAverageTime(($this->getAverageTime() * $this->getNbQuizz() + $timeToAdd) / ($this->getNbQuizz() + 1));
     }
 }

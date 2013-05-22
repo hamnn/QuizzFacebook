@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Answer controller.
  *
  */
-class AnswerController extends Controller {
+class AnswerController extends MetinetController {
 
     /**
      * Lists all Answer entities.
