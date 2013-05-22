@@ -50,14 +50,10 @@
                 </tbody>
             </table>
 
-
-            <a class="lienBouton" href="{{ path('quizz_new') }}">
-                Créer un nouveau quizz
-            </a>
-
-            <a class="lienBouton" href="{{ path('admin_index') }}">
-                Retour administration
-            </a>
+<div id="linkAdmin">
+            <a class="lienAccueil" href="{{ path('quizz_new') }}">Créer un nouveau Quizz</a>
+            <a class="lienAccueil" href="{{ path('admin_index') }}">Retour à l'administration</a>
+        </div>
         </div>
     </div>
 {% endblock %}

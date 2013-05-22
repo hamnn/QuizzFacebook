@@ -490,7 +490,7 @@ table {
 table th, table td {
   padding: 10px 10px 9px;
   line-height: 14px;
-  text-align: left;
+  text-align: center;
 }
 table th {
   padding-top: 9px;
