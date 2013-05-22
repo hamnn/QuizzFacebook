@@ -1,5 +1,5 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
-{% block title %}Accueil{% endblock %}
+{% block title %}Themes{% endblock %}
 {% block stylesheets %}
         {{ parent() }}
 <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/theme.css') }}" type="text/css" />
@@ -19,44 +19,59 @@
         <div id="nav">
             <ul class="navigation">
                 <h2>Choisissez votre Quizz parmi nos thèmes :</h2>
-                <li class="toggleSubMenu"><span>Séries TV</span>
-                    <ul class="subMenu" id="menu1">
-                        <li><a href="quizz.html" title="quizz">quizz1</a></li>
-                        <li><a href="#" title="quizz">quizz2</a></li>
-                    </ul>
+                {% for infoTheme in themes %}  
+                <div id="cadreImgTheme">
+                 <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
+                 </div>
+                        <li class="toggleSubMenu"><span>{{ infoTheme.title }}</span>
+                           
+                            <ul class="subMenu" id="menu1">
+                                {% for infoQuizz in infoTheme.quizzes %}
+                               <li>
+                                   <img class="imgQuizz" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ infoQuizz.picture }}" />
+                                <a class="titleQuizz" href="{{ path('quizz_frontDetails', { 'quizzId': infoQuizz.id }) }}" title="quizz">{{ infoQuizz.title }}</a>
+                                </li>
+                                 {% endfor %}
+                            </ul>
+                           
+                        </li>                   
+                {% endfor %}
+                        {% for infoTheme in themes %}  
+                <div id="cadreImgTheme">
+                 <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
+                 </div>
+                        <li class="toggleSubMenu"><span>{{ infoTheme.title }}</span>
+                           
+                            <ul class="subMenu" id="menu1">
+                                {% for infoQuizz in infoTheme.quizzes %}
+                               <li>
+                                
+                                <a href="{{ path('quizz_frontDetails', { 'quizzId': infoQuizz.id }) }}" title="quizz">{{ infoQuizz.title }}</a>
+                                </li>
+                                 {% endfor %}
+                            </ul>
+                           
+                        </li>                   
+                {% endfor %}
+                        {% for infoTheme in themes %}  
+                <div id="cadreImgTheme">
+                 <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
+                 </div>
+                        <li class="toggleSubMenu"><span>{{ infoTheme.title }}</span>
+                           
+                            <ul class="subMenu" id="menu1">
+                                {% for infoQuizz in infoTheme.quizzes %}
+                               <li>
+                                <a href="{{ path('quizz_frontDetails', { 'quizzId': infoQuizz.id }) }}" title="quizz">{{ infoQuizz.title }}</a>
+                                </li>
+                                 {% endfor %}
+                            </ul>
+                           
+                        </li>                   
+                {% endfor %}
 
-                </li>			
-                <li class="toggleSubMenu"><span>Célébrité</span>
-                    <ul class="subMenu" id="menu2">
-                        <li><a href="#" title="quizz">quizz1</a></li>
-                        <li><a href="#" title="quizz">quizz2</a></li>
-                    </ul>
-                </li>
-                <li class="toggleSubMenu"><span>Séries TV</span>
-                    <ul class="subMenu" id="menu3">
-                        <li><a href="#" title="quizz">quizz1</a></li>
-                        <li><a href="#" title="quizz">quizz2</a></li>
-                    </ul>
-                </li>
-                <li class="toggleSubMenu"><span>Célébrité</span>
-                    <ul class="subMenu" id="menu4">
-                        <li><a href="#" title="quizz">quizz1</a></li>
-                        <li><a href="#" title="quizz">quizz2</a></li>
-                    </ul>
-                </li>
-                <li class="toggleSubMenu"><span>Séries TV</span>
-                    <ul class="subMenu" id="menu5">
-                        <li><a href="#" title="quizz">quizz1</a></li>
-                        <li><a href="#" title="quizz">quizz2</a></li>
-                    </ul>
-                </li>
-                <li class="toggleSubMenu"><span>Célébrité</span>
-                    <ul class="subMenu" id="menu6">
-                        <li><a href="#" title="quizz">quizz1</a></li>
-                        <li><a href="#" title="quizz">quizz2</a></li>
-                    </ul>
-                </li>
             </ul>
+                <a class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
         </div>
     </div>
 </div>

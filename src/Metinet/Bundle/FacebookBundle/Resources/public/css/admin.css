@@ -37,16 +37,18 @@ body{
 	height: 100%;
         font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
-#page{
-	position: relative;
-	width: 710px;
-        top: 113px;
-	margin: 0 auto -142px; /* the bottom margin is the negative value of the footer's height */
-	/*background: gray;*/
-	background: #fff;
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
+#page {
+    position: relative;
+    width: 710px;
+    top: 113px;
+    margin: 0 auto 190px;
+    background: #fff;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    box-shadow: 7px 7px 10px gray;
+    border: 1px solid #999;
+    border-radius: 5px;
 }
 #logo{
 	background: url('../images/logo-Admin.png') no-repeat 0 0;

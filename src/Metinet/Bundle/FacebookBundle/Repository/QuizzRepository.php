@@ -29,7 +29,7 @@ class QuizzRepository extends EntityRepository
      */
     public function getPromotedQuizz($limit){
         if(isset($limit) && $limit > 0){
-            return $this->_em->createQuery("SELECT quizz.title, quizz.picture, quizz.shortDesc 
+            return $this->_em->createQuery("SELECT quizz.id, quizz.title, quizz.picture, quizz.shortDesc 
                                             FROM MetinetFacebookBundle:Quizz quizz
                                             WHERE quizz.isPromoted=1")
                     ->setMaxResults($limit)->getResult();
@@ -42,7 +42,7 @@ class QuizzRepository extends EntityRepository
      */
     public function getLastQuizz($limit){
         if(isset($limit) && $limit > 0){
-            return $this->_em->createQuery("SELECT quizz.title, quizz.picture, quizz.shortDesc 
+            return $this->_em->createQuery("SELECT quizz.id, quizz.title, quizz.picture, quizz.shortDesc 
                                             FROM MetinetFacebookBundle:Quizz quizz
                                             ORDER BY quizz.id")
                     ->setMaxResults($limit)->getResult();
