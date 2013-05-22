@@ -8,7 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response; // réponse JSON pour l'AJAX
 use Metinet\Bundle\FacebookBundle\Entity\QuizzResult;
 
-class PlayController extends Controller {
+class PlayController extends MetinetController {
 
     /**
      * PAGE DE DÉTAIL D'UN QUIZZ
@@ -30,20 +30,18 @@ class PlayController extends Controller {
 			'quizzId'  => $quizz->getId()));
 	}
 	// l'user n'a pas déjà joué au quizz, on init le quizz et on affiche la vue pour le démarrer
-	else {
-	    // on créé un tableau de correspondance entre les ids des Questions et leur numéro de question pour pouvoir mélanger l'ordre des questions
-	    // la key de l'array est le numéro de question, la value de l'array est l'id de la Question
-	    $arrayCorrespondanceOrdreQuestions = array();
-	    foreach ($quizz->getQuestions() as $question) {
-		$arrayCorrespondanceOrdreQuestions[] = $question->getId();
-	    }
-	    // on mélange l'array de correspondance pour avoir un ordre de déroulement des questions aléatoire
-	    shuffle($arrayCorrespondanceOrdreQuestions);
-	    // on enregistre l'array de correspondance dans une variable de session
-	    // pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
-	    $session = $this->getRequest()->getSession();
-	    $session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
+	// on créé un tableau de correspondance entre les ids des Questions et leur numéro de question pour pouvoir mélanger l'ordre des questions
+	// la key de l'array est le numéro de question, la value de l'array est l'id de la Question
+	$arrayCorrespondanceOrdreQuestions = array();
+	foreach ($quizz->getQuestions() as $question) {
+	    $arrayCorrespondanceOrdreQuestions[] = $question->getId();
 	}
+	// on mélange l'array de correspondance pour avoir un ordre de déroulement des questions aléatoire
+	shuffle($arrayCorrespondanceOrdreQuestions);
+	// on enregistre l'array de correspondance dans une variable de session
+	// pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
+	$session = $this->getRequest()->getSession();
+	$session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
         return array(	"quizz"			=> $quizz,
 			"nextQuestion"		=> 0);
     }
@@ -67,6 +65,10 @@ class PlayController extends Controller {
         foreach ($question->getAnswers() as $answer) {
             $arrayAnswers[] = $answer;
         }
+	// on stocke le numéro de la question à afficher pour le donner à la vue
+	$twigQuestionNumber = $questionNumber + 1;
+	// on stocke le nombre de questions du quizz pour le donner à la vue
+	$twigNbQuestions = count($this->getRequest()->getSession()->get("arrayCorrespondanceOrdreQuestions"));
         // on regarde s'il y a une question après celle-là pour savoir si on est à la fin du quizz ou non
         if (NULL !== $this->getQuizzQuestionFromQuestionNumber($questionNumber + 1)) {
             $nextQuestion = $questionNumber + 1;
@@ -77,10 +79,12 @@ class PlayController extends Controller {
         }
         // on génère la vue de la question à afficher
         $render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig",
-	    array(  "quizz"	    => $quizz,
-		    "question"	    => $question,
-		    "nextQuestion"  => $nextQuestion,
-		    "answers"	    => $arrayAnswers));
+	    array(  "quizz"		    => $quizz,
+		    "question"		    => $question,
+		    "nextQuestion"	    => $nextQuestion,
+		    "answers"		    => $arrayAnswers,
+		    "twigQuestionNumber"    => $twigQuestionNumber,
+		    "twigNbQuestions"	    => $twigNbQuestions));
         // on retourne l'objet reponse AJAX contenant le json de la vue de la question à afficher
         return new Response(json_encode(array("question" => $render)));
     }
@@ -172,10 +176,11 @@ class PlayController extends Controller {
             // on set les points de bonnes réponses en prenant en compte les bonus / malus
             $quizzResult->setWinPoints($this->getWinPointsWithBonusOrMalus($quizz, $quizzResult));
             // on récupère le message de fin de quizz en fonction du nombre de bonnes réponses
-            $txtWin = $this->getTxtWin($quizz, $quizzResult->getAverage());
+            $txtWin = $quizz->getTxtWin($quizzResult->getAverage());
             // on récupère l'user pour lui ajouter ses points et incrémenter son nombre de quizz
             $user = $quizzResult->getUser();
             $user->setPoints($user->getPoints() + $quizzResult->getWinPoints());
+	    $user->updateAverageTime($quizzResult->getTimeIntervalEnSecondes());
             $user->setNbQuizz($user->getNbQuizz() + 1);
             // enregistrement des objets en base
             $em = $this->getDoctrine()->getEntityManager();
@@ -257,20 +262,7 @@ class PlayController extends Controller {
                 ));
         exit;
     }
-
-    /**
-     * Fonction qui retourne un onjet User correspondant à l'utilisateur qui joue au quizz avec sa connection Facebook
-     * @return USER Un objet User
-     */
-    private function getUserFromFacebookConnection() {
-        // instanciation des repositories
-        $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
-        // récupération de l'user à partir de sa connection sbook
-        $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
-        $userResult = $userRepository->findBy(array("fbUid" => $userFbId));
-        $user = $userResult[0];
-        return $user;
-    }
+    
 
     /**
      * Fonction qui retourne le pourcentage (entre 0 et 1) de bonnes réponses au quizz obtenu par l'user.
@@ -324,26 +316,6 @@ class PlayController extends Controller {
         }
         // on retourne les points gagnés (en INT) avec leurs bonus / malus
         return intval($winPoints);
-    }
-
-    /**
-     * Fonction qui retourne le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
-     * @param QUIZZ $quizz	Le quizz auquel l'user vient de jouer.
-     * @param FLOAT $average	Le pourcentage (entre 0 et 1) de bonnes réponses au quizz.
-     * @return STRING	Le texte de fin de quizz en fonction du pourcentage de bonnes réponses.
-     */
-    private function getTxtWin($quizz, $average) {
-        $txtWin = "";
-        if ($average >= 0 && $average <= 0.25) {
-            $txtWin = $quizz->getTxtWin1();
-        } elseif ($average >= 0.26 && $average <= 0.50) {
-            $txtWin = $quizz->getTxtWin2();
-        } elseif ($average >= 0.51 && $average <= 0.75) {
-            $txtWin = $quizz->getTxtWin3();
-        } elseif ($average >= 0.76 && $average <= 1) {
-            $txtWin = $quizz->getTxtWin4();
-        }
-        return $txtWin;
     }
 
 }

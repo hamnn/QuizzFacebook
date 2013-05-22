@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Theme controller.
  *
  */
-class ThemeController extends Controller {
+class ThemeController extends MetinetController {
 
     /**
      * Lists all Theme entities.

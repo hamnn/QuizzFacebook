@@ -67,4 +67,17 @@ class UserRepository extends EntityRepository
 	}
 	return $arrayFinal;
     }
+    
+    /**
+     * Fonction qui retourne un objet User correspondant à l'user dont on reçoit l'id Facebook en paramètres.
+     * @param INT $fbId L'id Facebook de l'user que l'on cherche.
+     * @return USER si l'user a été trouvé, NULL sinon.
+     */
+    public function getUserFromFbId($fbId){
+	$userResult = $this->findBy(array("fbUid" => $fbId));
+	if(isset($userResult[0])){
+	    return $userResult[0];
+	}
+	return NULL;
+    }
 }
