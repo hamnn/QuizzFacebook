@@ -70,7 +70,7 @@ class AnswerController extends Controller {
         $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
         $answers = $question->getAnswers();
         foreach($answers as $answer){
-          echo'a';
+          
         }
         return array(
             'entity' => $entity,
