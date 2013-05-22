@@ -50,24 +50,30 @@ body{
     border: 1px solid #999;
     border-radius: 5px;
 }
-#logo{
-	background: url('../images/logo-Admin.png') no-repeat 0 0;
-	width: 400px;
-	height: 230px;
-	text-indent: -9999px;
+#logo {
+    background: url('../images/logo-Admin.png') no-repeat 0 0;
+    width: 400px;
+    height: 180px;
+    text-indent: -9999px;
 }
 #header{
-	position: absolute;
-	top: 0;
-	left: 50%;
-	width: 710px;
-	margin-left: -355px;
-	z-index: 10;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 710px;
+    margin-left: -355px;
+    z-index: 10;
+}
+#header a {
+    display: block;
+    width: 400px;
+    height: 180px;
 }
 #contenu{
 	position: relative;
-	top: 230px;
+	top: 140px;
 	margin-left: 20px;
+        margin-right: 20px;
 }
 .push {margin-top: 230px;}
 .push, #footer{	
@@ -80,6 +86,34 @@ body{
 }
 /* /COPRS ---------------------------------------------------------*/
 /* CONTENU --------------------------------------------------------*/
+#linkAdmin {
+    position: relative;
+    left: 50%;
+    margin-left: -239px;
+}
+.lienAccueil {
+    display: inline-block;
+    width: 200px;
+    height: 30px;
+    background: #3b5998;
+    color: #fff;
+    border: 2px solid whitesmoke;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 30px;
+    box-shadow: 3px 3px 5px gray;
+    position: relative;
+    margin-right: 50px;
+    margin-bottom: 85px;
+}
+.lienAccueil:hover {
+    color: #fff;
+    box-shadow: 1px 1px 4px gray;
+    position: relative;
+    top: 2px;
+    left: 2px;
+    text-decoration: none;
+}
 #formLogin{
     padding-top: 40px;
     position: relative;
@@ -120,7 +154,20 @@ label{
     border-radius: 5px;
 }
 table{
+    margin-top: 15px;
+}
+.infoUtile {
+    margin-bottom: 30px;
+}
+.infoUtile li {
     margin-top: 10px;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 3px gray;
+    font-size: 20px;
+}
+.titleTable{
+    color: #3B5998;
+    font-size: 18px;
 }
 /* /CONTENU-------------------------------------------------------- */
 /* FB CSS-------------------------------------------------------- */
@@ -385,7 +432,7 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
 
 table {
   width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 35px;
   padding: 0;
   font-size: 11px;
   border-collapse: collapse;
