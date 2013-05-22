@@ -214,14 +214,23 @@ class ThemeController extends Controller {
     
     
     /**
-     * Displays a form to create a new Theme entity.
+     * Liste des thèmes de quizz du front office
      *
      * @Route("/theme", name="theme_quizz")
      * @Template()
      */
     public function accueilThemeAction() {
-
-        return array();
+	// instanciation des repositories
+        $themeRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Theme');
+        $entities = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+        
+	$themes = $themeRepository->findAll();
+        $quizz = $entities->findAll();
+        
+        return array(
+            "themes" => $themes,
+            "quizz" => $quizz,
+            );
     }
 
    

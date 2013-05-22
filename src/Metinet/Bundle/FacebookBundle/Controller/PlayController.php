@@ -7,37 +7,45 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Response; // réponse JSON pour l'AJAX
 use Metinet\Bundle\FacebookBundle\Entity\QuizzResult;
-use Symfony\Component\HttpFoundation\Session\Session;
 
 class PlayController extends Controller {
 
-    //Variable pour savoir si nous sommes en présence d'un high score ou non 
-    var $highScore = true;
-
     /**
+     * PAGE DE DÉTAIL D'UN QUIZZ
      * Va chercher le quizz correspondant à l'id reçu et l'affiche pour commencer une partie
-     * @Route("/play{quizzId}", name="play_index")
+     * @Route("/play/{quizzId}", name="play_index")
      * @Template()
      */
     public function indexAction($quizzId) {
         // instanciation des repositories
         $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
         // on récupère le quizz correspondant à l'id reçu
         $quizz = $quizzRepository->find($quizzId);
-        // on créé un tableau de correspondance entre les ids des Questions et leur numéro de question pour pouvoir mélanger l'ordre des questions
-        // la key de l'array est le numéro de question, la value de l'array est l'id de la Question
-        $arrayCorrespondanceOrdreQuestions = array();
-        foreach ($quizz->getQuestions() as $question) {
-            $arrayCorrespondanceOrdreQuestions[] = $question->getId();
-        }
-        // on mélange l'array de correspondance pour avoir un ordre de déroulement des questions aléatoire
-        shuffle($arrayCorrespondanceOrdreQuestions);
-        // on enregistre l'array de correspondance dans une variable de session
-        // pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
-        $session = $this->getRequest()->getSession();
-        $session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
-        return array("quizz" => $quizz,
-            "nextQuestion" => 0);
+	// on regarde si l'user a déjà joué à ce quizz
+	$hasPlayedThisQuizz = $quizzResultRepository->hasPlayedThisQuizz($quizz, $this->getUserFromFacebookConnection());
+	// si l'user a déjà joué au quizz, on retourne sur la page de détails du quizz via son controlleur
+	if($hasPlayedThisQuizz){
+	    return $this->forward('MetinetFacebookBundle:Quizz:details', array(
+			'quizzId'  => $quizz->getId()));
+	}
+	// l'user n'a pas déjà joué au quizz, on init le quizz et on affiche la vue pour le démarrer
+	else {
+	    // on créé un tableau de correspondance entre les ids des Questions et leur numéro de question pour pouvoir mélanger l'ordre des questions
+	    // la key de l'array est le numéro de question, la value de l'array est l'id de la Question
+	    $arrayCorrespondanceOrdreQuestions = array();
+	    foreach ($quizz->getQuestions() as $question) {
+		$arrayCorrespondanceOrdreQuestions[] = $question->getId();
+	    }
+	    // on mélange l'array de correspondance pour avoir un ordre de déroulement des questions aléatoire
+	    shuffle($arrayCorrespondanceOrdreQuestions);
+	    // on enregistre l'array de correspondance dans une variable de session
+	    // pour pouvoir la réutiliser plus tard lors du chargement des prochaines questions
+	    $session = $this->getRequest()->getSession();
+	    $session->set("arrayCorrespondanceOrdreQuestions", $arrayCorrespondanceOrdreQuestions);
+	}
+        return array(	"quizz"			=> $quizz,
+			"nextQuestion"		=> 0);
     }
 
     /**
@@ -68,10 +76,11 @@ class PlayController extends Controller {
             $nextQuestion = -2;
         }
         // on génère la vue de la question à afficher
-        $render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig", array("quizz" => $quizz,
-            "question" => $question,
-            "nextQuestion" => $nextQuestion,
-            "answers" => $arrayAnswers));
+        $render = $this->renderView("MetinetFacebookBundle:Play:question.html.twig",
+	    array(  "quizz"	    => $quizz,
+		    "question"	    => $question,
+		    "nextQuestion"  => $nextQuestion,
+		    "answers"	    => $arrayAnswers));
         // on retourne l'objet reponse AJAX contenant le json de la vue de la question à afficher
         return new Response(json_encode(array("question" => $render)));
     }
@@ -177,16 +186,12 @@ class PlayController extends Controller {
             $session->remove("arrayCorrespondanceOrdreQuestions");
             $session->remove("quizzResultId");
             // on génère la vue de la fin du quizz
-            $render = $this->renderView("MetinetFacebookBundle:Play:quizzEnd.html.twig", array("quizzResult" => $quizzResult,
-                "txtWin" => $txtWin, 'highscore' => $this->highscore));
-
-            //Envoi des notifications aux utilisateurs dont le résultat à été battu
-            $this->friendNotificationAction($quizzId, $quizzResult->getWinPoints());
-
+            $render = $this->renderView("MetinetFacebookBundle:Play:quizzEnd.html.twig",
+		array(	"quizzResult"	=> $quizzResult,
+			"txtWin"	=> $txtWin));
             // on retourne l'objet reponse AJAX contenant le json de la vue de la fin du quizz
             return new Response(json_encode(array("quizzEnd" => $render)));
         }
-
         // si la fonction n'a pas été appelée par AJAX, on retourne un array vide
         return array();
     }
@@ -216,75 +221,41 @@ class PlayController extends Controller {
     }
 
     /**
-     * @Route("/play/notification/{quizzId}/{quizzScore}", name="play_friendNotificationAction")
+     * @Route("/play/notification/{quizzId}/{quizzResult}", name="play_friendNotificationAction")
      * @Template()
      */
-    public function friendNotificationAction($quizzId, $quizzScore) {
+    public function friendNotificationAction($quizzId, $quizzResult) {
 
-        $session = $this->getRequest()->getSession();
-        $user = $session->get('user');
+        $highScore = true;
+
+        //On récupère l'ID Facebook de l'utilisateur en cours
+        $fbUserId = $this->container->get('metinet.manager.fbuser')->getUser();
+
+        //On récupère l'utilisateur correspondant à cet ID fb
+        $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+        $user = $userRepository->findOneBy(array("fbUid" => $fbUserId));
 
         //On récupère tous les quizz_results en fonction du user_id et du quizz_id
         $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
-        $quizzResults = $quizzRepository->findBy(array("user" => $user['id'], 'quizz' => $quizzId));
-
+        $quizzResults = $quizzRepository->findBy(array("user" => $user->getId(), 'quizz' => $quizzId));
 
         foreach ($quizzResults as $oneQuizzresult) {
             //Si on trouve un résultat dans la base de donnée qui est supérieur au résultat en cours on sort de la boucle.
-            if ($oneQuizzresult->getWinPoints() > $quizzScore) {
-                $this->highScore = false;
+            // => on est pas dans le cas d'un meilleur score
+            if ($oneQuizzresult->getWinPoints() > $quizzResult) {
+                $highScore = false;
                 break;
             }
         }
 
-        if (!$this->highScore)
+        if (!$highScore)
             return NULL;
-
-        //Si c'est un High Score, on charge la liste de tous les amis fb de l'utilisateur
-        $userFriends = $this->container->get('metinet.manager.fbuser')->getUserFriends($user['fb_uid']);
-
-        //Pour chaque utilisateur on extrait l'ID correspondant
-        $friendsId = array();
-        foreach ($userFriends['data'] as $index => $friend)
-            $friendsId[] = $friend['id'];
-
-
-        //On récupère tous les quizz_results en fonction du user_id et du quizz_id
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $query = $em->createQueryBuilder();
-        $query->select('quizzResult')
-                ->addSelect('user')
-                ->from('MetinetFacebookBundle:QuizzResult', 'quizzResult')
-                ->leftJoin('quizzResult.user', 'user')
-                ->where('user.fbUid IN (:friendsId)')
-                ->andWhere('quizzResult.winPoints < (:winPoints)')
-                ->setParameters(array('winPoints' => $quizzScore, 'friendsId' => $friendsId));
-
-        $friendsToNotif = $query->getQuery()->getResult();
-
-        //On envoi des notifications aux amis dont le score vient d'être battu
-        foreach ($friendsToNotif as $oneFriend) {
-            $response = $this->container->get('metinet.manager.fbuser')->api('/' . $oneFriend->getUser()->getfbUid() . '/notifications', 'POST', array(
-                'template' => 'CouCou tu veux voir ma bite? ',
-                'href' => 'play' . $quizzId,
-                'access_token' => "575560672464968|YiKfCuPGRy5WwCgkWxO_vYkKmrg"
-                    ));
-        }
-
-        //On publie le nouveau highscore sur le mur 
-        try {
-            $attachment = array('message' => 'Je viens de battre mon record sur YouQuizz ! Mon nouveau score est de : '.$quizzScore,
-                'name' => 'Nouveau meilleur score sur YouQuizz',
-                'caption' => 'Le titre de ton post sur le Mur',
-                'picture' => 'http://www.startingform.sitew.com//fs/Root/normal/hf57-Point_d_interrogation.png');
-
-            $results = $this->container->get('metinet.manager.fbuser')->api('/'.$user['fb_uid'].'/feed/', 'post', $attachment);
-        } catch (FacebookApiException $e) {
-            echo $e->getMessage();
-            $user = null;
-        }
-        
+        $response = $facebook->api('/100000481617990/notifications', 'POST', array(
+            'template' => 'Coucou tu veux voir ma bite ?',
+            'href' => 'path/to/message/?id=1465341905',
+            'access_token' => "575560672464968|YiKfCuPGRy5WwCgkWxO_vYkKmrg"
+                ));
+        exit;
     }
 
     /**

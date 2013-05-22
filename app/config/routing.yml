@@ -8,7 +8,4 @@ _security_check:
     
 _security_logout:
     pattern: /logout
-
-_imagine:
-    resource: .
-    type:     imagine
+    

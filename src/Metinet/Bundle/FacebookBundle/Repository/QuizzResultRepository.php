@@ -24,4 +24,59 @@ class QuizzResultRepository extends EntityRepository
 		->getSingleScalarResult();
     }
     
+    /**
+     * Fonction qui retourne le pourcentage de réussite d'un quizz
+     * @return DOUBLE Le pourcentage
+     */
+    public function getReussiteQuizz($quizzID){
+        
+        $query = $this->_em->createQueryBuilder();
+        $quizz = $this->_em->getRepository('MetinetFacebookBundle:Quizz')->find($quizzID);
+        $query->select('quizzResult')
+        ->from('MetinetFacebookBundle:QuizzResult', 'quizzResult')
+        ->where('quizzResult.quizz IN (:quizz)')
+        ->setParameters(array('quizz' => $quizz));
+        $result = $query->getQuery()->getResult();
+        $addition = 0; 
+        $nb = 0;
+	    foreach($result as $row){
+		$average = $row->getAverage();
+                //Addition des pourcentages de réussite
+                $addition += (float) $average;
+                //On compte le nombre de fois que le quizz a été réalisé
+                $nb++;
+            }
+            //Calcul du total arrondi à 2 décimal
+            if($nb != 0){
+                $total = round(($addition / $nb)*100, 2);
+            }else{
+                $total = 0;
+            }
+        return array(
+            'total' => $total,
+            'nombre' => $nb
+        );
+    }
+    
+    /**
+     * Fonction qui regarde si l'user a déjà joué au quizz ou non 
+     * @param QUIZZ $quizz Le quizz que l'on veut jouer
+     * @param USER $user    L'user qui veut jouer au quizz
+     * @return BOOL TRUE or FALSE
+     */
+    public function hasPlayedThisQuizz($quizz, $user){
+	$paramArray = array("quizz" => $quizz,
+			    "user"  => $user);
+	$result = $this->_em->createQuery("SELECT COUNT(quizzResult.id)
+					FROM MetinetFacebookBundle:QuizzResult quizzResult
+					WHERE quizzResult.quizz = :quizz
+					AND quizzResult.user = :user")
+		->setParameters($paramArray)
+		->getSingleScalarResult();
+	if($result > 0){
+	    return TRUE;
+	}
+	return FALSE;
+    }
+    
 }

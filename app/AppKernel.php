@@ -21,7 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\FacebookBundle\FOSFacebookBundle(),
             new Metinet\Bundle\FacebookBundle\MetinetFacebookBundle(),
-            new Liip\ImagineBundle\LiipImagineBundle(),
+            new Gregwar\ImageBundle\GregwarImageBundle()
         );
         
 

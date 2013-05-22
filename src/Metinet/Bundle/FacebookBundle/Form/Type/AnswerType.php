@@ -14,11 +14,17 @@ class AnswerType extends AbstractType {
 
         $builder
                 ->add('title', 'text', array(
-                    'label'  => 'Titre',
+                    'label'  => false,
+                     'attr' => array(
+                        'placeholder' => 'Nouvelle réponse...',
+                    )
                 ))
                 ->add('isCorrect', 'checkbox', array(
-                    'label'  => 'Réponse juste',
+                    'label'  => false,
                     'required' => false,
+                    'attr' => array(
+                        'class' => 'answercheck'
+                    )
                 ));
         
     }
@@ -30,7 +36,7 @@ class AnswerType extends AbstractType {
     }
     
     public function getName() {
-        return 'register_user';
+        return 'register_answer';
     }
 
 }

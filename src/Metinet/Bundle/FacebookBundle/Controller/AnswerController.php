@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metinet\Bundle\FacebookBundle\Entity\Answer;
 use Metinet\Bundle\FacebookBundle\Entity\Question;
 use Metinet\Bundle\FacebookBundle\Form\Type\AnswerType;
+use Metinet\Bundle\FacebookBundle\Form\Type\AnswerFalseType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -66,7 +67,15 @@ class AnswerController extends Controller {
     public function newAction($id) {
         $entity = new Answer();
         $form = $this->createForm(new AnswerType(), $entity);
-
+        $em = $this->getDoctrine()->getManager();
+        $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
+        $answers = $question->getAnswers();
+        foreach($answers as $answer){
+            
+          if ($answer->getIsCorrect() == 1){
+              $form = $this->createForm(new AnswerFalseType(), $entity);
+          }
+        }
         return array(
             'entity' => $entity,
             'id_question' => $id,
@@ -85,9 +94,22 @@ class AnswerController extends Controller {
 
         $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
         $iscorrect = $entity->getIsCorrect();
+         $rightanswer = 0;
         if ($iscorrect == 1){
             $entity->setIsCorrect(0);
         }else{
+            //On récupère la question
+            $question = $em->getRepository('MetinetFacebookBundle:Question')->find($entity->getQuestion()->getId());
+            $answers = $question->getAnswers();
+            foreach($answers as $answer){
+                 if ($answer->getIsCorrect() == 1){
+                    $rightanswer += 1;
+                    $answer->setIsCorrect(0);
+                    $em->persist($answer);
+                    $em->flush();
+                }
+            }
+             
             $entity->setIsCorrect(1);
         }
         
@@ -104,6 +126,30 @@ class AnswerController extends Controller {
     }
 
     /**
+     * Edits title Answer entity.
+     *
+     * @Route("/admin/answer_ajax", name="answer_ajax")
+     * @Template("MetinetFacebookBundle:Question:show.html.twig")
+     */
+    public function AjaxAction() {
+        
+        $em = $this->getDoctrine()->getManager();
+        if(isset($_POST['id'])){
+            //On selectionne juste l'ID dans le string
+            $id = substr($_POST['id'], 6);
+            $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
+            if(isset($_POST['title'])){
+                $title = $_POST['title'];
+                $entity->setTitle($title);
+                 $em->persist($entity);
+                $em->flush();
+            }
+        }
+        
+	return new Response($title);
+    }
+
+    /**
      * Creates a new Answer entity.
      *
      * @Route("/admin/{id}/createanswer", name="answer_create")
@@ -115,10 +161,21 @@ class AnswerController extends Controller {
         
         $entity = new Answer();
         $form = $this->createForm(new AnswerType(), $entity);
+        
+        $em = $this->getDoctrine()->getManager();
+        $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
+        $answers = $question->getAnswers();
+        foreach($answers as $answer){
+            
+          if ($answer->getIsCorrect() == 1){
+              $form = $this->createForm(new AnswerFalseType(), $entity);
+              $entity->setIsCorrect(0);
+          }
+        }
+        
         $form->bind($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
             $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
             $entity->setQuestion($question);
             //$entity->upload();
@@ -130,67 +187,11 @@ class AnswerController extends Controller {
 
         return array(
             'entity' => $entity,
+            'id_question' => $id,
             'form' => $form->createView()
         );
     }
 
-    /**
-     * Displays a form to edit an existing Answer entity.
-     *
-     * @Route("/admin/{id}/editanswer", name="answer_edit")
-     * @Template()
-     */
-    public function editAction($id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Answer entity.');
-        }
-
-        $editForm = $this->createForm(new AnswerType(), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return array(
-            'entity' => $entity,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
-
-    /**
-     * Edits an existing Answer entity.
-     *
-     * @Route("/admin/{id}/updateanswer", name="answer_update")
-     * @Template("MetinetFacebookBundle:Question:show.html.twig")
-     */
-    public function updateAction(Request $request, $id) {
-        $em = $this->getDoctrine()->getManager();
-
-        $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
-
-        if (!$entity) {
-            throw $this->createNotFoundException('Unable to find Answer entity.');
-        }
-
-        $editForm = $this->createForm(new AnswerType(), $entity);
-        $editForm->bind($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-        }
-
-        $deleteForm = $this->createDeleteForm($id);
-        
-        return array(
-            'entity' => $entity->getQuestion(),
-            'answers' => $entity->getQuestion()->getAnswers(),
-            'delete_form' => $deleteForm->createView(),
-        );
-    }
 
     /**
      * Deletes a Answer entity.
