@@ -71,13 +71,13 @@ body{
 }
 #contenu{
 	position: relative;
-	top: 140px;
+	margin-top: 140px;
 	margin-left: 20px;
         margin-right: 20px;
 }
-.push {margin-top: 230px;}
+/*.push {margin-top: 230px;}*/
 .push, #footer{	
-	height: 142px;
+	height: 50px;
 }
 #cadreFooter{
 	position: relative;

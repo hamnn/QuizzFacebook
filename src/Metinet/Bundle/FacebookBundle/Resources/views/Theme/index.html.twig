@@ -4,7 +4,12 @@
         {{ parent() }}
         <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
 {% endblock %}
-{% block container %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+</div>
+<div id="page">
+    <div id="contenu">  
 <h1>Theme list</h1>
 
 <table class="records_list">
@@ -52,4 +57,6 @@
         </a>
     </li>
 </ul>
+</div>
+    </div>
 {% endblock %}
