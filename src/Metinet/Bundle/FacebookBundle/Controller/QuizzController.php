@@ -194,7 +194,17 @@ class QuizzController extends Controller {
         $em->persist($entity);
         $em->flush();
             
+
         $entities = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
+        $quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+        
+        foreach($entities as $entity){
+            
+            $tableau = $quizzResultRepository->getReussiteQuizz($entity->getId());
+            
+            $entity->setPourcentage($tableau['total']);
+            $entity->setNbParticipation($tableau['nombre']);
+        }
         
         return array(
             'entities' => $entities,
@@ -223,6 +233,15 @@ class QuizzController extends Controller {
         $em->flush();
             
         $entities = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
+        $quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+        
+        foreach($entities as $entity){
+            
+            $tableau = $quizzResultRepository->getReussiteQuizz($entity->getId());
+            
+            $entity->setPourcentage($tableau['total']);
+            $entity->setNbParticipation($tableau['nombre']);
+        }
         
         return array(
             'entities' => $entities,
