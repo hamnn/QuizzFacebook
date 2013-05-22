@@ -84,6 +84,7 @@ body{
 	margin: 0 auto;
 	width: 710px;
 }
+.efface{display: none;}
 /* /COPRS ---------------------------------------------------------*/
 /* CONTENU --------------------------------------------------------*/
 #contenu h1 {
@@ -195,6 +196,16 @@ label{
 table{
     margin-top: 15px;
 }
+.trio {
+    float: left;
+    border: none;
+    position: relative;
+}
+th {
+    white-space: nowrap;
+}
+.begin{border-top: 1px solid #ddd;}
+.last{margin-bottom: 30px;}
 .infoUtile {
     margin-bottom: 30px;
 }
