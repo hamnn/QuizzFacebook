@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Metinet\Bundle\FacebookBundle\Entity\Answer;
 use Metinet\Bundle\FacebookBundle\Entity\Question;
 use Metinet\Bundle\FacebookBundle\Form\Type\AnswerType;
+use Metinet\Bundle\FacebookBundle\Form\Type\AnswerFalseType;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -70,7 +71,10 @@ class AnswerController extends Controller {
         $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
         $answers = $question->getAnswers();
         foreach($answers as $answer){
-          
+            
+          if ($answer->getIsCorrect() == 1){
+              $form = $this->createForm(new AnswerFalseType(), $entity);
+          }
         }
         return array(
             'entity' => $entity,
@@ -90,9 +94,22 @@ class AnswerController extends Controller {
 
         $entity = $em->getRepository('MetinetFacebookBundle:Answer')->find($id);
         $iscorrect = $entity->getIsCorrect();
+         $rightanswer = 0;
         if ($iscorrect == 1){
             $entity->setIsCorrect(0);
         }else{
+            //On récupère la question
+            $question = $em->getRepository('MetinetFacebookBundle:Question')->find($entity->getQuestion()->getId());
+            $answers = $question->getAnswers();
+            foreach($answers as $answer){
+                 if ($answer->getIsCorrect() == 1){
+                    $rightanswer += 1;
+                    $answer->setIsCorrect(0);
+                    $em->persist($answer);
+                    $em->flush();
+                }
+            }
+             
             $entity->setIsCorrect(1);
         }
         
@@ -144,10 +161,21 @@ class AnswerController extends Controller {
         
         $entity = new Answer();
         $form = $this->createForm(new AnswerType(), $entity);
+        
+        $em = $this->getDoctrine()->getManager();
+        $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
+        $answers = $question->getAnswers();
+        foreach($answers as $answer){
+            
+          if ($answer->getIsCorrect() == 1){
+              $form = $this->createForm(new AnswerFalseType(), $entity);
+              $entity->setIsCorrect(0);
+          }
+        }
+        
         $form->bind($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getEntityManager();
             $question = $em->getRepository('MetinetFacebookBundle:Question')->find($id);
             $entity->setQuestion($question);
             //$entity->upload();
@@ -159,6 +187,7 @@ class AnswerController extends Controller {
 
         return array(
             'entity' => $entity,
+            'id_question' => $id,
             'form' => $form->createView()
         );
     }
