@@ -201,6 +201,34 @@ class QuizzController extends Controller {
             
         );
     }
+    
+    /**
+     * Edits isPromoted Quizz entity.
+     *
+     * @Route("/admin/{id}/ispromotedquizz", name="quizz_ispromoted")
+     * @Template("MetinetFacebookBundle:Quizz:index.html.twig")
+     */
+    public function isPromotedAction($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('MetinetFacebookBundle:Quizz')->find($id);
+        $ispromoted = $entity->getIsPromoted();
+        if ($ispromoted == 1){
+            $entity->setIsPromoted(0);
+        }else{
+            $entity->setIsPromoted(1);
+        }
+        
+        $em->persist($entity);
+        $em->flush();
+            
+        $entities = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
+        
+        return array(
+            'entities' => $entities,
+            
+        );
+    }
 
     /**
      * Deletes a Quizz entity.
