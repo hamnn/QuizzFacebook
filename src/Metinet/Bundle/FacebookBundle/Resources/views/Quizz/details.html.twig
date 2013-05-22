@@ -1,68 +1,100 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Détails d'un quizz{% endblock %}
-{% block body %}
-<h1>Détails d'un quizz</h1>
-<h2>{{ quizz.getTitle() }}</h2>
-<img src="{{ asset('uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
-<p>{{ nbQuestions }} questions</p>
-<p>{{ quizz.getLongDesc() }}</p>
-
-{% if hasPlayedThisQuizz == false %}
-    <a href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz</a>
-{% else %}
-    <p>Quizz terminé en {{ user.getTimeForThisQuizz() }} secondes! ({{ dateEnd }})</p>
-    <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz!</p>
-    <p>{{ txtWin }}</p>
-{% endif %}    
-    
-<h3>Les 10 meilleurs joueurs du quizz</h3>
-<table>
-    <tr>
-	<th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
-    </tr>
-    {% for bestUser in arrayBestUsers %}
-	<tr>
-	    <td>{{ loop.index }}</td>
-	    <td>{{ bestUser.getLastName() }}</td>
-	    <td>{{ bestUser.getFirstName() }}</td>
-	    <td>{{ bestUser.getWinPointsForThisQuizz() }}</td>
-	</tr>
-    {% endfor %}
-</table>
-
-
-<h3>Classement des amis qui ont joué à ce quizz</h3>
-<table>
-    <tr>
-	<th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
-    </tr>
-    {% for friend in arrayFriends %}
-    <tr>
-	<td>{{ loop.index }}</td>
-	<td>{{ friend.getLastName() }}</td>
-	<td>{{ friend.getFirstName() }}</td>
-	<td>{{ friend.getWinPointsForThisQuizz() }}</td>
-    </tr>
-    {% endfor %}
-</table>
-
-<h3>Défier des amis sur ce quizz</h3>
-<table>
-    {% for friendADefier in arrayFriendsADefier %}
-	<tr>
-	    <td>
-		<img src="https://graph.facebook.com/{{ friendADefier.id }}/picture" title="{{ friendADefier.name }}" alt="{{ friendADefier.name }}"/>
-	    </td>
-	    <td>
-		<input type="button" onclick="postToFeed({{ friendADefier.id }}); return false;" value="Défier" />
-	    </td>
-	</tr>
-    {% endfor %}
-</table>
-
+{% block stylesheets %}
+        {{ parent() }}
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% block body %}
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <div class="fb-like" data-href="http://apps.facebook.com/youquizzderocq/" data-send="true" data-width="450" data-show-faces="true"></div>
+</div>
+<div id="page">
+    <div id="preload">
+        <div id="content">
+            <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
+            <h2>Teste ta culture générale !</h2>
+            <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
+        </div>
+    </div>
+    {% set utilisateur = app.session.get('user') %}
+    <div id="blocProfil">
+        <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ utilisateur.fb_uid }} -->
+            <img id="imgUser" src="https://graph.facebook.com/{{ utilisateur.fb_uid }}/picture?type=square&width=150&height=150"/> 
+        </div>
+        <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ utilisateur.fb_uid }}">{{ utilisateur.firstname }}</a></h2>
+        <!-- <img src="{{ utilisateur.picture }}" alt="photo de {{ utilisateur.firstname }} {{ utilisateur.lastname }}" /> -->
+    </div>
+    <div id="contenu">
+    <h1>Détails d'un quizz</h1>
+    <h2>{{ quizz.getTitle() }}</h2>
+    <img src="{{ asset('uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
+    <p>{{ nbQuestions }} questions</p>
+    <p>{{ quizz.getLongDesc() }}</p>
+
+    {% if hasPlayedThisQuizz == false %}
+        <a href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz</a>
+    {% else %}
+        <p>Quizz terminé en {{ user.getTimeForThisQuizz() }} secondes! ({{ dateEnd }})</p>
+        <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz!</p>
+        <p>{{ txtWin }}</p>
+    {% endif %}    
+
+    <h3>Les 10 meilleurs joueurs du quizz</h3>
+    <table>
+        <tr>
+            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
+        </tr>
+        {% for bestUser in arrayBestUsers %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ bestUser.getLastName() }}</td>
+                <td>{{ bestUser.getFirstName() }}</td>
+                <td>{{ bestUser.getWinPointsForThisQuizz() }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+
+    <h3>Classement des amis qui ont joué à ce quizz</h3>
+    <table>
+        <tr>
+            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
+        </tr>
+        {% for friend in arrayFriends %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ friend.getLastName() }}</td>
+            <td>{{ friend.getFirstName() }}</td>
+            <td>{{ friend.getWinPointsForThisQuizz() }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Défier des amis sur ce quizz</h3>
+    <table>
+        {% for friendADefier in arrayFriendsADefier %}
+            <tr>
+                <td>
+                    <img src="https://graph.facebook.com/{{ friendADefier.id }}/picture" title="{{ friendADefier.name }}" alt="{{ friendADefier.name }}"/>
+                </td>
+                <td>
+                    <input type="button" onclick="postToFeed({{ friendADefier.id }}); return false;" value="Défier" />
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+    <div class="push"></div>
+</div>
+
     <script type="text/javascript">
 	FB.init({appId: "{{ fbAppId }}", status: true, cookie: true});
 
