@@ -1,4 +1,5 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Créer un nouveau Quizz{% endblock %}
 {% block stylesheets %}
         {{ parent() }}
         <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
@@ -13,18 +14,13 @@
 
 <form action="{{ path('quizz_create') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-    <p>
-        <button type="submit">Créer</button>
-    </p>
+    
+  
+        <div id="linkAdmin">
+           <button class="deleteBouton" style="margin-right: 60px; margin-top: 15px;" type="submit">Créer</button>
+            <a class="lienBouton" href="{{ path('admin_index') }}">Retour à l'administration</a>
+        </div>
 </form>
-
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('quizz') }}">
-            Retour à la liste
-        </a>
-    </li>
-</ul>
     </div>
     </div>
 {% endblock %}
