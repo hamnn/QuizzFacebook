@@ -36,7 +36,7 @@ class DefaultController extends Controller {
                 $user = null;
             }
         }*/
-        return array();
+        return array('highscore' => true);
     }
 
 }
