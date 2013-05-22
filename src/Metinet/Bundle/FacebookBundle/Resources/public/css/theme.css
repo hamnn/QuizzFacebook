@@ -51,13 +51,13 @@ body{
 }
 #header a {
     width: 300px;
-    height: 170px;
+    height: 155px;
     display: block;
 }
 #logo {
 	background: url('../images/logo.png') no-repeat 0 0;
 	width: 300px;
-	height: 175px;
+	height: 155px;
 	text-indent: -9999px;
         /*display: none;*/
 }
