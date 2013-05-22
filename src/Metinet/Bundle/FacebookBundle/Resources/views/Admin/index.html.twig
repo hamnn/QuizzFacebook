@@ -6,18 +6,19 @@
 {% endblock %}
 {% block body %}
 <div id='header'>
-    <h1 id="logo">YouQuizz-administration</h1>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
 </div>
 <div id="page">
     <form id="logout" action="{{ path('logout') }}" method="post">
         <input id="deconnex" type="submit" value="Se déconnecter" />
     </form>
     <div id="contenu">
-        <ul>
-            <li><a href="{{ path('quizz') }}">Quizz</a></li>
-            <li><a href="{{ path('theme') }}">Thème</a></li>
-        </ul>
-        <p>{{ arrayJoueurs7Jours | length -1}} joueur(s) créé(s) ces 7 derniers jours :</p>
+        <div id="linkAdmin">
+            <a class="lienAccueil" href="{{ path('quizz') }}">Accèder aux Quizz</a>
+            <a class="lienAccueil" href="{{ path('theme') }}">Accèder aux Thèmes</a>
+        </div>
+        <p style="font-size: 25px; font-weight: bold; margin-bottom: 20px;">Statistiques :</p>
+        <p class="titleTable">{{ arrayJoueurs7Jours | length -1}} joueur(s) créé(s) ces 7 derniers jours :</p>
         <table>
             <tr>
                 <th>Nom</th><th>Prénom</th><th>Username</th><th>Créé le</th>
@@ -33,7 +34,7 @@
         </table>
 
 
-        <p>{{ arrayJoueurs30Jours | length -1}} joueur(s) créé(s) ces 30 derniers jours :</p>
+        <p class="titleTable">{{ arrayJoueurs30Jours | length -1}} joueur(s) créé(s) ces 30 derniers jours :</p>
         <table>
             <tr>
                 <th>Nom</th><th>Prénom</th><th>Username</th><th>Créé le</th>
@@ -48,16 +49,26 @@
             {% endfor %}
         </table>
 
-        <ul>
-            <li>{{ nbQuizzDisponibles }} quizz disponibles!</li>
-            <li>Les {{ nbTotalJoueurs }} joueurs ont un score moyen de {{ scoreMoyenJoueurs }} points!</li>
-            <li>Il y a actuellement {{ nbQuizzEnCours }} quizz en cours de jeu!</li>
+        <ul class="infoUtile">
+            {% if nbQuizzDisponibles == 1 %}
+                <li>{{ nbQuizzDisponibles }} Quizz est disponible !</li>
+            {% endif %}
+            {% if nbQuizzDisponibles > 1 %}
+                <li>{{ nbQuizzDisponibles }} Quizz sont disponibles !</li>
+            {% endif %}
+            {% if nbTotalJoueurs == 1 %}
+                <li>Le joueur a un score moyen de {{ scoreMoyenJoueurs }} points !</li>
+            {% endif %}
+            {% if nbTotalJoueurs > 1 %}
+                <li>Les {{ nbTotalJoueurs }} joueurs ont un score moyen de {{ scoreMoyenJoueurs }} points !</li>
+            {% endif %}
+            <li>Il y a actuellement {{ nbQuizzEnCours }} Quizz en cours de jeu !</li>
         </ul>
 
-        <p>Top 3 des quizz les plus joués</p>
+        <p class="titleTable">Top 3 des Quizz les plus joués</p>
         <table>
             <tr>
-                <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joué</th>
+                <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joués</th>
                 {% for quizzPlusPop in top3QuizzPlusPopulaires %}
                     <tr>
                         <td>{{ quizzPlusPop.getTitle() }}</td>
@@ -70,10 +81,10 @@
         </table>
 
 
-        <p>Top 3 des quizz les moins joués</p>
+        <p class="titleTable">Top 3 des Quizz les moins joués</p>
         <table>
             <tr>
-                <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joué</th>
+                <th>Titre</th><th>Theme</th><th>Description courte</th><th>Nombre de fois joués</th>
                 {% for quizzMoinsPop in top3QuizzMoinsPopulaires %}
                     <tr>
                         <td>{{ quizzMoinsPop.getTitle() }}</td>
@@ -86,7 +97,7 @@
         </table>
 
 
-        <p>Les 10 derniers joueurs enregistrés</p>
+        <p class="titleTable">Les 10 derniers joueurs enregistrés</p>
         <table>
             <tr>
                 <th>Nom</th><th>Prénom</th><th>Image</th><th>Lien Facebook</th>
@@ -96,7 +107,7 @@
                     <td>{{ dernierUser.getLastname() }}</td>
                     <td>{{ dernierUser.getFirstname() }}</td>
                     <td><img src="{{ dernierUser.getPicture() }}" /></td>
-                    <td><a href="http://facebook.com/{{ dernierUser.getFbUid() }}">FB</a></td>
+                    <td><a target="_blank" href="http://facebook.com/{{ dernierUser.getFbUid() }}">voir le profil</a></td>
                 </tr>
             {% endfor %}
         </table>

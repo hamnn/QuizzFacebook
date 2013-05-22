@@ -20,7 +20,9 @@ class ThemeType extends AbstractType {
                 ->add('longDesc', 'textarea', array(
                     'label'  => 'Description',
                 ))
-                ->add('file');
+                ->add('file', 'file', array(
+                    'label'  => 'image',
+                ));
         
     }
     

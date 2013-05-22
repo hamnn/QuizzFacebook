@@ -222,8 +222,15 @@ class ThemeController extends MetinetController {
     public function accueilThemeAction() {
 	// instanciation des repositories
         $themeRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Theme');
+        $entities = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+        
 	$themes = $themeRepository->findAll();
-        return array("themes" => $themes);
+        $quizz = $entities->findAll();
+        
+        return array(
+            "themes" => $themes,
+            "quizz" => $quizz,
+            );
     }
 
    

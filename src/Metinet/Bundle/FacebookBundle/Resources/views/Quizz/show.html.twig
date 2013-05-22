@@ -1,6 +1,14 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Quizz{% endblock %}
-{% block container %}
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/admin.css')}}" />
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
+</div>
+<div id="page">
+    <div id="contenu"> 
 <h1>Quizz</h1>
 
 <table class="record_properties">
@@ -19,7 +27,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td><img src="{{ entity.getWebPath() | imagine_filter('my_large', true) }}" alt="{{ entity.title }}"/></td>
+            <td><img src="{{ image(entity.getAbsolutePath()).resize(200,200) }}" alt="{{ entity.picture }}"/></td>
         </tr>
         <tr>
             <th>Short description</th>
@@ -62,8 +70,12 @@
             <td>{{ entity.shareWallDesc }}</td>
         </tr>
         <tr>
-            <th>Activé</th>
+            <th>A la une</th>
             <td>{% if entity.isPromoted == 1 %}Oui{% else %}Non{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Activé</th>
+            <td>{% if entity.state == 1 %}Oui{% else %}Non{% endif %}</td>
         </tr>
         <tr>
             <th>Createdat</th>
@@ -75,21 +87,21 @@
 <ul id ="questions">
 {% for question in questions %}
         <li>
-            <img src="{{ question.getWebPath() | imagine_filter('my_thumb') }}" alt="{{ question.title }}"/> 
-            <span>{{ question.title }}</span>
-            <a href="{{ path('question_show', { 'id': question.id }) }}">
+            <img class="picture" src="{{ image(question.getAbsolutePath()).resize(100,100) }}" alt="{{ question.picture }}"/> 
+            <span class="titre">{{ question.title }}</span>
+            <a class="see" href="{{ path('question_show', { 'id': question.id }) }}">
                 Voir
             </a>
-            <a href="{{ path('question_edit', { 'id': question.id }) }}">
+            <a class="edit" href="{{ path('question_edit', { 'id': question.id }) }}" title="Editer">
                 Editer
             </a>
-            <a href="{{ path('question_delete', { 'id': question.id }) }}">
+            <a href="{{ path('question_delete', { 'id': question.id }) }}" class="delete" title="Supprimer">
                 Supprimer
             </a>
         </li>
 {% endfor %}
 </ul>
-<ul class="record_actions">
+<ul class="record_actions" style="clear:both;">
     <li>
         <a href="{{ path('quizz') }}">
            Retour à la liste
@@ -112,4 +124,6 @@
         </form>
     </li>
 </ul>
+    </div>
+    </div>
 {% endblock %}

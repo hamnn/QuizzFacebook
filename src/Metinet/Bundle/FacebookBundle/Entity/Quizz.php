@@ -72,6 +72,18 @@ class Quizz
      * @ORM\Column(name="win_points", type="integer")
      */
     private $winPoints;
+    
+    /**
+     * @var float
+     *
+     */
+    private $pourcentage;
+    
+    /**
+     * @var integer
+     *
+     */
+    private $nbParticipation;
 
     /**
      * @var integer
@@ -137,9 +149,9 @@ class Quizz
     private $createdAt;
 
     /**
-     * @var integer
+     * @var boolean
      *
-     * @ORM\Column(name="state", type="integer")
+     * @ORM\Column(name="state", type="boolean")
      */
     private $state;
 
@@ -167,7 +179,6 @@ class Quizz
         $this->quizzResults = new \Doctrine\Common\Collections\ArrayCollection();
         $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->createdAt = new \DateTime();
-        $this->state = 0;
     }
 
     /**
@@ -498,9 +509,32 @@ class Quizz
     {
         return $this->isPromoted;
     }
+    
+    /**
+     * Set nbParticipation
+     *
+     * @param integer $nbParticipation
+     * @return Quizz
+     */
+    public function setNbParticipation($nbParticipation)
+    {
+        $this->nbParticipation = $nbParticipation;
+
+        return $this;
+    }
 
     /**
-     * Set createdAt
+     * Get nbParticipation
+     *
+     * @return integer
+     */
+    public function getnbParticipation()
+    {
+        return $this->nbParticipation;
+    }
+
+    /**
+     * Set nbParticipation
      *
      * @param \DateTime $createdAt
      * @return Quizz
@@ -525,7 +559,7 @@ class Quizz
     /**
      * Set state
      *
-     * @param integer $state
+     * @param boolean $state
      * @return Quizz
      */
     public function setState($state)
@@ -538,7 +572,7 @@ class Quizz
     /**
      * Get state
      *
-     * @return integer
+     * @return boolean
      */
     public function getState()
     {
@@ -686,17 +720,15 @@ class Quizz
         return null === $this->picture ? null : $this->getUploadDir().'/'.$this->picture;
     }
 
-    protected function getUploadRootDir()
-    {
+     protected function getUploadRootDir() {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../../../web/'.$this->getUploadDir();
+        return __DIR__ . '/../Resources/public/uploads/pictures/' . $this->getUploadDir();
     }
 
-    protected function getUploadDir()
-    {
+    protected function getUploadDir() {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
-        return 'bundles/metinetfacebook/uploads/pictures/quizz';
+        return 'quizz';
     }
     
     /**
@@ -740,5 +772,28 @@ class Quizz
          if ($this->file == $this->getAbsolutePath()) {
             unlink($this->file);
         }
+    }
+    
+    /**
+     * Set pourcentage
+     *
+     * @param float $pourcentage
+     * @return Quizz
+     */
+    public function setPourcentage($pourcentage)
+    {
+        $this->pourcentage = $pourcentage;
+
+        return $this;
+    }
+
+    /**
+     * Get pourcentage
+     *
+     * @return float
+     */
+    public function getPourcentage()
+    {
+        return $this->pourcentage;
     }
 }

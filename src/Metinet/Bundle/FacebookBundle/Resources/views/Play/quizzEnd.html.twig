@@ -2,3 +2,118 @@
 <p>{{ quizzResult.getAverage() * 100 }}% de bonnes réponses!</p>
 <p>{{ quizzResult.getWinPoints() }} points gagnés!</p>
 <p>{{ txtWin }}</p>
+
+
+{% if highscore %}
+{% block stylesheets %}
+<!-- Add Facebook Friend Selector CSS -->
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/Facebook-Friend-Selector-master/friend-selector/jquery.friend.selector-1.2.css') }}" type="text/css" />
+{% endblock %}
+<body>
+    <div id="fb-root">Partager votre score sur le mur de  : </div>
+    <div id="fb-user">
+        <span id="fb-picture"></span>
+        <span id="fb-username"></span>
+        <span id="fb-id"></span>
+    </div>
+    <a href="javascript:{}" class="bt-fs-dialog">Click here</a>
+    <p><a onclick='postToFeed(); return false;'>Post to Feed</a></p>
+
+
+
+</body>
+</html>
+
+
+    {% javascripts 
+            '@MetinetFacebookBundle/Resources/public/Facebook-Friend-Selector-master/js/libs/jquery-1.6.2.min.js'
+            '@MetinetFacebookBundle/Resources/public/Facebook-Friend-Selector-master/friend-selector/jquery.friend.selector-1.2.js'
+    %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+<script src="//connect.facebook.net/en_US/all.js"></script>
+<!-- Friend Selector Integration  -->
+<script type="text/javascript">
+  $(document).ready(function($) {
+    $(".bt-fs-dialog").fSelector({onSubmit: function(response){
+        var splitId = response.toString().split('-');
+        var name = splitId[0];
+        var id = splitId[1];
+        $("#fb-username").html(name);
+        $("#fb-picture").html('<img src="https://graph.facebook.com/'+id+'/picture" />');
+        $("#fb-id").html(id);
+
+      }
+    });
+  });
+    window.fbAsyncInit = function() {
+      FB.init({
+        appId  			: '575560672464968', // Facebook Application ID
+        status 			: true, // check login status
+        cookie 			: true, // enable cookies to allow the server to access the session
+        xfbml  			: true, // parse XFBML
+        channelUrl  : '//ffs.codersgrave.com/example/channel.html', // Channel File
+      });
+
+
+      FB.getLoginStatus(function(response) {
+        if (response.authResponse) {
+          $(".connect").attr("class", "logout").text("Logout");
+          $(".fs-dialog-container").show();
+
+          $(".logout").click(function(){
+            FB.logout(function(response) {
+              location.reload();
+            });
+          });
+
+        } else {
+
+        }
+      });
+
+    };
+    // Load the SDK Asynchronously
+    (function(d){
+       var js, id = 'facebook-jssdk'; if (d.getElementById(id)) {return;}
+       js = d.createElement('script'); js.id = id; js.async = true;
+       js.src = "//connect.facebook.net/en_US/all.js";
+       d.getElementsByTagName('head')[0].appendChild(js);
+     }(document));
+
+    jQuery(document).ready(function($){
+
+      $(".connect").click(function(){
+        FB.login(function(response) {
+          if (response.authResponse) {
+            location.reload();
+          } else {
+            // User cancelled login or did not fully authorize
+          }
+        }, {scope: ''});
+      });
+
+    });
+
+    FB.init({appId: "575560672464968", status: true, cookie: true});
+
+    function postToFeed() {
+      var id = $("#fb-id").html();
+      alert(id);
+      // calling the API ...
+      var obj = {
+        method: 'feed',
+        to: id,
+        name: 'Facebook Dialogs',
+        caption: 'Reference Documentation',
+        description: 'Hello, je viens de battre ton record sur YouQuizz ! ;) '
+      };
+
+      function callback(response) {
+      }
+
+      FB.ui(obj, callback);
+    }
+
+    </script>
+    {% endjavascripts %}
+{% endif %}

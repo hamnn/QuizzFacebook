@@ -88,6 +88,19 @@ class FbUserManager
         return $user;
     }
     
+    public function getUserFriends($fbId)
+    {
+        try {
+            // Méthode 1
+            $lstFriends = $this->facebook->api('/'.$fbId."/friends");
+            return $lstFriends;
+        }
+        catch (Exception $e) {
+            echo "Erreur API FB ".$e;
+            return null;
+        }
+    }
+    
     public function getUser(){
         $currentUser = $this->facebook->getUser();
         if($currentUser) return $currentUser;

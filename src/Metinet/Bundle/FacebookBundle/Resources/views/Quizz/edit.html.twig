@@ -1,7 +1,15 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Edition Quizz{% endblock %}
-{% block container %}
-       
+{% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
+</div>
+<div id="page">
+    <div id="contenu"> 
         <h1>Edition Quizz</h1>
 
 <form action="{{ path('quizz_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
@@ -24,6 +32,7 @@
         </form>
     </li>
 </ul>
-        
+    </div>
+    </div>
 {% endblock %}
 

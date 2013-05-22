@@ -203,17 +203,15 @@ class Question
         return null === $this->picture ? null : $this->getUploadDir().'/'.$this->picture;
     }
 
-    protected function getUploadRootDir()
-    {
+     protected function getUploadRootDir() {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
-        return __DIR__.'/../../../../../web/'.$this->getUploadDir();
+        return __DIR__ . '/../Resources/public/uploads/pictures/' . $this->getUploadDir();
     }
 
-    protected function getUploadDir()
-    {
+    protected function getUploadDir() {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
         // le document/image dans la vue.
-        return 'bundles/metinetfacebook/uploads/pictures/question';
+        return 'question';
     }
     
     /**

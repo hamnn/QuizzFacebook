@@ -1,16 +1,29 @@
-<h1>Nouveau Theme</h1>
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Créer un nouveau thème{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
+</div>
+<div id="page">
+    <div id="contenu"> 
+<h1>Nouveau thème</h1>
 
 <form action="{{ path('theme_create') }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-    <p>
-        <button type="submit">Créer</button>
-    </p>
-</form>
 
-<ul class="record_actions">
-    <li>
-        <a href="{{ path('theme') }}">
+        <button  class="deleteBouton" type="submit">Créer</button>
+
+        <a  class="lienBouton" href="{{ path('theme') }}">
             Retour à la liste
         </a>
-    </li>
-</ul>
+
+</form>
+
+
+    </div>
+    </div>
+{% endblock %}
