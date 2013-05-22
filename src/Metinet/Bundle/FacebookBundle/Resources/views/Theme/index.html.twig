@@ -1,16 +1,16 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
-{% block title %}Theme list{% endblock %}
+{% block title %}Liste des thèmes{% endblock %}
 {% block stylesheets %}
         {{ parent() }}
         <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
 {% endblock %}
 {% block body %}
 <div id='header'>
-    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
 </div>
 <div id="page">
     <div id="contenu">  
-<h1>Theme list</h1>
+<h1>Liste des thèmes</h1>
 
 <table class="records_list">
     <thead>
@@ -45,18 +45,10 @@
     </tbody>
 </table>
 
-<ul>
-    <li>
-        <a href="{{ path('theme_new') }}">
-            Créer un nouveau theme
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('admin_index') }}">
-            Retour administration
-        </a>
-    </li>
-</ul>
+<div id="linkAdmin">
+            <a class="lienAccueil" href="{{ path('theme_new') }}">Créer un nouveau thème</a>
+            <a class="lienAccueil" href="{{ path('admin_index') }}">Retour à l'administration</a>
+        </div>
 </div>
     </div>
 {% endblock %}

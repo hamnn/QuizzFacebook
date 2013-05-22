@@ -4,7 +4,12 @@
         {{ parent() }}
         <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
 {% endblock %}
-{% block container %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
+</div>
+<div id="page">
+    <div id="contenu"> 
 <h1>Theme</h1>
 
 <table class="record_properties">
@@ -34,20 +39,22 @@
 
 <ul class="record_actions">
     <li>
-        <a href="{{ path('theme') }}">
+        <a class="lienBouton" href="{{ path('theme') }}">
            Retour à la liste
         </a>
     </li>
     <li>
-        <a href="{{ path('theme_edit', { 'id': entity.id }) }}">
+        <a class="lienBouton" href="{{ path('theme_edit', { 'id': entity.id }) }}">
             Editer
         </a>
     </li>
     <li>
         <form action="{{ path('theme_delete', { 'id': entity.id }) }}" method="post">
             {{ form_widget(delete_form) }}
-            <button type="submit">Supprimer</button>
+            <button  class="deleteBouton" type="submit">Supprimer</button>
         </form>
     </li>
 </ul>
+    </div>
+    </div>
 {% endblock %}

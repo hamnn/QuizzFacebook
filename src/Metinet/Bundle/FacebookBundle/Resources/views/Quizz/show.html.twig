@@ -3,7 +3,12 @@
 {% block stylesheets %}
     <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/admin.css')}}" />
 {% endblock %}
-{% block container %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
+</div>
+<div id="page">
+    <div id="contenu"> 
 <h1>Quizz</h1>
 
 <table class="record_properties">
@@ -119,4 +124,6 @@
         </form>
     </li>
 </ul>
+    </div>
+    </div>
 {% endblock %}
