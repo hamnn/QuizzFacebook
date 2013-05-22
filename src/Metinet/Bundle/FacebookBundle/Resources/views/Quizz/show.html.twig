@@ -65,8 +65,12 @@
             <td>{{ entity.shareWallDesc }}</td>
         </tr>
         <tr>
-            <th>Activé</th>
+            <th>A la une</th>
             <td>{% if entity.isPromoted == 1 %}Oui{% else %}Non{% endif %}</td>
+        </tr>
+        <tr>
+            <th>Activé</th>
+            <td>{% if entity.state == 1 %}Oui{% else %}Non{% endif %}</td>
         </tr>
         <tr>
             <th>Createdat</th>
@@ -92,7 +96,7 @@
         </li>
 {% endfor %}
 </ul>
-<ul class="record_actions">
+<ul class="record_actions" style="clear:both;">
     <li>
         <a href="{{ path('quizz') }}">
            Retour à la liste

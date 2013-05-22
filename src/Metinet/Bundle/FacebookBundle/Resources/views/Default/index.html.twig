@@ -34,10 +34,12 @@
         <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
     </div>
     <div id="contenu"
-         <p>nous vous proposons d'essayer ce quizz : </p>
+         <p>Votre classement : </p>
+            <br />
+         <p style="width: 410px; position: relative; left: 50%; margin-left: -215px; margin-bottom: 10px; font-size: 18px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
             {% for quizzPromoted in quizzEnAvant %}
                     <div id="cadreDescQuizz">
-                        <a href="#"><div id="5" class="hover"></div></a>
+                        <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzPromoted.id }) }}"><div id="5" class="hover"></div></a>
                         <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
                         <a class="desc" id="desc5" href="#">
                             <h3 class="desc" id="desc5">
@@ -48,10 +50,10 @@
                     </div>
             {% endfor %}
         <div id="LAstQuizz">
-            <p>voici les 4 derniers quizz disponibles : </p>
+            <p style="margin-bottom: 10px; font-size: 18px; font-weight: bold;">Voici les 4 derniers Quizz disponibles : </p>
             {% for quizzLast in derniersQuizz %}
                      <div id="cadreDesc4Quizz">
-                        <a href="#"><div id="{{ loop.index }}" class="hover"></div></a>
+                        <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzLast.id }) }}"><div id="{{ loop.index }}" class="hover"></div></a>
                         <img id="{{ loop.index }}" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzLast.picture }}" />
                         <a class="desc" id="desc{{ loop.index }}" href="#">
                             <h3 class="desc" id="desc{{ loop.index }}">
@@ -62,8 +64,7 @@
                     </div>
             {% endfor %}
          </div>
-            
-            <p>Votre classement : </p>
+
             <br />
             
             <a class="lienAccueil" href="#">Accèder aux classements</a>

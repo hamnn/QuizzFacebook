@@ -226,9 +226,10 @@ class ThemeController extends Controller {
         
 	$themes = $themeRepository->findAll();
         $quizz = $entities->findAll();
+        
         return array(
             "themes" => $themes,
-            'quizz' => $quizz,
+            "quizz" => $quizz,
             );
     }
 

@@ -1,5 +1,8 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Quizz list{% endblock %}
+{% block stylesheets %}
+    <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/admin.css')}}" />
+{% endblock %}
 {% block container %}
 <h1>Quizz list</h1>
 
@@ -11,6 +14,9 @@
             <th>Titre</th>
             <th>Image</th>
             <th>Mis en avant</th>
+            <th>Réussite %</th>
+            <th>Participations</th>
+            <th>Etat</th>
             <th>Voir</th>
             <th>Modifier</th>
             <th>Supprimer</th>
@@ -26,9 +32,14 @@
             <td>{% if entity.isPromoted == 1 %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}" id="actif">oui</a>{% else %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}" id="actif">non</a>{% endif %}</td>
             <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a<</td>
             <td><a href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a></td>
+            <td>{{ entity.pourcentage }}</td>
+            <td>{{ entity.nbParticipation }}</td>
+            <td>{% if entity.state == 1 %}<a class="state" href="{{ path('quizz_state', { 'id': entity.id }) }}" id="actif">Activé</a>{% else %}<a class="state" href="{{ path('quizz_state', { 'id': entity.id }) }}" id="actif">Desactivé</a>{% endif %}</td>
+            <td><a class="see" href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a<</td>
+            <td><a class="edit" href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a></td>
             <td>
                 <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
-                    <button type="submit">Supprimer</button>
+                    <button class="delete" type="submit">Supprimer</button>
                 </form>
             </td>
         </tr>

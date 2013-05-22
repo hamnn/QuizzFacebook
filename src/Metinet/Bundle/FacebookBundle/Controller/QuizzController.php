@@ -29,12 +29,21 @@ class QuizzController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('MetinetFacebookBundle:Quizz')->findAll();
+        $quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+        
+        foreach($entities as $entity){
+            
+            $tableau = $quizzResultRepository->getReussiteQuizz($entity->getId());
+            
+            $entity->setPourcentage($tableau['total']);
+            $entity->setNbParticipation($tableau['nombre']);
+        }
         
         return array(
             'entities' => $entities,
-            
         );
     }
+
 
     /**
      * Finds and displays a Quizz entity.
@@ -168,18 +177,18 @@ class QuizzController extends Controller {
     /**
      * Edits state Quizz entity.
      *
-     * @Route("/admin/{id}/ispromotedquizz", name="quizz_ispromoted")
+     * @Route("/admin/{id}/statequizz", name="quizz_state")
      * @Template("MetinetFacebookBundle:Quizz:index.html.twig")
      */
-    public function isPromotedAction($id) {
+    public function stateAction($id) {
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('MetinetFacebookBundle:Quizz')->find($id);
-        $ispromoted = $entity->getIsPromoted();
-        if ($ispromoted == 1){
-            $entity->setIsPromoted(0);
+        $isstate = $entity->getState();
+        if ($isstate == 1){
+            $entity->setState(0);
         }else{
-            $entity->setIsPromoted(1);
+            $entity->setState(1);
         }
         
         $em->persist($entity);

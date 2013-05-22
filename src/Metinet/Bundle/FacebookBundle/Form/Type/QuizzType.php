@@ -53,6 +53,10 @@ class QuizzType extends AbstractType {
                     'label'  => 'Description FB',
                 ))
                 ->add('isPromoted', 'checkbox', array(
+                    'label'  => 'A la une',
+                    'required' => false,
+                ))
+                ->add('state', 'checkbox', array(
                     'label'  => 'Activé',
                     'required' => false,
                 ))

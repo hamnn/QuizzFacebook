@@ -25,6 +25,36 @@ class QuizzResultRepository extends EntityRepository
     }
     
     /**
+     * Fonction qui retourne le pourcentage de réussite d'un quizz
+     * @return DOUBLE Le pourcentage
+     */
+    public function getReussiteQuizz($quizzID){
+        
+        $query = $this->_em->createQueryBuilder();
+        $quizz = $this->_em->getRepository('MetinetFacebookBundle:Quizz')->find($quizzID);
+        $query->select('quizzResult')
+        ->from('MetinetFacebookBundle:QuizzResult', 'quizzResult')
+        ->where('quizzResult.quizz IN (:quizz)')
+        ->setParameters(array('quizz' => $quizz));
+        $result = $query->getQuery()->getResult();
+        $addition = 0; 
+        $nb = 0;
+	    foreach($result as $row){
+		$average = $row->getAverage();
+                //Addition des pourcentages de réussite
+                $addition += (float) $average;
+                //On compte le nombre de fois que le quizz a été réalisé
+                $nb++;
+            }
+            //Calcul du total arrondi à 2 décimal
+            $total = round(($addition / $nb)*100, 2);
+        return array(
+            'total' => $total,
+            'nombre' => $nb
+        );
+    }
+    
+    /**
      * Fonction qui regarde si l'user a déjà joué au quizz ou non 
      * @param QUIZZ $quizz Le quizz que l'on veut jouer
      * @param USER $user    L'user qui veut jouer au quizz

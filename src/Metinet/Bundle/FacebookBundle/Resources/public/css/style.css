@@ -52,7 +52,7 @@ body{
 }
 #header a {
     width: 300px;
-    height: 170px;
+    height: 150px;
     display: block;
 }
 #logo {
@@ -84,7 +84,7 @@ body{
 #contenu{
 	position: relative;
         min-height: 350px;
-	top: 175px;
+	top: 270px;
 	margin-left: 20px;
 }
 .push {margin-top: 175px;}
@@ -176,10 +176,13 @@ margin-left: -20px;
     z-index: 20;
 }
 #cadreDescQuizz {
-	width: 410px;
-	height: 245px;
-	overflow: hidden;
-	position: relative;
+    width: 410px;
+    height: 245px;
+    overflow: hidden;
+    position: relative;
+    left: 50%;
+    margin-left: -215px;
+    margin-bottom: 30px;
 }
 
 #cadreDescQuizz img {
@@ -217,6 +220,10 @@ margin-left: -20px;
 }
 #LAstQuizz{
     width: 410px;
+    position: relative;
+    left: 50%;
+    margin-left: -215px;
+    margin-bottom: 30px;
 }
 #cadreDesc4Quizz {
     width: 200px;
@@ -224,6 +231,8 @@ margin-left: -20px;
     overflow: hidden;
     position: relative;
     display: inline-block;
+    margin-right: 2px;
+    margin-bottom: 6px;
 }
 
 #cadreDesc4Quizz img {
