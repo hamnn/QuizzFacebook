@@ -640,13 +640,14 @@ table .headerSortUp.purple, table .headerSortDown.purple {
     line-height:24px;
 }
 
-.edit, .delete, .state, .see{
+.edit, .delete, .state, .see, .statecheck{
     display:block;
     text-indent:-9999px;
     width:24px;
     height:24px;
     float:left;
     margin-left: 10px;
+    cursor:pointer;
 }
 
 .state, .texte_edit, .picture, .titre{
@@ -662,8 +663,12 @@ table .headerSortUp.purple, table .headerSortDown.purple {
     background: url('../images/check.png') no-repeat 0 0;
 }
 
-#nonactif{
+#nonactif, .statecheck{
     background: url('../images/close.png') no-repeat 0 0;
+}
+
+#register_answer .answercheck{
+    display:none;
 }
 
 .see{

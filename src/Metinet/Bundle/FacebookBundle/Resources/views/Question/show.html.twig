@@ -43,9 +43,10 @@
 {% endfor %}
 </ul>
 <input type="hidden" value="{{ path('answer_ajax') }}" name="ajaxController" id="aa"/>
+<input type="hidden" value="{{ path('answer_new', { 'id': entity.id }) }}" name="ajaxAddAnswer" id="bb"/>
 <ul class="record_actions">
     <li>
-        <a href="{{ path('answer_new', { 'id': entity.id }) }}">
+        <a id="addanswer" href="#">
             Ajouter une réponse
         </a>
     </li>
@@ -59,4 +60,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('/bundles/metinetfacebook/js/jquery.jeditable.js')}}"></script>
+    <script src="{{ asset('/bundles/metinetfacebook/js/scripts.js')}}"></script>
+    <script src="{{ asset('/bundles/metinetfacebook/js/ajax.js')}}"></script>
 {% endblock %}

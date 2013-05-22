@@ -20,3 +20,17 @@ $("#questionForm .answerRadio").change(function(){
     // on soumet le formulaire
     $(this).closest('form').submit();
 });
+
+
+/**
+ * Lorsque l'on souhaite ajouter une reponse
+ */
+$("#addanswer").click(function(){
+    //Si l'element n'existe pas alors on affiche pas
+    //Pour ajouter qu'une seule réponse la fois
+    if($('.answercheck').length == 0){
+        AjaxAddAnswer();
+    }
+    return false;
+});
+

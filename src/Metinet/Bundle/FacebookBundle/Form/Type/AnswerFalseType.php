@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Metinet\Bundle\FacebookBundle\Entity\Answer;
 
-class AnswerType extends AbstractType {
+class AnswerFalseType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
@@ -17,13 +17,6 @@ class AnswerType extends AbstractType {
                     'label'  => false,
                      'attr' => array(
                         'placeholder' => 'Nouvelle réponse...',
-                    )
-                ))
-                ->add('isCorrect', 'checkbox', array(
-                    'label'  => false,
-                    'required' => false,
-                    'attr' => array(
-                        'class' => 'answercheck'
                     )
                 ));
         
@@ -36,7 +29,7 @@ class AnswerType extends AbstractType {
     }
     
     public function getName() {
-        return 'register_answer';
+        return 'register_false_answer';
     }
 
 }
