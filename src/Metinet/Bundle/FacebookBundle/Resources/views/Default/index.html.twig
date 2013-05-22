@@ -2,20 +2,21 @@
 {% block title %}Accueil{% endblock %}
 {% block stylesheets %}
         {{ parent() }}
-        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
-	<script type="text/javascript" src="{{ asset_url }}"></script>
+<script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' %}
-	<script type="text/javascript" src="{{ asset_url }}"></script>
+<script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
 {% block body %}
 <div id='header'>
     <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <div class="fb-like" data-href="http://apps.facebook.com/youquizzderocq/" data-send="true" data-width="450" data-show-faces="true"></div>
 </div>
 <div id="page">
     <div id="preload">
@@ -35,96 +36,86 @@
     </div>
     <div id="contenu"
          <p>Votre classement : </p>
-            <br />
-         <p style="width: 410px; position: relative; left: 50%; margin-left: -215px; margin-bottom: 10px; font-size: 18px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
+        <br />
+        <p style="width: 410px; position: relative; left: 50%; margin-left: -215px; margin-bottom: 10px; font-size: 18px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
             {% for quizzPromoted in quizzEnAvant %}
-                    <div id="cadreDescQuizz">
-                        <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzPromoted.id }) }}"><div id="5" class="hover"></div></a>
-                        <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
-                        <a class="desc" id="desc5" href="#">
-                            <h3 class="desc" id="desc5">
-                                <p style="font-size: 25px; margin-top: -15px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
-                                <p>{{ quizzPromoted.shortDesc }}</p>
-                            </h3>
-                        </a>                 
-                    </div>
+        <div id="cadreDescQuizz">
+            <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzPromoted.id }) }}"><div id="5" class="hover"></div></a>
+            <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
+            <a class="desc" id="desc5" href="#">
+                <h3 class="desc" id="desc5">
+                    <p style="font-size: 25px; margin-top: -15px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
+                    <p>{{ quizzPromoted.shortDesc }}</p>
+                </h3>
+            </a>                 
+        </div>
             {% endfor %}
         <div id="LAstQuizz">
             <p style="margin-bottom: 10px; font-size: 18px; font-weight: bold;">Voici les 4 derniers Quizz disponibles : </p>
             {% for quizzLast in derniersQuizz %}
-                     <div id="cadreDesc4Quizz">
-                        <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzLast.id }) }}"><div id="{{ loop.index }}" class="hover"></div></a>
-                        <img id="{{ loop.index }}" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzLast.picture }}" />
-                        <a class="desc" id="desc{{ loop.index }}" href="#">
-                            <h3 class="desc" id="desc{{ loop.index }}">
-                                <p style="font-size: 17px; margin-top: -20px; font-weight: bold;">{{ quizzLast.title }}</p><br />
-                                <p  style="margin-top: -20px;">{{ quizzLast.shortDesc }}</p>
-                            </h3>
-                        </a>                 
-                    </div>
+            <div id="cadreDesc4Quizz">
+                <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzLast.id }) }}"><div id="{{ loop.index }}" class="hover"></div></a>
+                <img id="{{ loop.index }}" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzLast.picture }}" />
+                <a class="desc" id="desc{{ loop.index }}" href="#">
+                    <h3 class="desc" id="desc{{ loop.index }}">
+                        <p style="font-size: 17px; margin-top: -20px; font-weight: bold;">{{ quizzLast.title }}</p><br />
+                        <p  style="margin-top: -20px;">{{ quizzLast.shortDesc }}</p>
+                    </h3>
+                </a>                 
+            </div>
             {% endfor %}
-         </div>
+        </div>
 
-            <br />
-            
-            <a class="lienAccueil" href="#">Accèder aux classements</a>
-            <a class="lienAccueil" href="{{ path('theme_quizz') }}">Accèder aux quizz</a>
-            <a class="lienAccueil" href="#">invite tes amis</a>
+        <br />
+
+        <a class="lienAccueil" href="#">Accèder aux classements</a>
+        <a class="lienAccueil" href="{{ path('theme_quizz') }}">Accèder aux quizz</a>
+        <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Invite tes amis</a>
     </div>
     <div class="push"></div>
 </div>
 
+<script>
+  FB.init({
+    appId  : '575560672464968',
+    status : true,
+    cookie : true,
+    oauth: true
+  });
 
-    <div id="fb-root"></div>
-    <script src="http://connect.facebook.net/fr_FR/all.js"></script>
-    <div class="efface">
-    <p>
-        <input type="button"
-               onclick="sendRequestViaMultiFriendSelector(); return false;"
-               value="Send Request to Many Users with MFS"
-               />
-    </p>
-    <p>
-        <input type="button"
-               onclick="postToFeed(); return false;"
-               value="Share"
-               />
-    </p>
-    </div>
-    <script>
-      FB.init({
-        appId  : '575560672464968',
-        status : true,
-        cookie : true,
-        oauth: true
-      });
-
-      function sendRequestViaMultiFriendSelector() {
-        FB.ui({method: 'apprequests',
-          message: 'My Great Request'
-        });
-      }
+  function sendRequestViaMultiFriendSelector() {
+    FB.ui({method: 'apprequests',
+      message: 'My Great Request'
+    });
+  }
       
-      function postToFeed() {
-        // call the API
-        var obj = {
-          method: 'feed',
-          link: 'http://example.com',
-          picture: 'http://example.com/dialog_image.png',
-          name: 'Testing Action links',
-          caption: 'Test app',
-          to: '1531576941',
-          actions: [
-            {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
-          ],
-          description: 'Action links are awesome.'
-        };
+  function postToFeed() {
+    // call the API
+    var obj = {
+      method: 'feed',
+      link: 'http://example.com',
+      picture: 'http://example.com/dialog_image.png',
+      name: 'Testing Action links',
+      caption: 'Test app',
+      actions: [
+        {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
+      ],
+      description: 'Action links are awesome.'
+    };
 
-        function callback(response) {
-          console.log(response);
-        }
+    function callback(response) {
+      console.log(response);
+    }
 
-        FB.ui(obj, callback);
-      }
-        </script>
+    FB.ui(obj, callback);
+  }
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=575560672464968";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+    </script>
 {% endblock %}
