@@ -57,7 +57,7 @@ body{
 #page {
     position: relative;
     width: 710px;
-    margin: 90px auto -142px;
+    margin: 90px auto 50px;
     background: #fff;
     min-height: 450px;
     height: auto !important;
@@ -99,7 +99,7 @@ body{
 }
 #contenu {
     position: relative;
-    min-height: 350px;
+    /*min-height: 350px;*/
     margin-top: 130px;
     margin-left: 20px;
 }

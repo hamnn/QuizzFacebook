@@ -6,9 +6,6 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-    {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' 
                            '@MetinetFacebookBundle/Resources/public/js/ajax.js' output='js/ajax.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
@@ -16,18 +13,11 @@
 {% endblock %}
 {% block body %}
 <div id='header'>
-    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <a href="{{ path('accueil') }}"><h1 style="display: block;" id="logo">YouQuizz</h1></a>
     <!-- <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-width="450" data-show-faces="false"></div> -->
     <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true"></div>
 </div>
 <div id="page">
-    <div id="preload">
-        <div id="content">
-            <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
-            <h2>Teste ta culture générale !</h2>
-            <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
-        </div>
-    </div>
     {% set user = app.session.get('user') %}
     <div id="contenu">
         {% if arrayUserListing|length != 0 %}
@@ -98,7 +88,7 @@
             </div>
         <!-- fin classement amis pagination -->
         {% endif %}
-                <a class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
+                <a style="position: relative; left: 50%; margin-left: -102px;" class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
                    </div>
             <div class="push"></div>
         </div>

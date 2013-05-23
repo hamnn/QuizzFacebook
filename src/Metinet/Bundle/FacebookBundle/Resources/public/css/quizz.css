@@ -79,6 +79,11 @@ body{
 	text-indent: -9999px;
         display: none;
 }
+#playh2{
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 15px;
+}
 #header a #logo{
     -webkit-transition: -webkit-transform 0.1s ease-in-out;/* Utilisé pour la transition sur chrome et safari */
     -moz-transition: -moz-transform 0.1s ease-in-out;/* Utilisé pour la transition sur Firefox */
@@ -106,7 +111,7 @@ body{
 }
 .push {margin-top: 175px;}
 .push, #footer{	
-	height: 142px;
+	height: 30px;
 }
 #cadreFooter{
 	position: relative;
@@ -191,6 +196,36 @@ margin-left: -20px;
     margin-left: -260px;
     border: 2px solid #FFFFFF;
     box-shadow: 1px 2px 3px #666666;
+}
+#question img {
+    display: inline-block;
+    position: relative;
+    left: 0px;
+    margin-top: 20px;
+    margin-left: 0;
+    margin-bottom: 30px;
+}
+#chrono {margin-top: 15px;}
+#imgPlay{margin-left: -135px;}
+#question h4 {margin-top: 15px;}
+#questionForm table td {
+    vertical-align: top;
+    width: 500px;
+    border: none;
+}
+#questionForm table{
+    display: inline;
+}
+#questionForm table th, table td {
+    padding: 10px 10px 9px;
+    line-height: 14px;
+    text-align: left !important;
+}
+form {
+    margin-bottom: 30px;
+    margin-left: 10px;
+    display: inline-block;
+    width: 440px;
 }
 /* /CONTENU-------------------------------------------------------- */
 /* FB CSS-------------------------------------------------------- */
@@ -698,13 +733,32 @@ table .headerSortUp.purple, table .headerSortDown.purple {
     line-height: 18px;
     padding: 3px 0;
 }
-
+#playbutton:hover{
+    right: 77px !important;
+    top: 42px !important;
+}
 #playbutton{
      position: absolute;
     right: 79px;
-    top: 35px;
+    top: 40px;
+    display: inline-block;
+    width: 200px;
+    height: 30px;
+    background: #3b5998;
+    color: #fff;
+    border: 2px solid whitesmoke;
+    border-radius: 6px;
+    text-align: center;
+    line-height: 30px;
+    box-shadow: 3px 3px 5px gray;
+    margin-right: 22px;
 }
-
+#defi{
+    position: relative;
+    width: 300px;
+    left: 50%;
+    margin-left: -150px;
+}
 .congratulation{
     border-left: 1px solid #999999;
     margin-bottom: 30px;
