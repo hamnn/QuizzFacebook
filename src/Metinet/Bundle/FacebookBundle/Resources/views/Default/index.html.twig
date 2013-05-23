@@ -37,7 +37,7 @@
         <div id="classementJoueur">
             <p>Score : {{ user.points }} points</p>
             <p>Classement général : {{ classements }}</p>
-            <p>Classement entre pote : {{ classementFriend }}</p>
+           
         </div>
         <div id="contenu">
             <p style="width: 500px; position: relative; left: 50%; margin-left: -235px; margin-bottom: 10px; font-size: 20px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
@@ -71,7 +71,7 @@
 
             <br />
 
-            <a class="lienAccueil" href="#">Les classements</a>
+            <a class="lienAccueil" href="{{ path('classement') }}">Les classements</a>
             <a class="lienAccueil" href="{{ path('theme_quizz') }}">Les Quizz</a>
             <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector();
                     return false;">Invite tes amis</a>
