@@ -43,17 +43,6 @@
            Retour à la liste
         </a>
     </li>
-    <li>
-        <a class="lienBouton" href="{{ path('theme_edit', { 'id': entity.id }) }}">
-            Editer
-        </a>
-    </li>
-    <li>
-        <form action="{{ path('theme_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button  class="deleteBouton" type="submit">Supprimer</button>
-        </form>
-    </li>
 </ul>
     </div>
     </div>
