@@ -3,59 +3,66 @@
 {% block stylesheets %}
     <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/admin.css')}}" />
 {% endblock %}
-{% block container %}
-<h1>Question</h1>
+{% block body %}
+<div id='header'>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
+</div>
+<div id="page">
+    <div id="contenu"> 
+        <h1>Question</h1>
 
-<table class="record_properties">
-    <tbody>
-       <tr>
-            <th>Id</th>
-            <td>{{ entity.id }}</td>
-        </tr>
-        <tr>
-            <th>Titre</th>
-            <td>{{ entity.title }}</td>
-        </tr>
-        <tr>
-            <th>Image</th>
-            <td><img src="{{ image('@MetinetFacebookBundle/Resources/public/uploads/pictures/question/' ~ entity.picture).resize(200,200) }}" alt="{{ entity.title }}"/></td>
-        </tr>
-    </tbody>
-</table>
-<h3>Les réponses</h3>
-<ul id ="answers">
-{% for answer in answers %}
-        <li>
-            <span id="titre_{{ answer.id }}" class="texte_edit">{{ answer.title }}</span>
-            {% if answer.isCorrect == 1 %}
-                <a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="actif" class="state" title="Bonne réponse">
-                    Bonne réponse
+        <table class="record_properties">
+            <tbody>
+               <tr>
+                    <th>Id</th>
+                    <td>{{ entity.id }}</td>
+                </tr>
+                <tr>
+                    <th>Titre</th>
+                    <td>{{ entity.title }}</td>
+                </tr>
+                <tr>
+                    <th>Image</th>
+                    <td><img src="{{ image('@MetinetFacebookBundle/Resources/public/uploads/pictures/question/' ~ entity.picture).resize(200,200) }}" alt="{{ entity.title }}"/></td>
+                </tr>
+            </tbody>
+        </table>
+        <h3>Les réponses</h3>
+        <ul id ="answers">
+        {% for answer in answers %}
+                <li>
+                    <span id="titre_{{ answer.id }}" class="texte_edit">{{ answer.title }}</span>
+                    {% if answer.isCorrect == 1 %}
+                        <a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="actif" class="state" title="Bonne réponse">
+                            Bonne réponse
+                        </a>
+                    {% else %}
+                    <a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="nonactif" class="state" title="Mauvaise réponse">
+                            Mauvaise réponse
+                        </a>
+                    {% endif %}
+                    <a class="delete" style="float:left;" href="{{ path('answer_delete', { 'id': answer.id }) }}" title="Supprimer">
+                        Supprimer
+                    </a>
+                </li>
+        {% endfor %}
+        </ul>
+        <input type="hidden" value="{{ path('answer_ajax') }}" name="ajaxController" id="aa"/>
+        <input type="hidden" value="{{ path('answer_new', { 'id': entity.id }) }}" name="ajaxAddAnswer" id="bb"/>
+        <ul class="record_actions" style="margin-top:20px;">
+            <li>
+                <a class="lienBouton" id="addanswer" href="#">
+                    Ajouter une réponse
                 </a>
-            {% else %}
-            <a href="{{ path('answer_iscorrect', { 'id': answer.id }) }}" id="nonactif" class="state" title="Mauvaise réponse">
-                    Mauvaise réponse
+            </li>
+            <li>
+                <a class="lienBouton" href="{{ path('quizz_show', { 'id': entity.quizz.id }) }}">
+                   Retour au quizz
                 </a>
-            {% endif %}
-            <a class="delete" href="{{ path('answer_delete', { 'id': answer.id }) }}" title="Supprimer">
-                Supprimer
-            </a>
-        </li>
-{% endfor %}
-</ul>
-<input type="hidden" value="{{ path('answer_ajax') }}" name="ajaxController" id="aa"/>
-<input type="hidden" value="{{ path('answer_new', { 'id': entity.id }) }}" name="ajaxAddAnswer" id="bb"/>
-<ul class="record_actions">
-    <li>
-        <a id="addanswer" href="#">
-            Ajouter une réponse
-        </a>
-    </li>
-    <li>
-        <a href="{{ path('quizz_show', { 'id': entity.quizz.id }) }}">
-           Retour au quizz
-        </a>
-    </li>
-</ul>
+            </li>
+        </ul>
+    </div>
+</div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}

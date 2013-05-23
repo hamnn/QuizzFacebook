@@ -16,7 +16,10 @@ class QuestionType extends AbstractType {
                 ->add('title', 'text', array(
                     'label'  => 'Titre',
                 ))
-                ->add('file');
+                ->add('file', 'file', array(
+                    'label'  => 'Image',
+                    'required' => false
+                ));
         
     }
     

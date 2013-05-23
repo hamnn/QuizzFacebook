@@ -7,8 +7,8 @@
 			recupIdClick(this);
 		  },
 		  function () {
-			$('#cadreDescQuizz a').animate({top: '190px'}, 500, function() {});
-                        $('#cadreDesc4Quizz a').animate({top: '165px'}, 500, function() {});
+			$('#cadreDescQuizz a').animate({top: '210px'}, 500, function() {});
+                        $('#cadreDesc4Quizz a').animate({top: '190px'}, 500, function() {});
 		  });
 		
 		var idCss;

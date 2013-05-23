@@ -89,38 +89,40 @@
         <li>
             <img class="picture" src="{{ image(question.getAbsolutePath()).resize(100,100) }}" alt="{{ question.picture }}"/> 
             <span class="titre">{{ question.title }}</span>
-            <a class="see" href="{{ path('question_show', { 'id': question.id }) }}">
-                Voir
-            </a>
-            <a class="edit" href="{{ path('question_edit', { 'id': question.id }) }}" title="Editer">
-                Editer
-            </a>
-            <a href="{{ path('question_delete', { 'id': question.id }) }}" class="delete" title="Supprimer">
-                Supprimer
-            </a>
+            <div id="options">
+                <a class="see" href="{{ path('question_show', { 'id': question.id }) }}">
+                    Voir
+                </a>
+                <a class="edit" href="{{ path('question_edit', { 'id': question.id }) }}" title="Editer">
+                    Editer
+                </a>
+                <a href="{{ path('question_delete', { 'id': question.id }) }}" class="delete" title="Supprimer">
+                    Supprimer
+                </a>
+            </div>
         </li>
 {% endfor %}
 </ul>
 <ul class="record_actions" style="clear:both;">
     <li>
-        <a href="{{ path('quizz') }}">
+        <a class="lienBouton" href="{{ path('quizz') }}">
            Retour à la liste
         </a>
     </li>
     <li>
-        <a href="{{ path('quizz_edit', { 'id': entity.id }) }}">
-            Editer
+        <a class="lienBouton" href="{{ path('quizz_edit', { 'id': entity.id }) }}">
+            Modifier
         </a>
     </li>
     <li>
-        <a href="{{ path('question_new', { 'id': entity.id }) }}">
+        <a class="lienBouton" href="{{ path('question_new', { 'id': entity.id }) }}">
             Ajouter une question
         </a>
     </li>
     <li>
         <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
             {{ form_widget(delete_form) }}
-            <button type="submit">Supprimer</button>
+            <button class="deleteBouton" type="submit">Supprimer</button>
         </form>
     </li>
 </ul>

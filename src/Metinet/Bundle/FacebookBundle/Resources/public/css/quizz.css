@@ -34,6 +34,7 @@ hr{
 /* COPRS ----------------------------------------------------------*/
 body{
 	background: whitesmoke;
+        /*background: #D7DEE9;*/
 	height: 100%;
         font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
