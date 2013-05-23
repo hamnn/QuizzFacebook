@@ -1,26 +1,29 @@
-<table>
-    <tr>
-        <th>Place</th>
-        <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
-        <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
-        {# sorting of properties based on query components #}
-        <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
-        <th>{{ knp_pagination_sortable(pagination, 'Id', 'user.id') }}</th>
-    </tr>
+                <table>
+                    <tr>
+                        <th>Place</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
+                        {# sorting of properties based on query components #}
+                        <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Id', 'user.id') }}</th>
+                    </tr>
 
-    {# table body #}
-    {% for user in pagination %}
-    <tr {% if loop.index is odd %}class="color"{% endif %}>
-        <td>{{ user.getLastName() }}</td>
-        <td>{{ user.getFirstName() }}</td>
-        <td>{{ user.getPoints() }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{# display navigation #}
-    <div class="navigation">
-{{ knp_pagination_render(pagination) }}
-        </div>
+                    {# table body #}
+                    {% for user in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>{% render path('placeAmiPagination', {'idAmi' : user.getId()}) %}</td>
+                        <td>{{ user.getLastName() }}</td>
+                        <td>{{ user.getFirstName() }}</td>
+                        <td>{{ user.getPoints() }}</td>
+                        <td>{{ user.getId() }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+                {# display navigation #}
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
 
 {% javascripts '@MetinetFacebookBundle/Resources/public/js/ajax.js' output='js/ajax.js' %}
                     <script type="text/javascript" src="{{ asset_url }}"></script>

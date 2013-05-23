@@ -83,14 +83,15 @@
     <a class="lienAccueil" style="margin-top: 10px; margin-left: 25px;" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Je les défis !</a>
     </div>
     </div>
-        <div class="push" style="margin-top: 0;"></div>
+    <div class="push" style="margin-top: 0;"></div>
+    <div class="fb-comments" data-href="http://apps.facebook.com/youquizzderocq/" data-width="470" data-num-posts="10"></div>
 </div>
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 <script type="text/javascript">
-	FB.init({appId: "{{ fbAppId }}", status: true, cookie: true});
+	FB.init({appId: "{{ fb_app_id }}", status: true, cookie: true});
 
       function postToFeed(friendFbId) {
         // call the API
@@ -113,6 +114,14 @@
 
         FB.ui(obj, callback);
       }
+    </script>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=575560672464968";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
     </script>
     {% endjavascripts %}
 {% endblock %}
