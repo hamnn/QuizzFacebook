@@ -109,6 +109,7 @@ class QuestionController extends MetinetController {
 
         return array(
             'entity' => $entity,
+            'id_quizz' => $id,
             'form' => $form->createView()
         );
     }

@@ -23,12 +23,6 @@
                         Retour à la liste
                     </a>
                 </li>
-                <li>
-                    <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
-                        {{ form_widget(delete_form) }}
-                        <button class="deleteBouton" type="submit">Supprimer</button>
-                    </form>
-                </li>
             </ul>
         </form>
     </div>
