@@ -82,7 +82,13 @@ class UserRepository extends EntityRepository
     }
     
     
-    public function getClassementUserAvecAmis($user){
+    /**
+     * Fonction qui retourne le classement de l'user donné avec N autres user avant et après lui.
+     * @param USER $user L'user sont on souhaite avoir le classement
+     * @param INT $nbUsersProches Le nombre d'users à retourner avant et après l'User à classer dans le classement.
+     * @return ARRAY Un array d'objets User classés avec l'user choisi au milieu et nbUsersProches users avant et après lui s'il y en a.
+     */
+    public function getClassementUserAvecUsersProches($user, $nbUsersProches){
         $arrayMieuxClasse = array();
         $arrayMoinsClasse = array();
         $arrayFinal = array();
@@ -91,15 +97,15 @@ class UserRepository extends EntityRepository
         // requete pour savoir la place de l'user
         $placeUser = $this->getUserRank($user);
         $user->setGeneralRank($placeUser);
-        // requete pour récupérer les 5 users immédiatement mieux classés que moi
+        // requete pour récupérer les n users immédiatement mieux classés que moi
 	$result = $this->_em->createQuery(  "SELECT user
 					    FROM MetinetFacebookBundle:User user
 					    WHERE user.points >= :points
                                             AND user != :user
 					    ORDER BY user.points ASC,
-                                            user.averageTime DESC")
+                                            user.averageTime ASC")
 		->setParameters($paramArray)
-		->setMaxResults(5)
+		->setMaxResults($nbUsersProches)
 		->getResult();
         $i = 0;
 	foreach($result as $row){
@@ -114,15 +120,15 @@ class UserRepository extends EntityRepository
         
         // on s'ajoute à l'array des moins classés
         $arrayMoinsClasse[] = $user;
-        // requete pour récupérer les 5 users immédiatement moins bien classés que moi
+        // requete pour récupérer les n users immédiatement moins bien classés que moi
 	$result = $this->_em->createQuery(  "SELECT user
 					    FROM MetinetFacebookBundle:User user
 					    WHERE user.points <= :points
                                             AND user != :user
 					    ORDER BY user.points DESC,
-                                            user.averageTime DESC")
+                                            user.averageTime ASC")
 		->setParameters($paramArray)
-		->setMaxResults(5)
+		->setMaxResults($nbUsersProches)
 		->getResult();
         $i = 0;
 	foreach($result as $row){
@@ -132,10 +138,70 @@ class UserRepository extends EntityRepository
 		$arrayMoinsClasse[] = $row;
 	    }
 	}
-        
         // on ajoute les users classés à l'array final
         $arrayFinal = array_merge($arrayMieuxClasse, $arrayMoinsClasse);
+	return $arrayFinal;
+    }
+    
+    
+    
+    /**
+     * Fonction qui retourne le classement de l'user donné avec N autres friends avant et après lui.
+     * @param USER $user L'user sont on souhaite avoir le classement
+     * @param INT $nbUsersProches Le nombre de friends à retourner avant et après l'User à classer dans le classement.
+     * @return ARRAY Un array d'objets User classés avec l'user choisi au milieu et nbUsersProches fiends avant et après lui s'il y en a.
+     */
+    public function getClassementUserAvecFriendsProches($user, $friendsId, $nbUsersProches){
+        $arrayMieuxClasse = array();
+        $arrayMoinsClasse = array();
+        $arrayFinal = array();
+        $paramArray = array(    "points"  => $user->getPoints(),
+                                "user"      => $user,
+				"friendsId" => $friendsId);
+        // requete pour savoir la place de l'user
+        $placeUser = $this->getUserRank($user);
+        $user->setGeneralRank($placeUser);
+        // requete pour récupérer les n users immédiatement mieux classés que moi
+	$result = $this->_em->createQuery(  "SELECT user
+					    FROM MetinetFacebookBundle:User user
+					    WHERE user.points >= :points
+                                            AND user != :user
+					    AND user.fbUid IN (:friendsId)
+					    ORDER BY user.points ASC,
+                                            user.averageTime ASC")
+		->setParameters($paramArray)
+		->setMaxResults($nbUsersProches)
+		->getResult();
+	foreach($result as $row){
+	    if(isset($row)){
+                $row->setGeneralRank($this->getUserRank($row));
+		$arrayMieuxClasse[] = $row;
+	    }
+	}
+        // on trie l'array des mieux classés
+        $arrayMieuxClasse = array_reverse($arrayMieuxClasse);
         
+        // on s'ajoute à l'array des moins classés
+        $arrayMoinsClasse[] = $user;
+        // requete pour récupérer les n users immédiatement moins bien classés que moi
+	$result = $this->_em->createQuery(  "SELECT user
+					    FROM MetinetFacebookBundle:User user
+					    WHERE user.points <= :points
+                                            AND user != :user
+					    AND user.fbUid IN (:friendsId)
+					    ORDER BY user.points DESC,
+                                            user.averageTime ASC")
+		->setParameters($paramArray)
+		->setMaxResults($nbUsersProches)
+		->getResult();
+	foreach($result as $row){
+	    if(isset($row)){
+                $row->setGeneralRank($this->getUserRank($row));
+		$arrayMoinsClasse[] = $row;
+	    }
+	}
+        // on ajoute les users classés à l'array final
+        $arrayFinal = array_merge($arrayMieuxClasse, $arrayMoinsClasse);
 	return $arrayFinal;
     }
     
@@ -154,7 +220,7 @@ class UserRepository extends EntityRepository
 					    WHERE user.points >= :points
                                             AND user != :user
 					    ORDER BY user.points DESC,
-                                            user.averageTime DESC")
+                                            user.averageTime ASC")
 		->setParameters($paramArray)
 		->getSingleScalarResult() + 1;
     }
@@ -166,10 +232,20 @@ class UserRepository extends EntityRepository
         // requete pour savoir la place de l'user
         $top10 = $this->_em->createQuery(  "SELECT user
 					    FROM MetinetFacebookBundle:User user
-					    ORDER BY user.points DESC")
+					    ORDER BY user.points DESC,
+                                            user.averageTime ASC")
                 ->setMaxResults(10)
 		->getResult();
         
         return $top10;       
+    }
+    
+    public function getQueryAllFriends($friendsId){
+    return $this->_em->createQuery("SELECT user 
+                                    FROM MetinetFacebookBundle:User user
+                                    WHERE user.fbUid IN (:friendsId)
+                                    ORDER BY user.points DESC,
+                                    user.averageTime ASC")
+              ->setParameter("friendsId", $friendsId);
     }
 }

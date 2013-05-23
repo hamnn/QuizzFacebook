@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'lucida grande';
+    src: url('../fonts/6216-webfont.eot');
+    src: url('../fonts/6216-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/6216-webfont.woff') format('woff'),
+         url('../fonts/6216-webfont.ttf') format('truetype'),
+         url('../fonts/6216-webfont.svg#lucida_granderegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 /* RESET ---------------------------------------------------------*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -34,6 +45,7 @@ hr{
 /* COPRS ----------------------------------------------------------*/
 body{
 	background: whitesmoke;
+        /*background: #D7DEE9;*/
 	height: 100%;
         font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
@@ -181,40 +193,40 @@ margin-left: -20px;
     z-index: 20;
 }
 #cadreDescQuizz {
-    width: 410px;
-    height: 245px;
+    width: 450px;
+    height: 265px;
     overflow: hidden;
     position: relative;
-    left: 50%;
-    margin-left: -215px;
     margin-bottom: 30px;
+    left: 50%;
+    margin-left: -235px;
 }
 
 #cadreDescQuizz img {
     width: auto;
-    min-width: 410px;
-    height: 245px;
+    min-width: 450px;
+    height: 265px;
 }
 
 #cadreDescQuizz a.desc {
-	display: block;
-	width: 410px;
-	height: 245px;
-	color: #000;
-	text-decoration: none;
-	text-align: center;
-	position: absolute;
-	top: 190px;
-	left: 0;
-	line-height: 325px;
-	overflow: hidden;
+    display: block;
+    width: 450px;
+    height: 265px;
+    color: #000;
+    text-decoration: none;
+    text-align: center;
+    position: absolute;
+    top: 210px;
+    left: 0;
+    line-height: 325px;
+    overflow: hidden;
 }
 
 #cadreDescQuizz a.desc h3 {
-    width: 400px;
+    width: 440px;
     height: 100%;
     margin: 0;
-    padding: 20px 5px 0;
+    padding: 23px 5px 0;
     vertical-align: middle;
     display: inline-block;
     background-color: rgba(255, 255, 255, 0.7);
@@ -224,16 +236,14 @@ margin-left: -20px;
     top: 0;
     left: 0;
 }
-#LAstQuizz{
-    width: 410px;
+#LAstQuizz {
+    width: 670px;
     position: relative;
-    left: 50%;
-    margin-left: -215px;
     margin-bottom: 30px;
 }
 #cadreDesc4Quizz {
-    width: 200px;
-    height: 200px;
+    width: 330px;
+    height: 230px;
     overflow: hidden;
     position: relative;
     display: inline-block;
@@ -243,33 +253,33 @@ margin-left: -20px;
 
 #cadreDesc4Quizz img {
     width: auto;
-    min-width: 200px;
-    height: 200px;
+    min-width: 330px;
+    height: 230px;
 }
 #cadreDesc4Quizz a.desc {
-	display: block;
-	width: 200px;
-	height: 245px;
-	color: #000;
-	text-decoration: none;
-	text-align: center;
-	position: absolute;
-	top: 165px;
-	left: 0;
-	line-height: 325px;
-	overflow: hidden;
+    display: block;
+    width: 330px;
+    height: 245px;
+    color: #000;
+    text-decoration: none;
+    text-align: center;
+    position: absolute;
+    top: 190px;
+    left: 0;
+    line-height: 325px;
+    overflow: hidden;
 }
 
 #cadreDesc4Quizz a.desc h3 {
-    width: 190px;
+    width: 320px;
     height: 100%;
     margin: 0;
-    padding: 20px 5px 0;
+    padding: 23px 5px 0;
     vertical-align: middle;
     display: inline-block;
     background-color: rgba(255, 255, 255, 0.7);
     line-height: 35px;
-    font-size: 13px;
+    font-size: 14px;
     position: absolute;
     top: 0;
     left: 0;
