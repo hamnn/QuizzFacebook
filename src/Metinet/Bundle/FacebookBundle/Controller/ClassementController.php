@@ -6,6 +6,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+//use Metinet\Bundle\FacebookBundle\Entity\User;
+
 class ClassementController extends MetinetController {
 
     /**
@@ -14,18 +16,31 @@ class ClassementController extends MetinetController {
      */
     public function indexAction() {
         
-	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+	$userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');        
+        $user = $this->getUserFromFacebookConnection();
         
-        $quizzResults = $quizzResultRepository->findBy(array(),array('winPoints' => 'DESC'));
+        $arrayUserListing = $userRepository->getClassementUserAvecAmis($user);
         
-        foreach($quizzResults as $oneResult){
-            echo 'Id user : '.$oneResult->getId().' points : '.$oneResult->getWinPoints().'<br/><br/>';
+        $arrayTop10 = $userRepository->getTop10();
+        /*
+        // on merge l'User en BDD pour enregistrer ses réponses au quizz
+            $em = $this->getDoctrine()->getEntityManager();
+            
+            
+        for($i = 0; $i < 100; $i++){
+            $user = new User();
+            $user->setFbUid($i);
+            $user->setPicture($i.'.jpg');
+            $user->setPoints($i * 10);
+            $user->setLastName('last'.$i);
+            $user->setFirstName('first'.$i);
+            $em->persist($user);
         }
-        exit;
-        $session = $this->getRequest()->getSession();
-        $user = $session->get('user');
-        
+        $em->flush();
+        die('ok');*/
         return array(
+            'arrayUserListing' => $arrayUserListing,
+            'top10' => $arrayTop10
         );
     }
 

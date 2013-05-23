@@ -178,5 +178,6 @@ class QuizzResultRepository extends EntityRepository
                 ->setParameters(array('winPoints' => $quizzScore, 'friendsId' => $friendsId));
         
         $friendsToNotif = $query->getQuery()->getResult();
-    }
+    } 
+    
 }
