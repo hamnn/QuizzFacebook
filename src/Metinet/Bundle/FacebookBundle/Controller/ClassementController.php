@@ -44,11 +44,15 @@ class ClassementController extends MetinetController {
         //+top10
         $arrayTop10 = $userRepository->getTop10();
         
+        // on récupère le fb_app_id depuis parameters.yml
+	$fbAppId = $this->container->getParameter('fb_app_id');
+        
         
      
         return array(
             'pagination' => $pagination,
             'arrayUserListing' => $arrayUserListing,
+            'fbAppId' => $fbAppId,
             'top10' => $arrayTop10
         );
     }

@@ -334,8 +334,7 @@ class QuizzController extends MetinetController {
 	    $txtWin = $quizz->getTxtWin($quizzResult->getAverage());
 	    $dateEnd = $quizzResult->getDateEnd()->format('Y-m-d H:i:s');
 	}
-	// on récupère le fb_app_id depuis parameters.yml
-	$fbAppId = $this->container->getParameter('fb_app_id');
+        
 	// on récupère le nombre de questions pour le quizz
 	$nbQuestions = $questionRepository->getNombreQuestionsPourQuizz($quizz);
 	return array(	"quizz"			=> $quizz,
@@ -346,7 +345,6 @@ class QuizzController extends MetinetController {
 			"arrayFriendsADefier"	=> $arrayFriendsRank["arrayFriendsADefier"],
 			"arrayBestUsers"	=> $arrayBestUsers,
 			"hasPlayedThisQuizz"	=> $hasPlayedThisQuizz,
-			"fbAppId"		=> $fbAppId,
 			"nbQuestions"		=> $nbQuestions);
     }
 

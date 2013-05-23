@@ -11,82 +11,107 @@
     {% endjavascripts %}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
+<script type="text/javascript">
+       FB.init({appId: "{{ fb_app_id }}", status: true, cookie: true});
+
+      function postToFeed(friendFbId) {
+        // call the API
+        var obj = {
+          method: 'feed',
+          link: '{{ url('accueil') }}',
+          picture: '{{ app.request.host ~ asset('images/logo.png') }}',
+          name: 'YouQuizz',
+          caption: 'Defier',
+          to: friendFbId,
+          actions: [
+            {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
+          ],
+          description: 'Je viens de te battre au classement général de YouQuizz'
+        };
+
+        function callback(response) {
+          //document.getElementById('msg').innerHTML = "Post ID: " + response['post_id'];
+        }
+
+        FB.ui(obj, callback);
+      }
+    </script>
     {% endjavascripts %}
 {% endblock %}
 {% block body %}
-<div id='header'>
-    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-    <!-- <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-width="450" data-show-faces="false"></div> -->
-    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true"></div>
-</div>
-<div id="page">
-    <div id="preload">
-        <div id="content">
-            <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
-            <h2>Teste ta culture générale !</h2>
-            <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
-        </div>
+    <div id='header'>
+        <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+        <!-- <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-width="450" data-show-faces="false"></div> -->
+        <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true"></div>
     </div>
+    <div id="page">
+        <div id="preload">
+            <div id="content">
+                <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
+                <h2>Teste ta culture générale !</h2>
+                <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
+            </div>
+        </div>
     {% set user = app.session.get('user') %}
-    <div id="blocProfil">
-        <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->
-            <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=square&width=150&height=150"/> 
+        <div id="blocProfil">
+            <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->
+                <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=square&width=150&height=150"/> 
+            </div>
+            <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
+            <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
         </div>
-        <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
-        <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
-    </div>
-    <div id="contenu">
-        <h3>Classement proche de vous :</h3>
-        <table>
-            <tr>
-                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
-            </tr>
+        <div id="contenu">
+            <h3>Classement proche de vous :</h3>
+            <table>
+                <tr>
+                    <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
+                </tr>
             {% for user in arrayUserListing %}
-            <tr>
-                <td>{{ user.getGeneralRank() }}</td>
-                <td>{{ user.getLastName() }}</td>
-                <td>{{ user.getFirstName() }}</td>
-                <td>{{ user.getPoints() }}</td>
-            </tr>
+                <tr>
+                    <td>{{ user.getGeneralRank() }}</td>
+                    <td>{{ user.getLastName() }}</td>
+                    <td>{{ user.getFirstName() }}</td>
+                    <td>{{ user.getPoints() }}</td>
+                </tr>
             {% endfor %}
-        </table>
-        <br /><br /><br />
-        <h3>Top 10 :</h3>
-        <table>
-            <tr>
-                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
-            </tr>
+            </table>
+            <br /><br /><br />
+            <h3>Top 10 :</h3>
+            <table>
+                <tr>
+                    <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
+                </tr>
             {% for userTop10 in top10 %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ userTop10.getLastName() }}</td>
-                <td>{{ userTop10.getFirstName() }}</td>
-                <td>{{ userTop10.getPoints() }}</td>
-            </tr>
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ userTop10.getLastName() }}</td>
+                    <td>{{ userTop10.getFirstName() }}</td>
+                    <td>{{ userTop10.getPoints() }}</td>
+                </tr>
             {% endfor %}
-        </table>
-        <br /><br /><br />
-        <h3>Classement parmis mes amis :</h3>
-        <table>
-            <tr>
-                <th>Place</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
+            </table>
+            <br /><br /><br />
+            <h3>Classement parmis mes amis :</h3>
+            <table>
+                <tr>
+                    <th>Place</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
+                    <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
                 {# sorting of properties based on query components #}
-                <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
-            </tr>
+                    <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
+                </tr>
 
             {# table body #}
             {% for user in pagination %}
-            <tr {% if loop.index is odd %}class="color"{% endif %}>
-                <td>{{ loop.index }}</td>
-                <td>{{ user.getLastName() }}</td>
-                <td>{{ user.getFirstName() }}</td>
-                <td>{{ user.getPoints() }}</td>
-                <td><a class="lienAccueil" href="#" onclick="postToFeed({{ user.getFbUid() }}); return false;">Publier mon score</a></td>
-            </tr>
+                <tr {% if loop.index is odd %}class="color"{% endif %}>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ user.getLastName() }}</td>
+                    <td>{{ user.getFirstName() }}</td>
+                    <td>{{ user.getPoints() }}</td>
+                    <td><a class="lienAccueil" href="#" onclick="postToFeed({{ user.getFbUid() }}); return false;">Publier mon score</a></td>
+                </tr>
             {% endfor %}
-        </table>
+            </table>
 {# display navigation #}
             <div class="navigation">
     {{ knp_pagination_render(pagination) }}

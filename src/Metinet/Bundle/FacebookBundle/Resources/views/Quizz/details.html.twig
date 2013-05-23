@@ -89,7 +89,7 @@
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 <script type="text/javascript">
-	FB.init({appId: "{{ fbAppId }}", status: true, cookie: true});
+	FB.init({appId: "{{ fb_app_id }}", status: true, cookie: true});
 
       function postToFeed(friendFbId) {
         // call the API
