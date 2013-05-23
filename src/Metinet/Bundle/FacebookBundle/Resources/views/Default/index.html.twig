@@ -34,7 +34,11 @@
             <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
             <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
         </div>
-        <p>Votre classement :</p>
+        <div id="classementJoueur">
+            <p>Score : {{ user.points }} points</p>
+            <p>Classement général : {{ classements }}</p>
+            <p>Classement entre pote : {{ classementFriend }}</p>
+        </div>
         <div id="contenu">
             <p style="width: 500px; position: relative; left: 50%; margin-left: -235px; margin-bottom: 10px; font-size: 20px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
             {% for quizzPromoted in quizzEnAvant %}

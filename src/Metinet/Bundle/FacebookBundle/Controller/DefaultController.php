@@ -19,11 +19,14 @@ class DefaultController extends MetinetController {
         
         $quizzEnAvant = $quizzRepository->getPromotedQuizz(1);
         $derniersQuizz = $quizzRepository->getLastQuizz(4);
+        $user = $this->getUserFromFacebookConnection();
+        $classements = $userRepository->getUserRank($user);
         
         
         return array(
             "quizzEnAvant"   => $quizzEnAvant,
-            "derniersQuizz"   => $derniersQuizz
+            "derniersQuizz"   => $derniersQuizz,
+            "classements"   => $classements
         );
     }
 
