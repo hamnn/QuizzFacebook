@@ -715,6 +715,8 @@ table .headerSortUp.purple, table .headerSortDown.purple {
 .delete{
     background: url('../images/delete.png') no-repeat 0 0;
     border:none;
+    float:none;
+    padding:4px 0;
 }
 
 #actif{
@@ -731,10 +733,14 @@ table .headerSortUp.purple, table .headerSortDown.purple {
 
 .see{
     background: url('../images/loupe.png') no-repeat 0 0;
+    float:none;
+    padding:4px 0;
 }
 
 .edit{
     background: url('../images/modifier.png') no-repeat 0 0;
+    float:none;
+    padding:4px 0;
 }
 
 /*Gestion d'erreurs'*/
@@ -748,4 +754,60 @@ table .headerSortUp.purple, table .headerSortDown.purple {
     font-family: Arial, serif;
     font-size:14px;
     color: #e5352f;
+}
+
+#formimage{
+    margin-left: 130px;
+    margin-bottom: 20px;
+}
+    
+#questions{
+    margin-bottom: 20px;
+}
+
+#questions li{
+    border-bottom: 1px solid #CCCCCC;
+    height: 120px;
+    margin-top:20px;
+}
+
+#questions li img{
+    border: 2px solid #FFFFFF;
+    box-shadow: 1px 2px 3px #666666;
+}
+
+#questions li .titre{
+    font-size: 14px;
+    margin: 20px;
+    width: 400px;
+}
+
+#options{
+    float:right;
+    margin: 8px 0;
+}
+
+#answers{
+    margin-top:20px;
+}
+
+#register_answer, #register_false_answer{
+    clear:both;
+}
+
+#register_answer div, #register_false_answer div{
+    float:left;
+}
+
+#register_answer div #nonactif{
+    margin: 2px 20px;
+}
+
+#answerbutton{
+    font-size: 12px; 
+    height: 26px; 
+    width: 60px; 
+    box-shadow: 1px 1px 3px gray; 
+    line-height: 24px; 
+    border: 1px solid whitesmoke;
 }

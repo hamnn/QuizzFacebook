@@ -1,15 +1,29 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Edition Quizz{% endblock %}
-{% block container %}
+{% block stylesheets %}
+        {{ parent() }}
+        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/admin.css') }}" type="text/css" />
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('admin_index') }}"><h1 id="logo">YouQuizz-administration</h1></a>
+</div>
+<div id="page">
+    <div id="contenu"> 
 
 <h1>Nouvelle question</h1>
 
 <form action="{{ path('question_create', { 'id': id_quizz }) }}" method="post" {{ form_enctype(form) }}>
     {{ form_widget(form) }}
-    <p>
-        <button type="submit">Créer</button>
-    </p>
+    
+        <button class="deleteBouton" type="submit">Créer</button>
+    
+        <a class="lienBouton" href="{{ path('quizz_show', { 'id': id_quizz }) }}">
+            Retour au quizz
+         </a>
 </form>
 
 
+    </div>
+</div>
 {% endblock %}

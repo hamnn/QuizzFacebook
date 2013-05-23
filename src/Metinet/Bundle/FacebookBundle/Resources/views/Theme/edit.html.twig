@@ -13,29 +13,29 @@
        
         <h1>Edition Theme</h1>
 
-<form action="{{ path('theme_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-    {{ form_widget(edit_form) }}
-        
-     <ul class="record_actions">
-    <li>
-        <a  class="lienBouton" href="{{ path('theme') }}">
-            Retour à la liste
-        </a>
-    </li>
-    <li>
-        <button class="deleteBouton" type="submit">Enregistrer</button>
-    </li>
-    <li>
-        <form action="{{ path('theme_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button  class="deleteBouton" type="submit">Supprimer</button>
+        <form action="{{ path('theme_update', { 'id': entity.id }) }}" method="post" {{ form_enctype(edit_form) }}>
+            {{ form_widget(edit_form) }}
+            <img id="formimage" src="{{ image(entity.getAbsolutePath()).resize(100,100) }}" alt="{{ entity.picture }}"/>    
+             <ul class="record_actions">
+                <li>
+                    <button class="deleteBouton" type="submit">Enregistrer</button>
+                </li>
+                <li>
+                    <a  class="lienBouton" href="{{ path('theme') }}">
+                        Retour à la liste
+                    </a>
+                </li>
+                <li>
+                    <form action="{{ path('theme_delete', { 'id': entity.id }) }}" method="post">
+                        {{ form_widget(delete_form) }}
+                        <button  class="deleteBouton" type="submit">Supprimer</button>
+                    </form>
+                </li>
+            </ul>
+
         </form>
-    </li>
-</ul>
-    
-</form>
 
     </div>
-    </div>
+</div>
 {% endblock %}
 
