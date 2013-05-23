@@ -223,6 +223,7 @@ class ThemeController extends MetinetController {
 	// instanciation des repositories
         $themeRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Theme');
         $entities = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
+        $questions = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Question');
         
 	$themes = $themeRepository->findAll();
         $quizz = $entities->findAll();
@@ -231,6 +232,12 @@ class ThemeController extends MetinetController {
             
             $nb = $entities->getNbQuizzByTheme($t);
             $t->SetNbQuizz($nb);
+        }
+        
+        foreach($quizz as $q){
+            
+            $nb = $questions->getNombreQuestionsPourQuizz($q);
+            $q->SetNbQuestion($nb);
         }
         
         return array(

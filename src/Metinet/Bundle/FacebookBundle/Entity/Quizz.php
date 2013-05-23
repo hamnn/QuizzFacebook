@@ -85,6 +85,12 @@ class Quizz
      *
      */
     private $nbParticipation;
+    
+    /**
+     * @var integer
+     *
+     */
+    private $nbQuestion;
 
     /**
      * @var integer
@@ -532,6 +538,29 @@ class Quizz
     public function getnbParticipation()
     {
         return $this->nbParticipation;
+    }
+    
+    /**
+     * Set nbQuestion
+     *
+     * @param integer $nbQuestion
+     * @return Quizz
+     */
+    public function setNbQuestion($nbQuestion)
+    {
+        $this->nbQuestion = $nbQuestion;
+
+        return $this;
+    }
+
+    /**
+     * Get nbQuestion
+     *
+     * @return integer
+     */
+    public function getNbQuestion()
+    {
+        return $this->nbQuestion;
     }
 
     /**
