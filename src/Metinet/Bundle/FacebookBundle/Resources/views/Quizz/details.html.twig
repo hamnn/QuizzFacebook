@@ -2,19 +2,14 @@
 {% block title %}Détails d'un quizz{% endblock %}
 {% block stylesheets %}
         {{ parent() }}
-<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/quizz.css') }}" type="text/css" />
 {% endblock %}
-{% block javascripts %}
-    {{ parent() }}
-    {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
-<script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
-{% endblock %}
+
 
 {% block body %}
 <div id='header'>
     <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-    <div class="fb-like" data-href="http://apps.facebook.com/youquizzderocq/" data-send="true" data-width="450" data-show-faces="true"></div>
+    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="true" data-width="450" data-show-faces="true"></div>
 </div>
 <div id="page">
     <div id="preload">
@@ -25,17 +20,10 @@
         </div>
     </div>
     {% set utilisateur = app.session.get('user') %}
-    <div id="blocProfil">
-        <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ utilisateur.fb_uid }} -->
-            <img id="imgUser" src="https://graph.facebook.com/{{ utilisateur.fb_uid }}/picture?type=square&width=150&height=150"/> 
-        </div>
-        <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ utilisateur.fb_uid }}">{{ utilisateur.firstname }}</a></h2>
-        <!-- <img src="{{ utilisateur.picture }}" alt="photo de {{ utilisateur.firstname }} {{ utilisateur.lastname }}" /> -->
-    </div>
     <div id="contenu">
     <h1>Détails d'un quizz</h1>
     <h2>{{ quizz.getTitle() }}</h2>
-    <img src="{{ asset('uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
+    <img src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
     <p>{{ nbQuestions }} questions</p>
     <p>{{ quizz.getLongDesc() }}</p>
 
@@ -43,43 +31,45 @@
         <a href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz</a>
     {% else %}
         <p>Quizz terminé en {{ user.getTimeForThisQuizz() }} secondes! ({{ dateEnd }})</p>
-        <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz!</p>
+        <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz! <a class="lienAccueil" href="#" onclick="postToFeed({{ user.getFbUid() }}); return false;">Publier mon score</a></p>
         <p>{{ txtWin }}</p>
     {% endif %}    
 
     <h3>Les 10 meilleurs joueurs du quizz</h3>
     <table>
         <tr>
-            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
+            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
         </tr>
         {% for bestUser in arrayBestUsers %}
             <tr>
                 <td>{{ loop.index }}</td>
                 <td>{{ bestUser.getLastName() }}</td>
                 <td>{{ bestUser.getFirstName() }}</td>
-                <td>{{ bestUser.getWinPointsForThisQuizz() }}</td>
+                <td>{{ bestUser.getWinPointsForThisQuizz() }} pts</td>
+		<td>{{ bestUser.getTimeForThisQuizz() }} sec</td>
             </tr>
         {% endfor %}
     </table>
 
-
     <h3>Classement des amis qui ont joué à ce quizz</h3>
     <table>
         <tr>
-            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th>
+            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
         </tr>
         {% for friend in arrayFriends %}
         <tr>
             <td>{{ loop.index }}</td>
             <td>{{ friend.getLastName() }}</td>
             <td>{{ friend.getFirstName() }}</td>
-            <td>{{ friend.getWinPointsForThisQuizz() }}</td>
+            <td>{{ friend.getWinPointsForThisQuizz() }} pts</td>
+	    <td>{{ friend.getTimeForThisQuizz() }} sec</td>
         </tr>
         {% endfor %}
     </table>
 
     <h3>Défier des amis sur ce quizz</h3>
-    <table>
+    <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Invite tes amis</a>
+    <!-- <table>
         {% for friendADefier in arrayFriendsADefier %}
             <tr>
                 <td>
@@ -90,12 +80,15 @@
                 </td>
             </tr>
         {% endfor %}
-    </table>
+    </table> -->
     </div>
     <div class="push"></div>
 </div>
-
-    <script type="text/javascript">
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+<script type="text/javascript">
 	FB.init({appId: "{{ fbAppId }}", status: true, cookie: true});
 
       function postToFeed(friendFbId) {
@@ -104,13 +97,13 @@
           method: 'feed',
           link: '{{ url('accueil') }}',
           picture: '{{ app.request.host ~ asset('images/logo.png') }}',
-          name: 'Je te défie sur YouQuizz',
-          caption: 'Essaye de faire mieux que moi',
+          name: 'YouQuizz',
+          caption: 'Quizz {{ quizz.getTitle() }}',
           to: friendFbId,
           actions: [
             {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
           ],
-          description: 'Quizz {{ quizz.getTitle() }}'
+          description: 'J\'ai obtenu {{ user.getWinPointsForThisQuizz() }} point(s) en {{ user.getTimeForThisQuizz() }} secondes'
         };
 
         function callback(response) {
@@ -120,4 +113,7 @@
         FB.ui(obj, callback);
       }
     </script>
+    {% endjavascripts %}
+{% endblock %}
+    
 {% endblock %}

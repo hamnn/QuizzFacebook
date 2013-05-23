@@ -112,23 +112,57 @@ class QuizzResultRepository extends EntityRepository
     
     
     /**
-     * Fonction qui retourne les n meilleurs joueurs pour le quizz choisi (requete par rapport au score obtenu sur ce quizz).
+     * Fonction qui va classer les amis pour le quizz reçu selon leur score et leur temps de réponse.
+     * @param QUIZZ $quizz  Le quizz dont on veut savoir le classement
+     * @param ARRAY $arrayFriendsId Array d'id des objets User correspondant aux amis que l'on veut classer
+     * @return ARRAY Array d'objets User contenant les amis classés
+     */
+    public function getFriendsRank($quizz, $arrayFriendsId){
+	$paramArray = array(	"quizz"	    => $quizz,
+				"friendsId" => $arrayFriendsId);
+	$result = $this->_em->createQuery(  "SELECT quizzResult, (quizzResult.dateEnd - quizzResult.dateStart) AS dateDiff
+					    FROM MetinetFacebookBundle:QuizzResult quizzResult
+					    JOIN quizzResult.user user
+					    WHERE quizzResult.quizz = :quizz
+					    AND user.id IN (:friendsId)
+					    ORDER BY quizzResult.winPoints DESC,
+					    dateDiff ASC")
+		->setParameters($paramArray)
+		->getResult();
+	$arrayFinal = array();
+	foreach($result as $row){
+	    if(isset($row[0])){
+		// on récupère l'objet User correspondant à l'ami à partir de l'objet QuizzResult provenant de la requête
+		$arrayFinal[] = $row[0]->getUser();
+	    }
+	}
+	return $arrayFinal;
+    }
+    
+    
+    /**
+     * Fonction qui retourne les n meilleurs joueurs pour le quizz choisi
+     * (requete par rapport au score obtenu sur ce quizz puis par rapport au temps mis pour répondre au quizz).
      * @param QUIZZ $quizz Le quizz dont on souhaite avoir les meilleurs joueurs.
      * @param INT $nbUsers Le nombre d'objets User à retourner.
      * @return ARRAY Un tableau d'objets User.
      */
-    public function getBestQuizzUsers($quizz, $nbUsers){
+    public function getBestUsersQuizz($quizz, $nbUsers){
 	$paramArray = array("quizz" => $quizz);
-	$result = $this->_em->createQuery(  "SELECT quizzResult
+	$result = $this->_em->createQuery(  "SELECT quizzResult, (quizzResult.dateEnd - quizzResult.dateStart) AS dateDiff
 					    FROM MetinetFacebookBundle:QuizzResult quizzResult
 					    WHERE quizzResult.quizz = :quizz
-					    ORDER BY quizzResult.winPoints DESC")
+					    ORDER BY quizzResult.winPoints DESC,
+					    dateDiff ASC")
 		->setParameters($paramArray)
 		->setMaxResults($nbUsers)
 		->getResult();
 	$arrayFinal = array();
 	foreach($result as $row){
-	    $arrayFinal[] = $row->getUser();
+	    if(isset($row[0])){
+		// on récupère l'objet User à partir de l'objet QuizzResult provenant de la requête
+		$arrayFinal[] = $row[0]->getUser();
+	    }
 	}
 	return $arrayFinal;
     }

@@ -37,6 +37,12 @@ body{
 	height: 100%;
         font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
+.fb-like {
+    position: absolute;
+    top: 60px;
+    right: 0px;
+    display: none !important;
+}
 #page {
     position: relative;
     width: 710px;
@@ -184,7 +190,7 @@ label{
     font-weight: bold;
     line-height: 14px;
     float: left;
-    width: 115px;
+    width: 125px;
     /*text-align: right;*/
     color: #666666;
 }
@@ -397,13 +403,14 @@ input, textarea, select, .uneditable-input {
 }
 select {
   padding: 2px;
+  width: 310px;
   padding: initial;
 }
 input[type=checkbox], input[type=radio] {
   width: auto;
   height: auto;
   padding: 0;
-  margin: 3px 0;
+  margin: 10px 0;
   *margin-top: 0;
   /* IE6-7 */
 
@@ -418,6 +425,7 @@ input[type=file] {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
+  margin-top: 5px;
 }
 input[type=button], input[type=reset], input[type=submit] {
   width: auto;

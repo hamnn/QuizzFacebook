@@ -37,6 +37,11 @@ body{
 	height: 100%;
         font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 }
+.fb-like {
+    position: absolute !important;
+    top: 60px;
+    right: 0px;
+}
 #page {
     position: relative;
     width: 710px;

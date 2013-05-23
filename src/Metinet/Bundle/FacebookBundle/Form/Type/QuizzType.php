@@ -60,7 +60,9 @@ class QuizzType extends AbstractType {
                     'label'  => 'Activé',
                     'required' => false,
                 ))
-                ->add('file');
+                ->add('file', 'file', array(
+                    'label'  => 'image',
+                ));
         
     }
     

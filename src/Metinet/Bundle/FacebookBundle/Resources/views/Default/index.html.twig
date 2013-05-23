@@ -16,7 +16,8 @@
 {% block body %}
 <div id='header'>
     <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-    <div class="fb-like" data-href="http://apps.facebook.com/youquizzderocq/" data-send="true" data-width="450" data-show-faces="true"></div> 
+    <!-- <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-width="450" data-show-faces="false"></div> -->
+    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true"></div>
 </div>
 <div id="page">
     <div id="preload">
@@ -69,53 +70,9 @@
         <br />
 
         <a class="lienAccueil" href="#">Accèder aux classements</a>
-        <a class="lienAccueil" href="{{ path('theme_quizz') }}">Accèder aux quizz</a>
+        <a class="lienAccueil" href="{{ path('theme_quizz') }}">Accèder aux Quizz</a>
         <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Invite tes amis</a>
     </div>
     <div class="push"></div>
 </div>
-
-<script>
-  FB.init({
-    appId  : '575560672464968',
-    status : true,
-    cookie : true,
-    oauth: true
-  });
-
-  function sendRequestViaMultiFriendSelector() {
-    FB.ui({method: 'apprequests',
-      message: 'My Great Request'
-    });
-  }
-      
-  function postToFeed() {
-    // call the API
-    var obj = {
-      method: 'feed',
-      link: 'http://example.com',
-      picture: 'http://example.com/dialog_image.png',
-      name: 'Testing Action links',
-      caption: 'Test app',
-      actions: [
-        {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
-      ],
-      description: 'Action links are awesome.'
-    };
-
-    function callback(response) {
-      console.log(response);
-    }
-
-    FB.ui(obj, callback);
-  }
-  <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=575560672464968";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-    </script>
 {% endblock %}
