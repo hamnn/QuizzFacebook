@@ -17,14 +17,14 @@
             <ul class="navigation">
                 <h2>Choisissez votre Quizz parmi nos thèmes :</h2>
                 {% for infoTheme in themes %}  
-                <div id="cadreImgTheme">
-
-                 <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
-                 </div>
+                    {% if infoTheme.nbQuizz != 0 %}
+                        <div id="cadreImgTheme">
+                            <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
+                        </div>
                         <li class="toggleSubMenu"><span>{{ infoTheme.title }} ({{ infoTheme.nbQuizz }})</span>
                            
                             <ul class="subMenu" id="menu1">
-                                {% for infoQuizz in infoTheme.quizzes %}
+                              {% for infoQuizz in infoTheme.quizzes %}
                                <li>
                                     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
                                             <div class="flipper">
@@ -46,13 +46,12 @@
                                         <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Invite tes amis</a>
                                        </div>
                                 </li>
-                                 {% endfor %}
+                               {% endfor %}
                             </ul>
                            
-                        </li>                   
-
- 
-                {% endfor %}
+                        </li>  
+                        {% endif %}
+                        {% endfor %}
                 </ul>
                 <a class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
             </div>

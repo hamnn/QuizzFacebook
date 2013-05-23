@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fontscolors PUBLIC "-//NetBeans//DTD Editor Fonts and Colors settings 1.1//EN" "http://www.netbeans.org/dtds/EditorFontsColors-1_1.dtd">
+<fontscolors>
+    <fontcolor foreColor="ffb7dff8" name="PHP_VARIABLE"/>
+    <fontcolor foreColor="ffefcf7c" name="mod-method"/>
+    <fontcolor foreColor="red" name="mod-private"/>
+    <fontcolor default="identifier" name="PHP_STRING"/>
+    <fontcolor name="mod-protected"/>
+    <fontcolor name="mod-deprecated" strikeThrough="darkGray"/>
+    <fontcolor bgColor="ff85004b" foreColor="yellow" name="mark-occurrences"/>
+    <fontcolor name="mod-abstract"/>
+    <fontcolor default="field" name="mod-field"/>
+    <fontcolor foreColor="ffbebed2" name="heredocdelimiter"/>
+    <fontcolor foreColor="orange" name="phpopenclose"/>
+    <fontcolor foreColor="black" name="PHP_CONTENT"/>
+    <fontcolor foreColor="red" name="mod-public"/>
+    <fontcolor foreColor="white" name="mod-constructor"/>
+    <fontcolor name="mod-local-variable"/>
+    <fontcolor default="constant" foreColor="ff6c99bb" name="constant"/>
+    <fontcolor foreColor="red" name="mod-parameter"/>
+    <fontcolor default="keyword" foreColor="ffcc8741" name="keyword"/>
+    <fontcolor foreColor="pink" name="mod-static"/>
+    <fontcolor default="operator" foreColor="ff61d4f6" name="operator"/>
+    <fontcolor foreColor="ffd73324" name="mod-class" underline="gray"/>
+    <fontcolor foreColor="black" name="T_INLINE_HTML"/>
+    <fontcolor name="mod-unused" waveUnderlined="orange"/>
+    <fontcolor default="string" foreColor="ffa5c261" name="string"/>
+    <fontcolor name="mod-custom1">
+        <font style="bold"/>
+    </fontcolor>
+    <fontcolor default="comment" name="phpdockeyword">
+        <font style="bold"/>
+    </fontcolor>
+    <fontcolor bgColor="ff323232" default="comment" foreColor="ff8a8b8a" name="comment"/>
+    <fontcolor default="identifier" name="identifier"/>
+    <fontcolor default="separator" foreColor="white" name="separator"/>
+</fontscolors>
