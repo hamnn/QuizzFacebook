@@ -24,6 +24,10 @@ framework:
 twig:
     debug:            %kernel.debug%
     strict_variables: %kernel.debug%
+    # variables globales TWIG
+    globals:
+        # la variable fb_app_canvas_url de parameters.yml
+        fb_app_canvas_url: %fb_app_canvas_url%
 
 # Assetic Configuration
 assetic:
