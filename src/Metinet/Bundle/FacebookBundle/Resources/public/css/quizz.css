@@ -205,9 +205,23 @@ margin-left: -20px;
     margin-left: 0;
     margin-bottom: 30px;
 }
+#ready {
+    margin-top: 20px;
+    width: 208px;
+    position: relative;
+    left: 50%;
+    margin-left: -104px;
+}
 #chrono {margin-top: 15px;}
-#imgPlay{margin-left: -135px;}
-#question h4 {margin-top: 15px;}
+#imgPlay{margin-left: -130px !important;}
+#question h4 {
+    margin-top: 15px;
+    font-size: 20px;
+}
+.lienAccueil.end{
+    margin-top: 10px;
+    cursor: pointer;
+}
 #questionForm table td {
     vertical-align: top;
     width: 500px;
@@ -226,6 +240,10 @@ form {
     margin-left: 10px;
     display: inline-block;
     width: 440px;
+}
+#end {
+    line-height: 24px;
+    margin-bottom: 15px;
 }
 /* /CONTENU-------------------------------------------------------- */
 /* FB CSS-------------------------------------------------------- */
