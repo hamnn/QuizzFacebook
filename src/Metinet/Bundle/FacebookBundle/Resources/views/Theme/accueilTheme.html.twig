@@ -9,7 +9,7 @@
 {% block body %}
 <div id='header'>
     <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-     <div class="fb-like" data-href="http://apps.facebook.com/you-quizz/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+    <div class="fb-like" data-href="http://apps.facebook.com/you-quizz/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 </div>
 <div id="page">
     <div id="contenu">     
@@ -18,6 +18,7 @@
                 <h2>Choisissez votre Quizz parmi nos thèmes :</h2>
                 {% for infoTheme in themes %}  
                 <div id="cadreImgTheme">
+
                  <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
                  </div>
                         <li class="toggleSubMenu"><span>{{ infoTheme.title }} ({{ infoTheme.nbQuizz }})</span>
@@ -48,11 +49,15 @@
                             </ul>
                            
                         </li>                   
+
+ 
                 {% endfor %}
-            </ul>
+                </ul>
                 <a class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
+            </div>
         </div>
     </div>
+
 </div>
 {% endblock %}
 {% block javascripts %}

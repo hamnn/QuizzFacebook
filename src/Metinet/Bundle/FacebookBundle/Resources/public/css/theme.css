@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'lucida grande';
+    src: url('../fonts/6216-webfont.eot');
+    src: url('../fonts/6216-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/6216-webfont.woff') format('woff'),
+         url('../fonts/6216-webfont.ttf') format('truetype'),
+         url('../fonts/6216-webfont.svg#lucida_granderegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 /* RESET ---------------------------------------------------------*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -569,10 +580,10 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
     position:relative;
 }
 
-.navigation li .fb-like{
-    position:relative;
-    top:0;
-    right:auto;
+.navigation li .fb-like {
+    position: absolute !important;
+    top: 142px;
+    left: 0;
 }
 
 .navigation li .fb_iframe_widget span, .navigation li .fb_iframe_widget iframe  {
