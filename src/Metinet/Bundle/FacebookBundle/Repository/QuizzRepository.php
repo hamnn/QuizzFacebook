@@ -24,6 +24,19 @@ class QuizzRepository extends EntityRepository
     }
     
     /**
+     * Fonction qui retourne le nombre de quizz disponible pour le theme
+     * @return INT Le nombre de quizz disponibles
+     */
+    public function getNbQuizzByTheme($theme){
+        $paramArray = array("theme" => $theme);
+	return $this->_em->createQuery("SELECT COUNT(quizz.id)
+					FROM MetinetFacebookBundle:Quizz quizz
+                                        WHERE quizz.theme = :theme")
+		->setParameters($paramArray)
+		->getSingleScalarResult();
+    }
+    
+    /**
      * Fonction qui retourne le quizz mis en avant
      * @return string Le nom,image et description du quizz
      */

@@ -179,7 +179,11 @@ margin-left: -20px;
     position: relative;
     top: 85px;
     width: 465px;
+<<<<<<< HEAD
     height: 250px;
+=======
+    height:250px;
+>>>>>>> f86838a07925f3b064a46797f8538800201dff4f
     margin-left: 20px;
     border: 1px solid gray;
     padding: 10px;
