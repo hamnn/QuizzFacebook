@@ -1,6 +1,16 @@
 {% extends "MetinetFacebookBundle::base.html.twig" %}
 {% block title %}Jouer{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/quizz.css') }}" type="text/css" />
+{% endblock %}
 {% block body %}
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
+</div>
+<div id="page">
+<div id="contenu">
 <h1>Jouer à un quizz</h1>
 <h2>{{ quizz.getTitle() }}</h2>
 <img src="{{ image(quizz.getAbsolutePath()).resize(100,100) }}" />
@@ -24,7 +34,8 @@
 <input type="hidden" id="urlAjaxEnregistrerUserAnswer" value="{{ path('play_enregistrerUserAnswer') }}" />
 <input type="hidden" id="urlAjaxOnQuizzStart" value="{{ path('play_enregistrerOnQuizzStart', { 'quizzId' : quizz.getId() }) }}" />
 <input type="hidden" id="urlAjaxOnQuizzEnd" value="{{ path('play_enregistrerOnQuizzEnd', { 'quizzId' : quizz.getId() }) }}" />
-
+</div>
+    </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
