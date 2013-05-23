@@ -18,27 +18,27 @@
                     <th>Theme</th>
                     <th>Titre</th>
                     <th>Image</th>
-                    <th>Favoris</th>
+                    <th>A la une</th>
                     <th>Réussite %</th>
                     <th>Nb joué</th>
                     <th>Etat</th>
-                    <th class="efface">Voir</th>
+                    <!-- <th class="efface">Voir</th>
                     <th class="efface">Modifier</th>
-                    <th class="efface">Supprimer</th>
+                    <th class="efface">Supprimer</th> -->
                 </tr>
             </thead>
             <tbody>
     {% for entity in entities %}
                     <tr>
                         <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                        <td>{{ entity.theme.title }}</td>
+                        <td><a href="{{ path('theme_show', { 'id': entity.theme.id }) }}">{{ entity.theme.title }}</a></td>
                         <td>{{ entity.title }}</td>
                         <td><img src="{{ image(entity.getAbsolutePath()).resize(100,100) }}" alt="{{ entity.picture }}"/></td>
                         <td>{% if entity.isPromoted == 1 %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}">oui</a>{% else %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}">non</a>{% endif %}</td>
                         <td>{{ entity.pourcentage }}</td>
                         <td>{{ entity.nbParticipation }}</td>
                         <td>{% if entity.state == 1 %}<a class="state" href="{{ path('quizz_state', { 'id': entity.id }) }}" id="actif">Activé</a>{% else %}<a class="state" href="{{ path('quizz_state', { 'id': entity.id }) }}" id="nonactif">Desactivé</a>{% endif %}</td>
-                        <td class="trio begin"><a title="Voir" class="see" href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a<</td>
+                        <td class="trio"><a title="Voir" class="see" href="{{ path('quizz_show', { 'id': entity.id }) }}">Voir</a></td>
                         <td class="trio"><a title="Modifier" class="edit" href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a></td>
                         <td class="trio last">
                             <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
