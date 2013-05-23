@@ -9,7 +9,7 @@
 {% block body %}
 <div id='header'>
     <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-    <div class="fb-like" data-href="http://apps.facebook.com/youquizzderocq/" data-send="true" data-width="450" data-show-faces="true"></div>
+    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="true" data-width="450" data-show-faces="true"></div>
 </div>
 <div id="page">
     <div id="preload">
@@ -38,7 +38,7 @@
         <a href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz</a>
     {% else %}
         <p>Quizz terminé en {{ user.getTimeForThisQuizz() }} secondes! ({{ dateEnd }})</p>
-        <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz!</p>
+        <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz! <a class="lienAccueil" href="#" onclick="postToFeed({{ user.getFbUid() }}); return false;">Publier mon score</a></p>
         <p>{{ txtWin }}</p>
     {% endif %}    
 
@@ -104,13 +104,13 @@
           method: 'feed',
           link: '{{ url('accueil') }}',
           picture: '{{ app.request.host ~ asset('images/logo.png') }}',
-          name: 'Je te défie sur YouQuizz',
-          caption: 'Essaye de faire mieux que moi',
+          name: 'YouQuizz',
+          caption: 'Quizz {{ quizz.getTitle() }}',
           to: friendFbId,
           actions: [
             {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
           ],
-          description: 'Quizz {{ quizz.getTitle() }}'
+          description: 'J\'ai obtenu {{ user.getWinPointsForThisQuizz() }} point(s) en {{ user.getTimeForThisQuizz() }} secondes'
         };
 
         function callback(response) {
