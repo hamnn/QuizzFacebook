@@ -13,7 +13,7 @@
 {% block body %}
 <div id='header'>
     <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-     <div class="fb-like" data-href="http://apps.facebook.com/you-quizz/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+    <div class="fb-like" data-href="http://apps.facebook.com/you-quizz/" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
 </div>
 <div id="page">
     <div id="contenu">     
@@ -22,38 +22,37 @@
                 <h2>Choisissez votre Quizz parmi nos thèmes :</h2>
                 {% for infoTheme in themes %}  
                 <div id="cadreImgTheme">
-                 <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
-                 </div>
-                        <li class="toggleSubMenu"><span>{{ infoTheme.title }} ({{ infoTheme.nbQuizz }})</span>
-                           
-                            <ul class="subMenu" id="menu1">
-                                {% for infoQuizz in infoTheme.quizzes %}
-                               <li>
-                                    <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-                                            <div class="flipper">
-                                                    <div class="front">
-                                                            <img class="imgQuizz" src="{{ image(infoQuizz.getAbsolutePath()).resize(210,150) }}" alt="{{ infoQuizz.picture }}"/>
-                                                    </div>
-                                                    <div class="back">
-                                                            <p style="font-size: 15px; color: #fff; line-height: 20px; text-align: center; top: 10%;">{{ infoQuizz.shortDesc }}</p>
-                                                            
-                                                    </div>
-                                                    
-                                            </div>
+                    <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
+                </div>
+                <li class="toggleSubMenu"><span>{{ infoTheme.title }} ({{ infoTheme.nbQuizz }})</span>
+                    <ul class="subMenu" id="menu1">
+                        {% for infoQuizz in infoTheme.quizzes %}
+                            <li>
+                                <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+                                    <div class="flipper">
+                                        <div class="front">
+                                            <img class="imgQuizz" src="{{ image(infoQuizz.getAbsolutePath()).resize(210,150) }}" alt="{{ infoQuizz.picture }}"/>
+                                        </div>
+                                        <div class="back">
+                                            <p style="font-size: 15px; color: #fff; line-height: 20px; text-align: center; top: 10%;">{{ infoQuizz.shortDesc }}</p>
+
+                                        </div>
+
                                     </div>
-                                       <div class="fb-like" data-href="{{ fb_app_canvas_url }}/front/quizz/details/{{ infoQuizz.id }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
-                                       <div id="pk">
-                                    <a class="titleQuizz" href="{{ path('quizz_frontDetails', { 'quizzId': infoQuizz.id }) }}">{{ infoQuizz.title }}</a>
-                                    </div>
-                                </li>
-                                 {% endfor %}
-                            </ul>
-                           
-                        </li>                   
+                                </div>
+                                <div class="fb-like" data-href="{{ fb_app_canvas_url }}/front/quizz/details/{{ infoQuizz.id }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
+
+                                <a class="titleQuizz" href="{{ path('quizz_frontDetails', { 'quizzId': infoQuizz.id }) }}">{{ infoQuizz.title }}</a>
+
+                            </li>
+                        {% endfor %}
+                        </ul>
+
+                    </li>                   
                 {% endfor %}
-            </ul>
+                </ul>
                 <a class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
