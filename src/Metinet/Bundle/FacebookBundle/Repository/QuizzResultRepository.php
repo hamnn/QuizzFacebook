@@ -133,4 +133,16 @@ class QuizzResultRepository extends EntityRepository
 	return $arrayFinal;
     }
     
+    public function getFriendToNotif($quizzScore, $friendsId){
+	$query = $this->_em->createQueryBuilder();
+        $query->select('quizzResult')
+                ->addSelect('user')
+                ->from('MetinetFacebookBundle:QuizzResult', 'quizzResult')
+                ->leftJoin('quizzResult.user', 'user')
+                ->where('user.fbUid IN (:friendsId)')
+                ->andWhere('quizzResult.winPoints < (:winPoints)')
+                ->setParameters(array('winPoints' => $quizzScore, 'friendsId' => $friendsId));
+        
+        $friendsToNotif = $query->getQuery()->getResult();
+    }
 }
