@@ -21,7 +21,8 @@ class ThemeType extends AbstractType {
                     'label'  => 'Description',
                 ))
                 ->add('file', 'file', array(
-                    'label'  => 'image',
+                    'label'  => 'Image',
+                    'required' => false
                 ));
         
     }

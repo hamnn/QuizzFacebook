@@ -14,19 +14,18 @@
     {% endjavascripts %}
 {% endblock %}
 {% block body %}
-    <div id='header'>
-        <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-        <!-- <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-width="450" data-show-faces="false"></div> -->
-        <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false"></div>
-    </div>
-    <div id="page">
-        <div id="preload">
-            <div id="content">
-                <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
-                <h2>Teste ta culture générale !</h2>
-                <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
-            </div>
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
+</div>
+<div id="page">
+    <div id="preload">
+        <div id="content">
+            <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
+            <h2>Teste ta culture générale !</h2>
+            <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
         </div>
+    </div>
         {% set user = app.session.get('user') %}
         <div id="blocProfil">
             <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->

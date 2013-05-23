@@ -1,1 +1,76 @@
-{# empty Twig template #}
+{% extends "MetinetFacebookBundle::base.html.twig" %}
+{% block title %}Accueil{% endblock %}
+{% block stylesheets %}
+        {{ parent() }}
+<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' %}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+{% block body %}
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <!-- <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-width="450" data-show-faces="false"></div> -->
+    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+</div>
+<div id="page">
+    <div id="preload">
+        <div id="content">
+            <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
+            <h2>Teste ta culture générale !</h2>
+            <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
+        </div>
+    </div>
+    {% set user = app.session.get('user') %}
+    <div id="blocProfil">
+        <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->
+            <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=square&width=150&height=150"/> 
+        </div>
+        <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
+        <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
+    </div>
+    <div id="contenu">
+        <h3>Classement avec vos amis :</h3>
+        <table>
+            <tr>
+                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
+            </tr>
+            {% for user in arrayUserListing %}
+                <tr>
+                    <td>{{ user.getGeneralRank() }}</td>
+                    <td>{{ user.getLastName() }}</td>
+                    <td>{{ user.getFirstName() }}</td>
+                    <td>{{ user.getPoints() }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br /><br /><br />
+        <h3>Top 10 :</h3>
+        <table>
+            <tr>
+                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
+            </tr>
+            {% for userTop10 in top10 %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ userTop10.getLastName() }}</td>
+                    <td>{{ userTop10.getFirstName() }}</td>
+                    <td>{{ userTop10.getPoints() }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        
+
+        <a class="lienAccueil" href="#">Accèder aux classements</a>
+        <a class="lienAccueil" href="{{ path('theme_quizz') }}">Accèder aux Quizz</a>
+        <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Invite tes amis</a>
+    </div>
+    <div class="push"></div>
+</div>
+{% endblock %}

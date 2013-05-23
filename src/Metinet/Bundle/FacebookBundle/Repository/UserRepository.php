@@ -80,4 +80,96 @@ class UserRepository extends EntityRepository
 	}
 	return NULL;
     }
+    
+    
+    public function getClassementUserAvecAmis($user){
+        $arrayMieuxClasse = array();
+        $arrayMoinsClasse = array();
+        $arrayFinal = array();
+        $paramArray = array(    "points"  => $user->getPoints(),
+                                "user"      => $user);
+        // requete pour savoir la place de l'user
+        $placeUser = $this->getUserRank($user);
+        $user->setGeneralRank($placeUser);
+        // requete pour récupérer les 5 users immédiatement mieux classés que moi
+	$result = $this->_em->createQuery(  "SELECT user
+					    FROM MetinetFacebookBundle:User user
+					    WHERE user.points >= :points
+                                            AND user != :user
+					    ORDER BY user.points ASC,
+                                            user.averageTime DESC")
+		->setParameters($paramArray)
+		->setMaxResults(5)
+		->getResult();
+        $i = 0;
+	foreach($result as $row){
+	    if(isset($row)){
+                $i++;
+                $row->setGeneralRank($user->getGeneralRank() - $i);
+		$arrayMieuxClasse[] = $row;
+	    }
+	}
+        // on trie l'array des mieux classés
+        $arrayMieuxClasse = array_reverse($arrayMieuxClasse);
+        
+        // on s'ajoute à l'array des moins classés
+        $arrayMoinsClasse[] = $user;
+        // requete pour récupérer les 5 users immédiatement moins bien classés que moi
+	$result = $this->_em->createQuery(  "SELECT user
+					    FROM MetinetFacebookBundle:User user
+					    WHERE user.points <= :points
+                                            AND user != :user
+					    ORDER BY user.points DESC,
+                                            user.averageTime DESC")
+		->setParameters($paramArray)
+		->setMaxResults(5)
+		->getResult();
+        $i = 0;
+	foreach($result as $row){
+	    if(isset($row)){
+                $i++;
+                $row->setGeneralRank($user->getGeneralRank() + $i);
+		$arrayMoinsClasse[] = $row;
+	    }
+	}
+        
+        // on ajoute les users classés à l'array final
+        $arrayFinal = array_merge($arrayMieuxClasse, $arrayMoinsClasse);
+        
+	return $arrayFinal;
+    }
+    
+    
+    /**
+     * Fonction qui retourne le rang de l'user dans le classement général.
+     * @param USER $user    L'user dont on souhaite savoir le rang
+     * @return INT Le rang de l'user
+     */
+    public function getUserRank($user){
+        $paramArray = array(    "points"  => $user->getPoints(),
+                                "user"      => $user);
+        // requete pour savoir la place de l'user
+        return $this->_em->createQuery(  "SELECT COUNT(user.id)
+					    FROM MetinetFacebookBundle:User user
+					    WHERE user.points >= :points
+                                            AND user != :user
+					    ORDER BY user.points DESC,
+                                            user.averageTime DESC")
+		->setParameters($paramArray)
+		->getSingleScalarResult() + 1;
+    }
+    
+    
+    
+    public function getTop10(){
+        
+        // requete pour savoir la place de l'user
+        $top10 = $this->_em->createQuery(  "SELECT user
+					    FROM MetinetFacebookBundle:User user
+					    ORDER BY user.points DESC")
+                ->setMaxResults(10)
+		->getResult();
+        
+        return $top10;       
+    }
 }
