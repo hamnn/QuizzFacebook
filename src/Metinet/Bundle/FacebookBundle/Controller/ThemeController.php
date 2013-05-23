@@ -227,6 +227,12 @@ class ThemeController extends MetinetController {
 	$themes = $themeRepository->findAll();
         $quizz = $entities->findAll();
         
+        foreach($themes as $t){
+            
+            $nb = $entities->getNbQuizzByTheme($t);
+            $t->SetNbQuizz($nb);
+        }
+        
         return array(
             "themes" => $themes,
             "quizz" => $quizz,
