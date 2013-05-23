@@ -18,7 +18,7 @@
                     <th>Theme</th>
                     <th>Titre</th>
                     <th>Image</th>
-                    <th>Favoris</th>
+                    <th>A la une</th>
                     <th>Réussite %</th>
                     <th>Nb joué</th>
                     <th>Etat</th>
@@ -31,7 +31,7 @@
     {% for entity in entities %}
                     <tr>
                         <td><a href="{{ path('quizz_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>
-                        <td>{{ entity.theme.title }}</td>
+                        <td><a href="{{ path('theme_show', { 'id': entity.theme.id }) }}">{{ entity.theme.title }}</a></td>
                         <td>{{ entity.title }}</td>
                         <td><img src="{{ image(entity.getAbsolutePath()).resize(100,100) }}" alt="{{ entity.picture }}"/></td>
                         <td>{% if entity.isPromoted == 1 %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}">oui</a>{% else %}<a href="{{ path('quizz_ispromoted', { 'id': entity.id }) }}">non</a>{% endif %}</td>
