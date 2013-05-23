@@ -83,9 +83,11 @@ class ThemeController extends MetinetController {
         $entity = new Theme();
         $form = $this->createForm(new ThemeType(), $entity);
         $form->bind($request);
-
+        $file = $form->get('file')->getData();
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            if(!isset($file))
+                $entity->SetPicture("");
             //$entity->upload();
             $em->persist($entity);
             $em->flush();
@@ -142,6 +144,14 @@ class ThemeController extends MetinetController {
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new ThemeType(), $entity);
         $editForm->bind($request);
+        
+        $file = $editForm->get('file')->getData();
+        
+        if(isset($file)){
+           $picture = sha1(uniqid(mt_rand(), true)).$file->getClientOriginalName();
+            
+            $entity->setPicture($picture);
+        }
 
         if ($editForm->isValid()) {
             $em->persist($entity);
@@ -240,9 +250,12 @@ class ThemeController extends MetinetController {
             $q->SetNbQuestion($nb);
         }
         
+        $fbAppId = $this->container->getParameter('fb_app_id');
+        
         return array(
             "themes" => $themes,
             "quizz" => $quizz,
+            'fbAppId' => $fbAppId
             );
     }
 

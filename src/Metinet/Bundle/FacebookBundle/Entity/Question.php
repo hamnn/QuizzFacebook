@@ -41,7 +41,6 @@ class Question
     
     /**
      * @Assert\File(maxSize="6000000")
-     * @Assert\NotBlank(message="Une image doit être envoyé")
      */
     public $file;
 
@@ -221,6 +220,7 @@ class Question
      */
     public function preUpload()
     {
+        
          if (null !== $this->file) {
             // faites ce que vous voulez pour générer un nom unique
             $this->picture = sha1(uniqid(mt_rand(), true)).'.'.$this->file->guessExtension();
@@ -233,6 +233,7 @@ class Question
      */
     public function upload()
     {
+            
      if (null === $this->file) {
             return;
         }
@@ -241,6 +242,8 @@ class Question
         // va automatiquement être lancée par la méthode move(). Cela va empêcher
         // proprement l'entité d'être persistée dans la base de données si
         // erreur il y a
+        print_r($this->picture);
+        
         $this->file->move($this->getUploadRootDir(), $this->picture);
 
         unset($this->file);

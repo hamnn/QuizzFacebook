@@ -42,7 +42,6 @@ class Quizz
     
     /**
      * @Assert\File(maxSize="6000000")
-     * @Assert\NotBlank(message="Une image doit être envoyé")
      */
     public $file;
     
@@ -745,15 +744,19 @@ class Quizz
     {
         return null === $this->picture ? null : $this->getUploadRootDir().'/'.$this->picture;
     }
+    
+    
     public function getWebPath()
     {
         return null === $this->picture ? null : $this->getUploadDir().'/'.$this->picture;
     }
+    
 
      protected function getUploadRootDir() {
         // le chemin absolu du répertoire où les documents uploadés doivent être sauvegardés
         return __DIR__ . '/../Resources/public/uploads/pictures/' . $this->getUploadDir();
     }
+    
 
     protected function getUploadDir() {
         // on se débarrasse de « __DIR__ » afin de ne pas avoir de problème lorsqu'on affiche
@@ -773,6 +776,7 @@ class Quizz
         }
     }
 
+    
     /**
      * @ORM\PostPersist()
      * @ORM\PostUpdate()
@@ -804,18 +808,6 @@ class Quizz
         }
     }
     
-    /**
-     * Set pourcentage
-     *
-     * @param float $pourcentage
-     * @return Quizz
-     */
-    public function setPourcentage($pourcentage)
-    {
-        $this->pourcentage = $pourcentage;
-
-        return $this;
-    }
 
     /**
      * Get pourcentage
@@ -825,5 +817,15 @@ class Quizz
     public function getPourcentage()
     {
         return $this->pourcentage;
+    }
+    
+    /**
+     * Set pourcentage
+     * 
+     * 
+     */
+    public function setPourcentage($pourcentage){
+	$this->pourcentage = $pourcentage;
+	return $this;
     }
 }
