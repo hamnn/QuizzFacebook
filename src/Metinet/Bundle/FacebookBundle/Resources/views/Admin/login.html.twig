@@ -11,7 +11,7 @@
 <div id="page">
     <div id="contenu">
         {% if error %}
-            <div>{{ error.message }}</div>
+            <div class="error">{{ error.message }}</div>
         {% endif %}
         <form id="formLogin" action="{{ path('login_check') }}" method="post">
             <label for="username">Identifiant :</label>

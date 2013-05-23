@@ -730,3 +730,16 @@ table .headerSortUp.purple, table .headerSortDown.purple {
 .edit{
     background: url('../images/modifier.png') no-repeat 0 0;
 }
+
+/*Gestion d'erreurs'*/
+
+.error{
+    
+    background: url('../images/error.png') no-repeat 20px center;
+    padding: 15px 15px 15px 60px;
+    border:1px solid #e5352f;
+    font-style: italic;
+    font-family: Arial, serif;
+    font-size:14px;
+    color: #e5352f;
+}
