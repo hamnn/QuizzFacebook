@@ -9,7 +9,9 @@ use Symfony\Component\HttpFoundation\Response; // réponse JSON pour l'AJAX
 use Metinet\Bundle\FacebookBundle\Entity\QuizzResult;
 
 class PlayController extends MetinetController {
-
+    
+    
+    var $highScore = true;
     /**
      * PAGE DE DÉTAIL D'UN QUIZZ
      * Va chercher le quizz correspondant à l'id reçu et l'affiche pour commencer une partie
@@ -190,6 +192,9 @@ class PlayController extends MetinetController {
             // on nettoie les variables de session utilisées pour jouer au quizz
             $session->remove("arrayCorrespondanceOrdreQuestions");
             $session->remove("quizzResultId");
+            
+            //On appelle la fonction qui envoi des notifications aux autres users
+            $this->friendNotificationAction($quizzId, $quizzResult->getWinPoints());
             // on génère la vue de la fin du quizz
             $render = $this->renderView("MetinetFacebookBundle:Play:quizzEnd.html.twig",
 		array(	"quizzResult"	=> $quizzResult,
@@ -226,11 +231,11 @@ class PlayController extends MetinetController {
     }
 
     /**
-     * @Route("/play/notification/{quizzId}/{quizzResult}", name="play_friendNotificationAction")
+     * @Route("/play/notification/{quizzId}/{quizzScore}", name="play_friendNotificationAction")
      * @Template()
      */
     public function friendNotificationAction($quizzId, $quizzScore) {
-        
+               
         $session = $this->getRequest()->getSession();
         $user = $session->get('user');
 
@@ -263,12 +268,12 @@ class PlayController extends MetinetController {
       // instanciation des repositories
 	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
 	// récupération des users par leur score DESC
-	$friendsToNotif = $quizzResultRepository->getFriendToNotif($quizzScore, $friendsId);
+	$friendsToNotif = $quizzResultRepository->getFriendToNotif($quizzId, $quizzScore, $friendsId);
         
-       foreach ($friendsToNotif as $oneFriend) {
-            $response = $this->container->get('metinet.manager.fbuser')->api('/'.$oneFriend->getUser()->getfbUid().'/notifications', 'POST', array(
-            'template' => 'CouCou tu veux voir ma bite? ',
-            'href' => 'play' . $quizzId,
+       foreach ($friendsToNotif as $oneFriend) {           
+           $response = $this->container->get('metinet.manager.fbuser')->api('/'.$oneFriend->getUser()->getfbUid().'/notifications', 'POST', array(
+            'template' => 'Coucou, tu veux voir mon jeu ? Je viens de battre ton score, cliques ici pour accèder au quizz !  ',
+            'href' => 'play/' . $quizzId,
             'access_token' => "575560672464968|YiKfCuPGRy5WwCgkWxO_vYkKmrg"
                 ));
         }
