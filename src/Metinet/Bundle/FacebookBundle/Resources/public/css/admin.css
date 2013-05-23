@@ -489,7 +489,8 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
 }
 
 table {
-  width: 100%;
+  /*width: 100%;*/
+  width: 670px;
   margin-bottom: 35px;
   padding: 0;
   font-size: 11px;
