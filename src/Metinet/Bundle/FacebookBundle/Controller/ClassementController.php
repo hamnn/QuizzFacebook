@@ -16,10 +16,9 @@ class ClassementController extends MetinetController {
         
 	$userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');        
         $user = $this->getUserFromFacebookConnection();
-        
-        
+
         //+5/-5
-        $arrayUserListing = $userRepository->getClassementUserAvecAmis($user);        
+        $arrayUserListing = $userRepository->getClassementUserAvecUsersProches($user, 5);    
         
         
         //friends
@@ -38,7 +37,7 @@ class ClassementController extends MetinetController {
         $pagination = $paginator->paginate(
             $queryFriends,
             $this->get('request')->query->get('page', 1)/*page number*/,
-            10/*limit per page*/
+            1/*limit per page*/
         );       
         
         
