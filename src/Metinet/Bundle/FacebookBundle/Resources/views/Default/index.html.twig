@@ -31,13 +31,12 @@
             <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->
                 <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=square&width=150&height=150"/> 
             </div>
-            <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
-            <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
+                <h2><p style="margin-bottom: 10px;">Bonjour, </p><a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}"><p style="margin-bottom: 15px;">{{ user.firstname }}</p></a></h2>
+                <h3 style="border-top: 1px solid gray">Score : {{ user.points }} points</h3>
+                <h3>Classement général : {{ classements }}</h3>
         </div>
         <div id="classementJoueur">
-            <p>Score : {{ user.points }} points</p>
-            <p>Classement général : {{ classements }}</p>
-            <h3>Classement parmis mes amis :</h3>
+            <h3>{{ titreClassement }}</h3>
             <table>
                 <tr>
                     <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>

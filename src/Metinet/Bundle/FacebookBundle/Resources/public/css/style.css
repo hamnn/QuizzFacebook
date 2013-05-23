@@ -101,12 +101,12 @@ body{
 #contenu{
 	position: relative;
         min-height: 350px;
-	top: 270px;
+	top: 125px;
 	margin-left: 20px;
 }
 .push {margin-top: 175px;}
 .push, #footer{	
-	height: 142px;
+	height: 10px;
 }
 #cadreFooter{
 	position: relative;
@@ -152,22 +152,41 @@ margin-left: -20px;
 .efface{display: none;}
 /* /COPRS ---------------------------------------------------------*/
 /* CONTENU --------------------------------------------------------*/
+#profiler {
+    display: block;
+    max-width: 163px;
+    height: auto;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 #profiler:hover{color: #3b5998; text-decoration: underline;}
-#blocProfil{position: absolute; top: 20px; right: 20px;}
+#blocProfil{position: absolute; top: 85px; right: 20px;}
 #blocProfil h2 {
     position: relative;
-    text-align: right;
+    text-align: center;
     top: 10px;
     z-index: 10;
 }
-#classementJoueur{
-    
-   position: relative;
-   top: 100px;
-    
+#blocProfil h2 p {margin-bottom: 10px;}
+#blocProfil h3 {
+    padding-top: 10px;
+    font-size: 12px;
+}
+#classementJoueur {
+    position: relative;
+    top: 85px;
+    width: 465px;
+    margin-left: 20px;
+    border: 1px solid gray;
+    padding: 10px;
+    border-radius: 3px;
+}
+#classementJoueur h3 {
+    margin-bottom: 20px;
 }
 #cadreimgUser {
-    float: right;
+    /*float: right;*/
     position: relative;
     padding-top: 3px;
     padding-left: 3px;
@@ -203,7 +222,7 @@ margin-left: -20px;
     height: 265px;
     overflow: hidden;
     position: relative;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     left: 50%;
     margin-left: -235px;
 }
@@ -570,5 +589,203 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
   -moz-box-shadow: none;
   box-shadow: none;
   outline: 1px dotted #666;
+}
+table {
+  width: 100%;
+  /*width: 670px;
+  margin-bottom: 35px;*/
+  padding: 0;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+table th, table td {
+  padding: 10px 10px 9px;
+  line-height: 14px;
+  text-align: center;
+}
+table th {
+  padding-top: 9px;
+  font-weight: bold;
+  vertical-align: middle;
+}
+table td {
+  vertical-align: top;
+  border-top: 1px solid #ddd;
+}
+table tbody th {
+  border-top: 1px solid #ddd;
+  vertical-align: top;
+}
+.condensed-table th, .condensed-table td {
+  padding: 5px 5px 4px;
+}
+.bordered-table {
+  border: 1px solid #ddd;
+  border-collapse: separate;
+  *border-collapse: collapse;
+  /* IE7, collapse table to remove spacing */
+
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+.bordered-table th + th, .bordered-table td + td, .bordered-table th + td {
+  border-left: 1px solid #ddd;
+}
+.bordered-table thead tr:first-child th:first-child, .bordered-table tbody tr:first-child td:first-child {
+  -webkit-border-radius: 4px 0 0 0;
+  -moz-border-radius: 4px 0 0 0;
+  border-radius: 4px 0 0 0;
+}
+.bordered-table thead tr:first-child th:last-child, .bordered-table tbody tr:first-child td:last-child {
+  -webkit-border-radius: 0 4px 0 0;
+  -moz-border-radius: 0 4px 0 0;
+  border-radius: 0 4px 0 0;
+}
+.bordered-table tbody tr:last-child td:first-child {
+  -webkit-border-radius: 0 0 0 4px;
+  -moz-border-radius: 0 0 0 4px;
+  border-radius: 0 0 0 4px;
+}
+.bordered-table tbody tr:last-child td:last-child {
+  -webkit-border-radius: 0 0 4px 0;
+  -moz-border-radius: 0 0 4px 0;
+  border-radius: 0 0 4px 0;
+}
+table .span1 {
+  width: 5px;
+}
+table .span2 {
+  width: 15px;
+}
+table .span3 {
+  width: 25px;
+}
+table .span4 {
+  width: 35px;
+}
+table .span5 {
+  width: 45px;
+}
+table .span6 {
+  width: 55px;
+}
+table .span7 {
+  width: 65px;
+}
+table .span8 {
+  width: 75px;
+}
+table .span9 {
+  width: 85px;
+}
+table .span10 {
+  width: 95px;
+}
+table .span11 {
+  width: 105px;
+}
+table .span12 {
+  width: 115px;
+}
+table .span13 {
+  width: 125px;
+}
+table .span14 {
+  width: 135px;
+}
+table .span15 {
+  width: 145px;
+}
+table .span16 {
+  width: 155px;
+}
+.zebra-striped tbody tr:nth-child(odd) td, .zebra-striped tbody tr:nth-child(odd) th {
+  background-color: #f9f9f9;
+}
+.zebra-striped tbody tr:hover td, .zebra-striped tbody tr:hover th {
+  background-color: #f2f2f2;
+}
+table .header {
+  cursor: pointer;
+}
+table .header:after {
+  content: "";
+  float: right;
+  margin-top: 7px;
+  border-width: 0 4px 4px;
+  border-style: solid;
+  border-color: #000 transparent;
+  visibility: hidden;
+}
+table .headerSortUp, table .headerSortDown {
+  background-color: rgba(141, 192, 219, 0.25);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+}
+table .header:hover:after {
+  visibility: visible;
+}
+table .headerSortDown:after, table .headerSortDown:hover:after {
+  visibility: visible;
+  filter: alpha(opacity=60);
+  -khtml-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+table .headerSortUp:after {
+  border-bottom: none;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #000;
+  visibility: visible;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  filter: alpha(opacity=60);
+  -khtml-opacity: 0.6;
+  -moz-opacity: 0.6;
+  opacity: 0.6;
+}
+table .blue {
+  color: #627aad;
+  border-bottom-color: #627aad;
+}
+table .headerSortUp.blue, table .headerSortDown.blue {
+  background-color: #e8ecf3;
+}
+table .green {
+  color: #3b6e22;
+  border-bottom-color: #3b6e22;
+}
+table .headerSortUp.green, table .headerSortDown.green {
+  background-color: #9fd983;
+}
+table .red {
+  color: #dd3c10;
+  border-bottom-color: #dd3c10;
+}
+table .headerSortUp.red, table .headerSortDown.red {
+  background-color: #fef2ee;
+}
+table .yellow {
+  color: #e2c822;
+  border-bottom-color: #e2c822;
+}
+table .headerSortUp.yellow, table .headerSortDown.yellow {
+  background-color: #faf5d6;
+}
+table .orange {
+  color: #f89406;
+  border-bottom-color: #f89406;
+}
+table .headerSortUp.orange, table .headerSortDown.orange {
+  background-color: #fee9cc;
+}
+table .purple {
+  color: #7a43b6;
+  border-bottom-color: #7a43b6;
+}
+table .headerSortUp.purple, table .headerSortDown.purple {
+  background-color: #e2d5f0;
 }
 /* /FB CSS------------------------------------------------------- */

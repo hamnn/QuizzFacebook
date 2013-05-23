@@ -30,10 +30,12 @@ class DefaultController extends MetinetController {
             $friendsId[] = $friend['id'];
         }
         // classement de l'user par rapport à ses amis
+        $titreClassement = "Classement parmi vos amis :";
         $arrayUserListing = $userRepository->getClassementUserAvecFriendsProches($user, $friendsId, 2);
         
         //si j'ai as d'mis et qe j'ai pas de curly
         if(count($arrayUserListing) < 2){ // < 2 car je suis dans l'arrayUserListing
+            $titreClassement = "Classement parmi tous les joueurs :";
             $arrayUserListing = $userRepository->getClassementUserAvecUsersProches($user, 2);
         }
         
@@ -42,7 +44,8 @@ class DefaultController extends MetinetController {
             "quizzEnAvant"   => $quizzEnAvant,
             "derniersQuizz"   => $derniersQuizz,
             "classements"   => $classements,
-            "arrayUserListing"   => $arrayUserListing
+            "arrayUserListing"   => $arrayUserListing,
+            "titreClassement"   => $titreClassement
         );
     }
 
