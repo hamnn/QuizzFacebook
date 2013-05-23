@@ -160,6 +160,12 @@ margin-left: -20px;
     top: 10px;
     z-index: 10;
 }
+#classementJoueur{
+    
+   position: relative;
+   top: 100px;
+    
+}
 #cadreimgUser {
     float: right;
     position: relative;

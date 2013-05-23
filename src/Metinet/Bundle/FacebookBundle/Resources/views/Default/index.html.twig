@@ -46,7 +46,25 @@
             <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
             <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
         </div>
-        <p>Votre classement :</p>
+        <div id="classementJoueur">
+            <p>Score : {{ user.points }} points</p>
+            <p>Classement général : {{ classements }}</p>
+            <h3>Classement parmis mes amis :</h3>
+            <table>
+                <tr>
+                    <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
+                </tr>
+                {% for friends in arrayUserListing %}
+                <tr>
+                    <td>{{ friends.getGeneralRank() }}</td>
+                    <td>{{ friends.getLastName() }}</td>
+                    <td>{{ friends.getFirstName() }}</td>
+                    <td>{{ friends.getPoints() }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        
+        </div>
         <div id="contenu">
             <p style="width: 500px; position: relative; left: 50%; margin-left: -235px; margin-bottom: 10px; font-size: 20px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
             {% for quizzPromoted in quizzEnAvant %}
@@ -79,7 +97,7 @@
 
             <br />
 
-            <a class="lienAccueil" href="#">Les classements</a>
+            <a class="lienAccueil" href="{{ path('classement') }}">Les classements</a>
             <a class="lienAccueil" href="{{ path('theme_quizz') }}">Les Quizz</a>
             <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector();
                     return false;">Invite tes amis</a>
