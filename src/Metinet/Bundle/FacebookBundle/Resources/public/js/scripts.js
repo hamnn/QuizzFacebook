@@ -34,3 +34,34 @@ $("#addanswer").click(function(){
     return false;
 });
 
+    //Initialisation de la variable qui récupère le lien
+    var theHREF;
+ 
+    //Fonction d'affichage du pop up'
+    $( "#dialog-confirm" ).dialog({
+        resizable: false,
+        height:160,
+        width:550,
+        autoOpen: false,
+        modal: true,
+        buttons: {
+            "Oui": function() {
+                $( this ).dialog( "close" );
+                window.location.href = theHREF;
+            },
+            "Annuler": function() {
+                $( this ).dialog( "close" );
+            }
+        }
+    });            
+ 
+    //Si on souhaite supprimer
+    $("a.checkdelete").click(function(e) {
+        e.preventDefault();
+        //On récupère le lien
+        theHREF = $(this).attr("href");
+        //On entre dans la fonction
+        $("#dialog-confirm").dialog("open");
+    });
+
+

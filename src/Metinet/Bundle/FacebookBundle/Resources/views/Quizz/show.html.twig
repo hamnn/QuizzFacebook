@@ -2,6 +2,7 @@
 {% block title %}Quizz{% endblock %}
 {% block stylesheets %}
     <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/admin.css')}}" />
+    <link type="text/css" rel="stylesheet" href="{{asset('/bundles/metinetfacebook/css/smoothness/jquery-ui-1.10.3.custom.min.css')}}" />
 {% endblock %}
 {% block body %}
 <div id='header'>
@@ -96,7 +97,7 @@
                 <a class="edit" href="{{ path('question_edit', { 'id': question.id }) }}" title="Editer">
                     Editer
                 </a>
-                <a href="{{ path('question_delete', { 'id': question.id }) }}" class="delete" title="Supprimer">
+                <a href="{{ path('question_delete', { 'id': question.id }) }}" class="delete checkdelete" title="Supprimer">
                     Supprimer
                 </a>
             </div>
@@ -110,22 +111,23 @@
         </a>
     </li>
     <li>
-        <a class="lienBouton" href="{{ path('quizz_edit', { 'id': entity.id }) }}">
-            Modifier
-        </a>
-    </li>
-    <li>
         <a class="lienBouton" href="{{ path('question_new', { 'id': entity.id }) }}">
             Ajouter une question
         </a>
     </li>
-    <li>
-        <form action="{{ path('quizz_delete', { 'id': entity.id }) }}" method="post">
-            {{ form_widget(delete_form) }}
-            <button class="deleteBouton" type="submit">Supprimer</button>
-        </form>
-    </li>
 </ul>
     </div>
     </div>
+    
+    <div id="dialog-confirm" title="Confirmation de la suppression" style="display:none;">
+    <p>
+        <span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0; font-size:12px;"></span>
+        Etes-vous sûr de vouloir supprimer cette question ?
+    </p>
+</div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="{{ asset('/bundles/metinetfacebook/js/scripts.js')}}"></script>
 {% endblock %}
