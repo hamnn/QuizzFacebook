@@ -34,7 +34,7 @@
         <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz! <a class="lienAccueil" href="#" onclick="postToFeed({{ user.getFbUid() }}); return false;">Publier mon score</a></p>
         <p>{{ txtWin }}</p>
     {% endif %}    
-
+<div class="fb-like" data-href="{{ fb_app_canvas_url }}/front/quizz/details/{{ quizz.getId() }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
     <h3>Les 10 meilleurs joueurs du quizz</h3>
     <table>
         <tr>
