@@ -563,3 +563,18 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
     transform: rotateY(180deg);
     background: #3B5997;
 }
+
+.navigation li{
+    position:relative;
+}
+
+.navigation li .fb-like{
+    position:relative;
+    top:0;
+    right:auto;
+}
+
+.navigation li .fb_iframe_widget span, .navigation li .fb_iframe_widget iframe  {
+    height:auto !important;
+    width:auto !important;
+}

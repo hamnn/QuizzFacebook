@@ -33,6 +33,12 @@ class Theme {
     private $title;
     
     /**
+     * @var integer
+     *
+     */
+    private $nbQuizz;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="picture", type="string", length=255)
@@ -79,6 +85,27 @@ class Theme {
      */
     public function getId() {
         return $this->id;
+    }
+    
+    /**
+     * Get nbquizz
+     *
+     * @return integer
+     */
+    public function getNbQuizz() {
+        return $this->nbQuizz;
+    }
+    
+    /**
+     * Set nbQuizz
+     *
+     * @param int $nbQuizz
+     * @return Theme
+     */
+    public function setNbQuizz($nbQuizz) {
+        $this->nbQuizz = $nbQuizz;
+
+        return $this;
     }
 
     /**
