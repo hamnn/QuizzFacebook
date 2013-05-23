@@ -80,6 +80,20 @@ class User
      * @var type INT
      */
     private $timeForThisQuizz;
+    
+    /**
+     * Variable qui contient la place de l'user dans le classement général (par rapport aux autres users et leurs points)
+     * N'apparait pas en BDD
+     * @var type INT 
+     */
+    private $generalRank;
+    
+    /**
+     * Variable qui contient la place de l'user dans le classement général (par rapport aux autres users et leurs points)
+     * N'apparait pas en BDD
+     * @var type INT 
+     */
+    private $gerenalRank;
 
     /**
      * @var float
@@ -323,6 +337,26 @@ class User
      */
     public function getTimeForThisQuizz(){
 	return $this->timeForThisQuizz;
+    }
+    
+    /**
+     * Variable qui contient la place de l'user dans le classement général (par rapport aux autres users et leurs points)
+     * N'apparait pas en BDD
+     * @param INT
+     * @return User
+     */
+    public function setGeneralRank($generalRank){
+        $this->generalRank = $generalRank;
+        return $this;
+    }
+    
+    /**
+     * Variable qui contient la place de l'user dans le classement général (par rapport aux autres users et leurs points)
+     * N'apparait pas en BDD
+     * @return INT
+     */
+    public function getGeneralRank(){
+        return $this->generalRank;
     }
 
     /**

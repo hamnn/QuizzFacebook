@@ -229,38 +229,49 @@ class PlayController extends MetinetController {
      * @Route("/play/notification/{quizzId}/{quizzResult}", name="play_friendNotificationAction")
      * @Template()
      */
-    public function friendNotificationAction($quizzId, $quizzResult) {
-
-        $highScore = true;
-
-        //On récupère l'ID Facebook de l'utilisateur en cours
-        $fbUserId = $this->container->get('metinet.manager.fbuser')->getUser();
-
-        //On récupère l'utilisateur correspondant à cet ID fb
-        $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
-        $user = $userRepository->findOneBy(array("fbUid" => $fbUserId));
+    public function friendNotificationAction($quizzId, $quizzScore) {
+        
+        $session = $this->getRequest()->getSession();
+        $user = $session->get('user');
 
         //On récupère tous les quizz_results en fonction du user_id et du quizz_id
         $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
-        $quizzResults = $quizzRepository->findBy(array("user" => $user->getId(), 'quizz' => $quizzId));
+        $quizzResults = $quizzRepository->findBy(array("user" => $user['id'], 'quizz' => $quizzId));
+
 
         foreach ($quizzResults as $oneQuizzresult) {
             //Si on trouve un résultat dans la base de donnée qui est supérieur au résultat en cours on sort de la boucle.
-            // => on est pas dans le cas d'un meilleur score
-            if ($oneQuizzresult->getWinPoints() > $quizzResult) {
-                $highScore = false;
+            if ($oneQuizzresult->getWinPoints() > $quizzScore) {
+                $this->highScore = false;
                 break;
             }
         }
 
-        if (!$highScore)
+        if (!$this->highScore)
             return NULL;
-        $response = $facebook->api('/100000481617990/notifications', 'POST', array(
-            'template' => 'Coucou tu veux voir ma bite ?',
-            'href' => 'path/to/message/?id=1465341905',
+
+        //Si c'est un High Score, on charge la liste de tous les amis fb de l'utilisateur
+        $userFriends = $this->container->get('metinet.manager.fbuser')->getUserFriends($user['fb_uid']);
+        
+        //Pour chaque utilisateur on extrait l'ID correspondant
+        $friendsId = array();
+        foreach($userFriends['data'] as $index => $friend)
+            $friendsId[] = $friend['id'];
+
+
+        //On récupère tous les quizz_results en fonction du user_id et du quizz_id
+      // instanciation des repositories
+	$quizzResultRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:QuizzResult');
+	// récupération des users par leur score DESC
+	$friendsToNotif = $quizzResultRepository->getFriendToNotif($quizzScore, $friendsId);
+        
+       foreach ($friendsToNotif as $oneFriend) {
+            $response = $this->container->get('metinet.manager.fbuser')->api('/'.$oneFriend->getUser()->getfbUid().'/notifications', 'POST', array(
+            'template' => 'CouCou tu veux voir ma bite? ',
+            'href' => 'play' . $quizzId,
             'access_token' => "575560672464968|YiKfCuPGRy5WwCgkWxO_vYkKmrg"
                 ));
-        exit;
+        }
     }
     
 

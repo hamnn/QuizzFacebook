@@ -81,7 +81,4 @@ class QuizzRepository extends EntityRepository
 	    return $arrayFinal;
 	}
     }
-    
-
-    
 }
