@@ -97,7 +97,7 @@ class UserRepository extends EntityRepository
 					    WHERE user.points >= :points
                                             AND user != :user
 					    ORDER BY user.points ASC,
-                                            user.averageTime DESC")
+                                            user.averageTime ASC")
 		->setParameters($paramArray)
 		->setMaxResults(5)
 		->getResult();
@@ -120,7 +120,7 @@ class UserRepository extends EntityRepository
 					    WHERE user.points <= :points
                                             AND user != :user
 					    ORDER BY user.points DESC,
-                                            user.averageTime DESC")
+                                            user.averageTime ASC")
 		->setParameters($paramArray)
 		->setMaxResults(5)
 		->getResult();
@@ -154,7 +154,7 @@ class UserRepository extends EntityRepository
 					    WHERE user.points >= :points
                                             AND user != :user
 					    ORDER BY user.points DESC,
-                                            user.averageTime DESC")
+                                            user.averageTime ASC")
 		->setParameters($paramArray)
 		->getSingleScalarResult() + 1;
     }
@@ -166,10 +166,20 @@ class UserRepository extends EntityRepository
         // requete pour savoir la place de l'user
         $top10 = $this->_em->createQuery(  "SELECT user
 					    FROM MetinetFacebookBundle:User user
-					    ORDER BY user.points DESC")
+					    ORDER BY user.points DESC,
+                                            user.averageTime ASC")
                 ->setMaxResults(10)
 		->getResult();
         
         return $top10;       
+    }
+    
+    public function getQueryAllFriends($friendsId){
+    return $this->_em->createQuery("SELECT user 
+                                    FROM MetinetFacebookBundle:User user
+                                    WHERE user.fbUid IN (:friendsId)
+                                    ORDER BY user.points DESC,
+                                    user.averageTime ASC")
+              ->setParameter("friendsId", $friendsId);
     }
 }
