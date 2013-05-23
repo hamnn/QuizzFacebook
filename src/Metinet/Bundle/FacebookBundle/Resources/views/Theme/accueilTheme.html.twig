@@ -32,7 +32,7 @@
                                     <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
                                             <div class="flipper">
                                                     <div class="front">
-                                                            <img class="imgQuizz" src="{{ image(infoQuizz.getAbsolutePath()).resize(160,100) }}" alt="{{ infoQuizz.picture }}"/>
+                                                            <img class="imgQuizz" src="{{ image(infoQuizz.getAbsolutePath()).resize(210,150) }}" alt="{{ infoQuizz.picture }}"/>
                                                     </div>
                                                     <div class="back">
                                                             <p style="font-size: 15px; color: #fff; line-height: 20px; text-align: center; top: 10%;">{{ infoQuizz.shortDesc }}</p>
@@ -42,23 +42,6 @@
                                        <div id="pk">
                                     <a class="titleQuizz" href="{{ path('quizz_frontDetails', { 'quizzId': infoQuizz.id }) }}">{{ infoQuizz.title }}</a>
                                     </div>
-                                </li>
-                                 {% endfor %}
-                            </ul>
-                           
-                        </li>                   
-                {% endfor %}
-                        {% for infoTheme in themes %}  
-                <div id="cadreImgTheme">
-                 <img class="imgTheme" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/theme/') }}{{ infoTheme.picture }}" />
-                 </div>
-                        <li class="toggleSubMenu"><span>{{ infoTheme.title }}</span>
-                           
-                            <ul class="subMenu" id="menu1">
-                                {% for infoQuizz in infoTheme.quizzes %}
-                               <li>
-                                
-                                <a href="{{ path('quizz_frontDetails', { 'quizzId': infoQuizz.id }) }}" title="quizz">{{ infoQuizz.title }}</a>
                                 </li>
                                  {% endfor %}
                             </ul>

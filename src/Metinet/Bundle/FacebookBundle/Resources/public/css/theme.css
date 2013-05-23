@@ -182,7 +182,7 @@ margin-left: -20px;
     height: auto;
 }
 .imgQuizz {
-    width: 160px;
+    width: 210px;
     height: auto;
 }
 .navigation li ul {
@@ -193,18 +193,19 @@ margin-left: -20px;
 }
 .subMenu li {
     display: inline-block;
-    width: 160px;
+    width: 210px;
     margin-top: 10px;
-    margin-right: 5px;
-    float: left;
+    margin-right: 7px;
+    /*margin-right: 10px;
+    float: left;*/
 }
 .titleQuizz {
     display: block !important;
-    width: 160px;
+    width: 210px;
     text-align: center;
     float: left;
 }
-.toggleSubMenu p {
+.toggleSubMenu .closeMenu, .toggleSubMenu .openMenu {
     position: absolute;
     top: 0px;
     right: 5px;
@@ -518,8 +519,8 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
     -webkit-perspective: 1000;
     -moz-perspective: 1000;
     perspective: 1000;
-    width: 160px;
-    height: 100px;
+    width: 210px;
+    height: 150px;
 }
 
 .flip-container:hover .flipper, .flip-container.hover .flipper {
@@ -529,8 +530,8 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
 }
 
 .flip-container, .front, .back {
-    width: 160px;
-    height: 100px;
+    width: 210px;
+    height: 150px;
     margin-bottom: 10px;
 }
 
