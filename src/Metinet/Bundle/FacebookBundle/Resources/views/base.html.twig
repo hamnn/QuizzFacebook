@@ -13,5 +13,53 @@
 {% endblock %}
 {% block javascripts %}
     <script src="{{asset('/bundles/metinetfacebook/js/jquery-1.9.1.min.js')}}"></script>
-    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script src="http://connect.facebook.net/fr_FR/all.js"></script>
+    <script>
+  FB.init({
+    //194511877363884
+    //575560672464968
+    appId  : '194511877363884',
+    status : true,
+    cookie : true,
+    oauth: true
+  });
+
+  function sendRequestViaMultiFriendSelector() {
+    FB.ui({method: 'apprequests',
+      message: 'Teste ta culture générale et essaye de me battre aux Quizz !'
+    });
+  }
+      
+  function postToFeed() {
+    // call the API
+    var obj = {
+      method: 'feed',
+      link: 'http://example.com',
+      picture: 'http://example.com/dialog_image.png',
+      name: 'Testing Action links',
+      caption: 'Test app',
+      actions: [
+        {'name': 'get reward', 'link': 'http://example.com/redeem_reward'}
+      ],
+      description: 'Action links are awesome.'
+    };
+
+    function callback(response) {
+      console.log(response);
+    }
+
+    FB.ui(obj, callback);
+  }</script>
+  <div id="fb-root"></div>
+<script>
+  (function(d, s, id) {     
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=194511877363884";
+        fjs.parentNode.insertBefore(js, fjs);
+    }
+(document, 'script', 'facebook-jssdk'));
+    </script>
+    
 {% endblock %}
