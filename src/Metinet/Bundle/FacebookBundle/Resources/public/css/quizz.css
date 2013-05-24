@@ -777,4 +777,11 @@ table .headerSortUp.purple, table .headerSortDown.purple {
     font-size:32px;
     font-weight:bold;
 }
+
+.fb_iframe_widget {
+    display: block !important;
+    margin: auto;
+    position: relative;
+    width: 470px;
+}
 /* /FB CSS------------------------------------------------------- */

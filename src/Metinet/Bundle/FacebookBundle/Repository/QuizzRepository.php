@@ -31,7 +31,8 @@ class QuizzRepository extends EntityRepository
         $paramArray = array("theme" => $theme);
 	return $this->_em->createQuery("SELECT COUNT(quizz.id)
 					FROM MetinetFacebookBundle:Quizz quizz
-                                        WHERE quizz.theme = :theme")
+                                        WHERE quizz.theme = :theme
+                                        AND quizz.state=1")
 		->setParameters($paramArray)
 		->getSingleScalarResult();
     }
@@ -44,7 +45,8 @@ class QuizzRepository extends EntityRepository
         if(isset($limit) && $limit > 0){
             return $this->_em->createQuery("SELECT quizz.id, quizz.title, quizz.picture, quizz.shortDesc 
                                             FROM MetinetFacebookBundle:Quizz quizz
-                                            WHERE quizz.isPromoted=1")
+                                            WHERE quizz.isPromoted=1
+                                            AND quizz.state=1")
                     ->setMaxResults($limit)->getResult();
         }
     }
@@ -57,6 +59,7 @@ class QuizzRepository extends EntityRepository
         if(isset($limit) && $limit > 0){
             return $this->_em->createQuery("SELECT quizz.id, quizz.title, quizz.picture, quizz.shortDesc 
                                             FROM MetinetFacebookBundle:Quizz quizz
+                                            WHERE quizz.state=1
                                             ORDER BY quizz.id")
                     ->setMaxResults($limit)->getResult();
         }

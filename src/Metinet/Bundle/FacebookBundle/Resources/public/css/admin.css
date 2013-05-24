@@ -211,7 +211,7 @@ th {
     white-space: nowrap;
 }
 .begin{border-top: 1px solid #ddd;}
-.last{margin-bottom: 30px;}
+.last{margin-bottom: 0px;}
 .infoUtile {
     margin-bottom: 30px;
 }
