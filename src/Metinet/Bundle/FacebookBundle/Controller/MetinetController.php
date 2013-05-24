@@ -20,8 +20,9 @@ class MetinetController extends Controller {
         $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
         // récupération de l'user à partir de sa connection sbook
         $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
+        var_dump($userFbId);
         $userResult = $userRepository->findBy(array("fbUid" => $userFbId));
-        $user = $userResult;
+        $user = $userResult[0];
         return $user;
     }
     

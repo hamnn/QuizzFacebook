@@ -211,7 +211,7 @@ class UserRepository extends EntityRepository
      * @param USER $user    L'user dont on souhaite savoir le rang
      * @return INT Le rang de l'user
      */
-    public function getUserRank($user){
+    public function getUserRank($user){        
         // si l'user n'a pas de points (il n'a jamais joué), alors il est dernier
         if($user->getPoints() == NULL){
             return $this->getNombreTotalJoueurs();
