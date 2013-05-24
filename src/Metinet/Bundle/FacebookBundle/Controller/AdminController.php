@@ -28,7 +28,7 @@ class AdminController extends MetinetController
 	// on récupère le nombre de quizz disponibles
 	$nbQuizzDisponibles = $quizzRepository->getNombreQuizzDisponibles();
 	// on récupère le score moyen de tous les joueurs
-	$scoreMoyenJoueurs = $userRepository->getScoreMoyenDeTousLesJoueurs();
+	$scoreMoyenJoueurs = round($userRepository->getScoreMoyenDeTousLesJoueurs(), 2);
 	// on récupère le nombre total de joueurs
 	$nbTotalJoueurs = $userRepository->getNombreTotalJoueurs();
 	// on récupère le nombre de quizz en cours de jeu

@@ -331,7 +331,7 @@ class PlayController extends MetinetController {
             $winPoints -= $quizz->getWinPoints() * 0.15;
         }
         // on retourne les points gagnés (en INT) avec leurs bonus / malus
-        return intval($winPoints);
+        return round($winPoints);
     }
 
 }
