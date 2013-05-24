@@ -84,9 +84,11 @@
                     {# table body #}
                     {% for user in pagination %}
                     <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>{% render path('placeAmiPagination', {'idAmi' : user.getId()}) %}</td>
                         <td>{{ user.getLastName() }}</td>
                         <td>{{ user.getFirstName() }}</td>
                         <td>{{ user.getPoints() }}</td>
+                        <td>{{ user.getId() }}</td>
                     </tr>
                     {% endfor %}
                 </table>

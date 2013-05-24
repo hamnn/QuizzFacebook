@@ -74,4 +74,19 @@ public function amisPaginationAction(){
         $pagination->setUsedRoute("amisPagination"); 
         return $pagination;
     }
+
+
+    /**
+    * Fonction qui getourne une vue ayant la place de l'user reçu dans le classement général
+    * @Route("/classement/amisPagination/placeAmi/ami/{idAmi}", name="placeAmiPagination")
+    * @param INT $idAmi L'id de l'objet User corrspondant à l'ami dont on souhaite savoir le classement
+    */
+    public function placeAmiPaginationAction($idAmi){
+        // instanciation des repositories
+        $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+        $friend = $userRepository->find($idAmi);
+        $placeAmi = $userRepository->getUserRank($friend);
+        return $this->render("MetinetFacebookBundle:Classement:placeAmi.html.twig",
+                            array(  "place" => $placeAmi));
+    }
 }
