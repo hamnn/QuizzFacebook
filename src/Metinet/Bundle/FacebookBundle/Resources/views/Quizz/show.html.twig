@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td><img src="{{ image(entity.getAbsolutePath()).resize(200,200) }}" alt="{{ entity.picture }}"/></td>
+            <td>{% if entity.picture != '' %}<img src="{{ image(entity.getAbsolutePath()).resize(200,200) }}" alt="{{ entity.picture }}"/>{% endif %}</td>
         </tr>
         <tr>
             <th>Short description</th>
