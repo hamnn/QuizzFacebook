@@ -32,8 +32,10 @@
                 <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=square&width=150&height=150"/> 
             </div>
                 <h2><p style="margin-bottom: 10px;">Bonjour, </p><a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}"><p style="margin-bottom: 15px;">{{ user.firstname }}</p></a></h2>
+                {% if user.points is not null %}
                 <h3 style="border-top: 1px solid gray">Score : {{ user.points }} points</h3>
                 <h3>Classement général : {{ classements }}</h3>
+                {% endif %}
         </div>
         <div id="classementJoueur">
             <h3>{{ titreClassement }}</h3>

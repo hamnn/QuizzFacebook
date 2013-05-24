@@ -21,67 +21,68 @@
     </div>
     {% set utilisateur = app.session.get('user') %}
     <div id="contenu">
-    <h1>Détails d'un quizz</h1>
-    <h2>{{ quizz.getTitle() }}</h2>
-    <img src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
-    <p>{{ nbQuestions }} questions</p>
-    <p>{{ quizz.getLongDesc() }}</p>
-
+        <h1 class="h1details">Détails d'un quizz</h1>
+    <h2 class="h2details">{{ quizz.getTitle() }}</h2>
     {% if hasPlayedThisQuizz == false %}
-        <a href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz</a>
-    {% else %}
-        <p>Quizz terminé en {{ user.getTimeForThisQuizz() }} secondes! ({{ dateEnd }})</p>
-        <p>{{ user.getWinPointsForThisQuizz() }} points gagnés pour ce quizz! <a class="lienAccueil" href="#" onclick="postToFeed({{ user.getFbUid() }}); return false;">Publier mon score</a></p>
-        <p>{{ txtWin }}</p>
-    {% endif %}   
-    <h3>Les 10 meilleurs joueurs du quizz</h3>
-    <table>
-        <tr>
-            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
-        </tr>
-        {% for bestUser in arrayBestUsers %}
+    <a class="lienAccueil" id="playbutton" href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz !</a>
+    {% endif %}
+    <img src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
+    <ul class="detailsquizz">
+        <li>Actuellement {{ nbQuestions }} question(s)</li>
+        <li>{{ quizz.getLongDesc() }}</li>
+    </ul>
+
+    {% if hasPlayedThisQuizz != false %}
+    <div class="congratulation">
+        <ul>
+            <li>{{ txtWin }}</li>
+            <li>Quizz terminé en <strong>{{ user.getTimeForThisQuizz() }} secondes</strong> ! ({{ dateEnd }})</li>
+            <li style="margin-top:10px;"><span>{{ user.getWinPointsForThisQuizz() }}</span> points gagnés pour ce quizz !</li>
+            <li><a class="lienAccueil" href="#" onclick="postToFeed({{ user.getFbUid() }}); return false;">Publier mon score</a></li>
+        </ul>
+    </div>
+    {% endif %}  
+        
+    {% if arrayBestUsers|length != 0 %}
+        <h3>Les 10 meilleurs joueurs du quizz</h3>
+        <table>
+            <tr>
+                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
+            </tr>
+            {% for bestUser in arrayBestUsers %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ bestUser.getLastName() }}</td>
+                    <td>{{ bestUser.getFirstName() }}</td>
+                    <td>{{ bestUser.getWinPointsForThisQuizz() }} pts</td>
+                    <td>{{ bestUser.getTimeForThisQuizz() }} sec</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    
+    {% if arrayFriends|length != 0 %}
+        <h3>Classement des amis qui ont joué à ce quizz</h3>
+        <table>
+            <tr>
+                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
+            </tr>
+            {% for friend in arrayFriends %}
             <tr>
                 <td>{{ loop.index }}</td>
-                <td>{{ bestUser.getLastName() }}</td>
-                <td>{{ bestUser.getFirstName() }}</td>
-                <td>{{ bestUser.getWinPointsForThisQuizz() }} pts</td>
-		<td>{{ bestUser.getTimeForThisQuizz() }} sec</td>
+                <td>{{ friend.getLastName() }}</td>
+                <td>{{ friend.getFirstName() }}</td>
+                <td>{{ friend.getWinPointsForThisQuizz() }} pts</td>
+                <td>{{ friend.getTimeForThisQuizz() }} sec</td>
             </tr>
-        {% endfor %}
-    </table>
-
-    <h3>Classement des amis qui ont joué à ce quizz</h3>
-    <table>
-        <tr>
-            <th>Place</th><th>Nom</th><th>Prénom</th><th>Score</th><th>Temps</th>
-        </tr>
-        {% for friend in arrayFriends %}
-        <tr>
-            <td>{{ loop.index }}</td>
-            <td>{{ friend.getLastName() }}</td>
-            <td>{{ friend.getFirstName() }}</td>
-            <td>{{ friend.getWinPointsForThisQuizz() }} pts</td>
-	    <td>{{ friend.getTimeForThisQuizz() }} sec</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h3>Défier des amis sur ce quizz</h3>
+            {% endfor %}
+        </table>
+     {% endif %}
+    <h3 style="margin-bottom:10px;">Défier des amis sur ce quizz</h3>
     <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Invite tes amis</a>
-    <!-- <table>
-        {% for friendADefier in arrayFriendsADefier %}
-            <tr>
-                <td>
-                    <img src="https://graph.facebook.com/{{ friendADefier.id }}/picture" title="{{ friendADefier.name }}" alt="{{ friendADefier.name }}"/>
-                </td>
-                <td>
-                    <input type="button" onclick="postToFeed({{ friendADefier.id }}); return false;" value="Défier" />
-                </td>
-            </tr>
-        {% endfor %}
-    </table> -->
+    
     </div>
-    <div class="push"></div>
+        <div class="push" style="margin-top: 0;"></div>
 </div>
 {% block javascripts %}
     {{ parent() }}
