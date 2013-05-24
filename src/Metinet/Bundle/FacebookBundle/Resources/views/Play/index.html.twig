@@ -6,14 +6,13 @@
 {% endblock %}
 {% block body %}
 <div id='header'>
-    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <a href="{{ path('accueil') }}"><h1 style="display: block;" id="logo">YouQuizz</h1></a>
     <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
 </div>
 <div id="page">
 <div id="contenu">
-<h1>Jouer à un quizz</h1>
-<h2>{{ quizz.getTitle() }}</h2>
-<img src="{{ image(quizz.getAbsolutePath()).resize(100,100) }}" />
+<h2 id="playh2">Jouer au Quizz : {{ quizz.getTitle() }}</h2>
+<img id="imgPlay" src="{{ image(quizz.getAbsolutePath()).resize(250,170) }}" />
 <div id="chrono" style="display:none;">
     <ul style="list-style-type: none;">
 	<li id="min" style="display:inline-block;">0</li>
@@ -24,7 +23,9 @@
 	<li style="display:inline-block;margin-right:10px;">dsec</li>
     </ul>
 </div>
-<a href="#" id="startQuizzLink" onclick="return false;">Commencer le quizz</a>
+<div id="ready">
+    <a href="#" class="lienAccueil" id="startQuizzLink" onclick="return false;">C'est parti !</a>
+</div>
 <div id="question">
     <!-- Les questions vont s'afficher en AJAX ici. -->
     <input type="hidden" id="nextQuestion" value="{{ nextQuestion }}" />
