@@ -47,7 +47,7 @@
                 <tr>
                     <td>{{ friends.getGeneralRank() }}</td>
                     <td>{{ friends.getLastName() }}</td>
-                    <td>{{ friends.getFirstName() }}</td>
+                    <td><a id="tableProfil" target="_blank" style="color: #3b5998!important" href="http://www.facebook.com/{{ user.fb_uid }}">{{ friends.getFirstName() }}</a></td>
                     <td>{{ friends.getPoints() }}</td>
                 </tr>
                 {% endfor %}

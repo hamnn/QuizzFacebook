@@ -21,7 +21,7 @@ class MetinetController extends Controller {
         // récupération de l'user à partir de sa connection sbook
         $userFbId = $this->container->get('metinet.manager.fbuser')->getUser();
         $userResult = $userRepository->findBy(array("fbUid" => $userFbId));
-        $user = $userResult[0];
+        $user = $userResult;
         return $user;
     }
     
