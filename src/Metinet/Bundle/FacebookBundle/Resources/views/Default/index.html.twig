@@ -2,42 +2,30 @@
 {% block title %}Accueil{% endblock %}
 {% block stylesheets %}
         {{ parent() }}
-<link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
+        <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/css/style.css') }}" type="text/css" />
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
-<script type="text/javascript" src="{{ asset_url }}"></script>
+        <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    <script>
-       FB.init({
-         appId  : "{{ fb_app_id }}",
-         frictionlessRequests: true
-       });
-
-       function sendRequestViaMultiFriendSelector() {
-         FB.ui({method: 'apprequests',
-           message: 'Teste ta culture générale et essaye de me battre aux Quizz !'
-         });
-       }
-     </script>
 {% endblock %}
 {% block body %}
-    <div id='header'>
-        <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
-        <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
-    </div>
-    <div id="page">
-        <div id="preload">
-            <div id="content">
-                <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
-                <h2>Teste ta culture générale !</h2>
-                <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
-            </div>
+<div id='header'>
+    <a href="{{ path('accueil') }}"><h1 id="logo">YouQuizz</h1></a>
+    <div class="fb-like" data-href="{{ fb_app_canvas_url }}" data-layout="button_count" data-send="false" data-width="450" data-show-faces="false"></div>
+</div>
+<div id="page">
+    <div id="preload">
+        <div id="content">
+            <img src="{{ asset('/bundles/metinetfacebook/images/logo.png') }}" alt="logoAttente">
+            <h2>Teste ta culture générale !</h2>
+            <div id="infoCharg"><p id="charge">Chargement...&nbsp;</p><p id="preloadPercent">0%</p></div>
         </div>
+    </div>
         {% set user = app.session.get('user') %}
         <div id="blocProfil">
             <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->
@@ -45,9 +33,9 @@
             </div>
                 <h2><p style="margin-bottom: 10px;">Bonjour, </p><a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}"><p style="margin-bottom: 15px;">{{ user.firstname }}</p></a></h2>
                 {% if user.points is not null %}
-                    <h3 style="border-top: 1px solid gray">Score : {{ user.points }} points</h3>
-                {%endif%}
+                <h3 style="border-top: 1px solid gray">Score : {{ user.points }} points</h3>
                 <h3>Classement général : {{ classements }}</h3>
+                {% endif %}
         </div>
         <div id="classementJoueur">
             <h3>{{ titreClassement }}</h3>
@@ -69,16 +57,16 @@
         <div id="contenu">
             <p style="width: 500px; position: relative; left: 50%; margin-left: -235px; margin-bottom: 10px; font-size: 20px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
             {% for quizzPromoted in quizzEnAvant %}
-            <div id="cadreDescQuizz">
-                <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzPromoted.id }) }}"><div id="5" class="hover"></div></a>
-                <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
-                <a class="desc" id="desc5" href="#">
-                    <h3 class="desc" id="desc5">
-                        <p style="font-size: 30px; margin-top: -15px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
-                        <p>{{ quizzPromoted.shortDesc }}</p>
-                    </h3>
-                </a>                 
-            </div>
+                <div id="cadreDescQuizz">
+                    <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzPromoted.id }) }}"><div id="5" class="hover"></div></a>
+                    <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
+                    <a class="desc" id="desc5" href="#">
+                        <h3 class="desc" id="desc5">
+                            <p style="font-size: 30px; margin-top: -15px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
+                            <p>{{ quizzPromoted.shortDesc }}</p>
+                        </h3>
+                    </a>                 
+                </div>
             {% endfor %}
             <div id="LAstQuizz">
                 <p style="margin-bottom: 10px; font-size: 20px; font-weight: bold;">Voici les 4 derniers Quizz disponibles : </p>
@@ -102,7 +90,7 @@
             <a class="lienAccueil" href="{{ path('theme_quizz') }}">Les Quizz</a>
             <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector();
                     return false;">Invite tes amis</a>
-            </div>
-            <div class="push"></div>
         </div>
+        <div class="push"></div>
+    </div>
 {% endblock %}

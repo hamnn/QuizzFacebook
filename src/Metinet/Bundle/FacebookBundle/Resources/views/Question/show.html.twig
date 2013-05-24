@@ -56,6 +56,11 @@
                 </a>
             </li>
             <li>
+               <a class="lienBouton" href="{{ path('question_edit', { 'id': entity.id }) }}" title="Editer">
+                    Modifier la question
+                </a>
+            </li>
+            <li>
                 <a class="lienBouton" href="{{ path('quizz_show', { 'id': entity.quizz.id }) }}">
                    Retour au quizz
                 </a>

@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'lucida grande';
+    src: url('../fonts/6216-webfont.eot');
+    src: url('../fonts/6216-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/6216-webfont.woff') format('woff'),
+         url('../fonts/6216-webfont.ttf') format('truetype'),
+         url('../fonts/6216-webfont.svg#lucida_granderegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 /* RESET ---------------------------------------------------------*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -150,8 +161,8 @@ margin-left: -20px;
     margin-bottom: 10px;
 }
 .navigation > .toggleSubMenu ul li a{
-	display: block;
-	background: white;
+	/*display: block;
+	background: white;*/
         color: #000;
 }
 .navigation > .toggleSubMenu {
@@ -182,7 +193,7 @@ margin-left: -20px;
     height: auto;
 }
 .imgQuizz {
-    width: 160px;
+    width: 210px;
     height: auto;
 }
 .navigation li ul {
@@ -193,18 +204,19 @@ margin-left: -20px;
 }
 .subMenu li {
     display: inline-block;
-    width: 160px;
+    width: 210px;
     margin-top: 10px;
-    margin-right: 5px;
-    float: left;
+    margin-right: 7px;
+    /*margin-right: 10px;
+    float: left;*/
 }
 .titleQuizz {
     display: block !important;
-    width: 160px;
+    width: 210px;
     text-align: center;
     float: left;
 }
-.toggleSubMenu p {
+.toggleSubMenu .closeMenu, .toggleSubMenu .openMenu {
     position: absolute;
     top: 0px;
     right: 5px;
@@ -215,12 +227,41 @@ margin-left: -20px;
 .open a .closeMenu{display: none !important;}
 .closeMenu{display: block;}
 .openMenu{display: none;}
+.infoRight {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    color: #fff;
+    font-size: 13px;
+}
+.infoRight.begin {
+    bottom: 25px;
+}
+#pk {
+    margin-bottom: 45px;
+}
+#pk .lienAccueil {
+    position: relative;
+    top: 24px;
+}
+.navigation .lienAccueil {
+    width: 100px;
+    font-size: 14px;
+    display: block;
+    line-height: 5px;
+    left: 0;
+    margin-left: 106px;
+}
+.navigation .lienAccueil:hover{
+   top: 2px;
+   margin-left: 108px;
+}
 .lienAccueil {
     display: inline-block;
     width: 200px;
     height: 30px;
-    background: #3b5998;
-    color: #fff;
+    background: #3b5998 !important;
+    color: #fff !important;
     border: 2px solid whitesmoke;
     border-radius: 6px;
     text-align: center;
@@ -232,7 +273,6 @@ margin-left: -20px;
     margin-bottom: 30px;
 }
 .lienAccueil:hover {
-    color: #fff;
     box-shadow: 1px 1px 4px gray;
     position: relative;
     top: 2px;
@@ -518,8 +558,8 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
     -webkit-perspective: 1000;
     -moz-perspective: 1000;
     perspective: 1000;
-    width: 160px;
-    height: 100px;
+    width: 210px;
+    height: 150px;
 }
 
 .flip-container:hover .flipper, .flip-container.hover .flipper {
@@ -529,8 +569,8 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
 }
 
 .flip-container, .front, .back {
-    width: 160px;
-    height: 100px;
+    width: 210px;
+    height: 150px;
     margin-bottom: 10px;
 }
 
@@ -562,16 +602,19 @@ input[type=file]:focus, input[type=checkbox]:focus, select:focus {
     -moz-transform: rotateY(180deg);
     transform: rotateY(180deg);
     background: #3B5997;
+    width: 200px;
+    height: 140px;
+    padding: 5px;
 }
 
 .navigation li{
     position:relative;
 }
 
-.navigation li .fb-like{
-    position:relative;
-    top:0;
-    right:auto;
+.navigation li .fb-like {
+    position: absolute !important;
+    top: 180px;
+    left: 0;
 }
 
 .navigation li .fb_iframe_widget span, .navigation li .fb_iframe_widget iframe  {

@@ -100,10 +100,13 @@ class QuizzController extends MetinetController {
         $entity = new Quizz();
         $form = $this->createForm(new QuizzType(), $entity);
         $form->bind($request);
-
+        $file = $form->get('file')->getData();
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             //$entity->upload();
+            if(!isset($file))
+                $entity->SetPicture("");
+            
             $em->persist($entity);
             $em->flush();
 
@@ -337,6 +340,7 @@ class QuizzController extends MetinetController {
         
 	// on récupère le nombre de questions pour le quizz
 	$nbQuestions = $questionRepository->getNombreQuestionsPourQuizz($quizz);
+        
 	return array(	"quizz"			=> $quizz,
 			"user"			=> $user,
 			"txtWin"		=> $txtWin,

@@ -95,11 +95,14 @@ class QuestionController extends MetinetController {
         $entity = new Question();
         $form = $this->createForm(new QuestionType(), $entity);
         $form->bind($request);
-
+        $file = $form->get('file')->getData();
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
             $quizz = $em->getRepository('MetinetFacebookBundle:Quizz')->find($id);
             $entity->setQuizz($quizz);
+
+            if(!isset($file))
+                $entity->SetPicture("");
             //$entity->upload();
             $em->persist($entity);
             $em->flush();
@@ -157,7 +160,16 @@ class QuestionController extends MetinetController {
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createForm(new QuestionType(), $entity);
         $editForm->bind($request);
-
+        $file = $editForm->get('file')->getData();
+        
+        if(isset($file)){
+           $picture = sha1(uniqid(mt_rand(), true)).$file->getClientOriginalName();
+            echo''.$picture.'';
+            
+            $entity->setPicture($picture);
+        
+        }
+        
         if ($editForm->isValid()) {
             $em->persist($entity);
             $em->flush();

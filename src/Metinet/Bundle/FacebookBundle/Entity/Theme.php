@@ -48,7 +48,6 @@ class Theme {
     
     /**
      * @Assert\File(maxSize="6000000")
-     * @Assert\NotBlank(message="Une image doit être envoyé")
      */
     public $file;
 

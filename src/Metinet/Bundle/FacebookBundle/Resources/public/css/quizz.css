@@ -1,3 +1,14 @@
+@font-face {
+    font-family: 'lucida grande';
+    src: url('../fonts/6216-webfont.eot');
+    src: url('../fonts/6216-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/6216-webfont.woff') format('woff'),
+         url('../fonts/6216-webfont.ttf') format('truetype'),
+         url('../fonts/6216-webfont.svg#lucida_granderegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 /* RESET ---------------------------------------------------------*/
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -178,6 +189,8 @@ margin-left: -20px;
     position: relative;
     left: 50%;
     margin-left: -260px;
+    border: 2px solid #FFFFFF;
+    box-shadow: 1px 2px 3px #666666;
 }
 /* /CONTENU-------------------------------------------------------- */
 /* FB CSS-------------------------------------------------------- */
@@ -656,5 +669,58 @@ table .purple {
 }
 table .headerSortUp.purple, table .headerSortDown.purple {
   background-color: #e2d5f0;
+}
+
+.h1details{
+    
+    font-size: 22px;
+    letter-spacing: 0.08em;
+    margin-bottom: 30px;
+}
+
+.h2details{
+    color: #3B5998;
+    font-size: 18px;
+    margin-bottom:20px;
+    margin-left: 84px;
+}
+
+.detailsquizz{
+    margin-top:20px;
+    margin-left: 84px;
+    margin-bottom: 30px;
+    width: 506px;
+}
+
+.detailsquizz li{
+    color: #444444;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 3px 0;
+}
+
+#playbutton{
+     position: absolute;
+    right: 79px;
+    top: 35px;
+}
+
+.congratulation{
+    border-left: 1px solid #999999;
+    margin-bottom: 30px;
+    margin-right: 20px;
+    padding: 10px 10px 0 10px;
+}
+
+.congratulation li{
+    font-size:14px;
+    line-height: 18px;
+    padding:3px 0;
+}
+
+.congratulation li span{
+    color: #3B5998;
+    font-size:32px;
+    font-weight:bold;
 }
 /* /FB CSS------------------------------------------------------- */

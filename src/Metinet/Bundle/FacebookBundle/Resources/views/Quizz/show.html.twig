@@ -28,7 +28,7 @@
         </tr>
         <tr>
             <th>Image</th>
-            <td><img src="{{ image(entity.getAbsolutePath()).resize(200,200) }}" alt="{{ entity.picture }}"/></td>
+            <td>{% if entity.picture != '' %}<img src="{{ image(entity.getAbsolutePath()).resize(200,200) }}" alt="{{ entity.picture }}"/>{% endif %}</td>
         </tr>
         <tr>
             <th>Short description</th>
@@ -88,7 +88,7 @@
 <ul id ="questions">
 {% for question in questions %}
         <li>
-            <img class="picture" src="{{ image(question.getAbsolutePath()).resize(100,100) }}" alt="{{ question.picture }}"/> 
+            {% if question.picture != '' %}<img class="picture" src="{{ image(question.getAbsolutePath()).resize(100,100) }}" alt="{{ question.picture }}"/>{% endif %} 
             <span class="titre">{{ question.title }}</span>
             <div id="options">
                 <a class="see" href="{{ path('question_show', { 'id': question.id }) }}">
@@ -110,6 +110,9 @@
            Retour à la liste
         </a>
     </li>
+    <li>
+        <a title="Modifier" class="lienBouton" href="{{ path('quizz_edit', { 'id': entity.id }) }}">Modifier</a>
+        </li>
     <li>
         <a class="lienBouton" href="{{ path('question_new', { 'id': entity.id }) }}">
             Ajouter une question
