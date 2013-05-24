@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="{{ asset('/bundles/metinetfacebook/Facebook-Friend-Selector-master/friend-selector/jquery.friend.selector-1.2.css') }}" type="text/css" />
 {% endblock %}
 <body>
+    <a href="javascript:{}" class="connect">Se connecter</a>
     <div id="fb-root">Partager votre score sur le mur de  : </div>
     <div id="fb-user">
         <span id="fb-picture"></span>
@@ -17,7 +18,7 @@
     </div>
     <a href="javascript:{}" class="bt-fs-dialog">Choisir un ami : </a>
     <p><a onclick='postToFeed(); return false;'>Poster sur son mur</a></p>
-
+    <div class="fb-comments" data-href="http://apps.facebook.com/youquizzderocq/" data-width="470" data-num-posts="10"></div>
 
 
 </body>
@@ -84,7 +85,6 @@
       $(".connect").click(function(){
         FB.login(function(response) {
           if (response.authResponse) {
-            location.reload();
           } else {
             // User cancelled login or did not fully authorize
           }
@@ -113,5 +113,13 @@
       FB.ui(obj, callback);
     }
 
+    </script>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=575560672464968";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
     </script>
     {% endjavascripts %}
