@@ -495,6 +495,15 @@ table {
   padding: 0;
   font-size: 11px;
   border-collapse: collapse;
+   border: 1px solid #DDDDDD;
+   -moz-box-shadow: 1px 1px 2px #DDDDDD;
+   -moz-border-radius:4px;
+   -webkit-box-shadow: 1px 1px 2px #DDDDDD;
+   -webkit-border-radius:4px;
+   -o-box-shadow: 1px 1px 2px #DDDDDD;
+   -o-border-radius:4px;
+    border-radius:4px;
+    box-shadow: 1px 1px 2px #DDDDDD;
 }
 table th, table td {
   padding: 10px 10px 9px;
@@ -506,9 +515,13 @@ table th {
   font-weight: bold;
   vertical-align: middle;
 }
+
+table tr{
+    border-top: 1px solid #ddd;
+}
+
 table td {
   vertical-align: top;
-  border-top: 1px solid #ddd;
 }
 table tbody th {
   border-top: 1px solid #ddd;
@@ -520,7 +533,7 @@ table tbody th {
 .bordered-table {
   border: 1px solid #ddd;
   border-collapse: separate;
-  *border-collapse: collapse;
+  border-collapse: collapse;
   /* IE7, collapse table to remove spacing */
 
   -webkit-border-radius: 4px;

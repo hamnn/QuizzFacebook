@@ -234,14 +234,19 @@ class ThemeController extends MetinetController {
         $themeRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Theme');
         $entities = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
         $questions = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Question');
+        $quizzRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:Quizz');
         
 	$themes = $themeRepository->findAll();
         $quizz = $entities->findAll();
         
+                
         foreach($themes as $t){
             
             $nb = $entities->getNbQuizzByTheme($t);
             $t->SetNbQuizz($nb);
+            
+             $chaine = $t->getShortDesc();
+             
         }
         
         foreach($quizz as $q){
@@ -249,6 +254,7 @@ class ThemeController extends MetinetController {
             $nb = $questions->getNombreQuestionsPourQuizz($q);
             $q->SetNbQuestion($nb);
         }
+        
         
         $fbAppId = $this->container->getParameter('fb_app_id');
         
