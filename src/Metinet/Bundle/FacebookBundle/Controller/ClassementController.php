@@ -24,7 +24,7 @@ class ClassementController extends MetinetController {
         //+top10
         $arrayTop10 = $userRepository->getTop10();
      
-$pagination = $this->getAmisPagination();
+        $pagination = $this->getAmisPagination();
         return array(
           'pagination' => $pagination,
             'arrayUserListing' => $arrayUserListing,
@@ -35,7 +35,7 @@ $pagination = $this->getAmisPagination();
     
 /**
 * Fonction qui est appelée pour rendre la vue du classement des amis avec pagination en AJAX
-* @Route("/classement/amisPagination", name="amisPagination")public function amisPaginationAction(){
+* @Route("/classement/amisPagination", name="amisPagination")
 * @Template("")
 */
 public function amisPaginationAction(){
@@ -53,7 +53,7 @@ public function amisPaginationAction(){
  * Fonction qui retourne l'objet pagination pour le classement des amis avec pagination
  */
  private function getAmisPagination(){
- //friends
+        //friends
         $session = $this->getRequest()->getSession();
         $user = $session->get('user');
         
@@ -63,15 +63,15 @@ public function amisPaginationAction(){
         foreach($userFriends['data'] as $index => $friend){
             $friendsId[] = $friend['id'];
         }
-$userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
-     $queryFriends = $userRepository->getQueryAllFriends($friendsId);
+        $userRepository = $this->getDoctrine()->getRepository('MetinetFacebookBundle:User');
+        $queryFriends = $userRepository->getQueryAllFriends($friendsId);
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $queryFriends,
             $this->get('request')->query->get('page', 1)/*page number*/,
             1/*limit per page*/
         );    
-$pagination->setUsedRoute("amisPagination"); 
- return $pagination;
- }
+        $pagination->setUsedRoute("amisPagination"); 
+        return $pagination;
+    }
 }
