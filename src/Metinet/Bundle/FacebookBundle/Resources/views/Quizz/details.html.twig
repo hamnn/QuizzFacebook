@@ -21,10 +21,10 @@
     </div>
     {% set utilisateur = app.session.get('user') %}
     <div id="contenu">
-        <h1 class="h1details">Détails d'un quizz</h1>
+        <h1 class="h1details">Détails du Quizz</h1>
     <h2 class="h2details">{{ quizz.getTitle() }}</h2>
     {% if hasPlayedThisQuizz == false %}
-    <a class="lienAccueil" id="playbutton" href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz !</a>
+    <a id="playbutton" href="{{ path('play_index', { 'quizzId': quizz.getId() }) }}">Jouer à ce quizz !</a>
     {% endif %}
     <img src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/' ~ quizz.getPicture()) }}" />
     <ul class="detailsquizz">
@@ -78,18 +78,20 @@
             {% endfor %}
         </table>
      {% endif %}
+    <div id="defi">
     <h3 style="margin-bottom:10px;">Défier des amis sur ce quizz</h3>
-    <a class="lienAccueil" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Invite tes amis</a>
-    
+    <a class="lienAccueil" style="margin-top: 10px; margin-left: 25px;" href="#" onclick="sendRequestViaMultiFriendSelector(); return false;">Je les défis !</a>
     </div>
-        <div class="push" style="margin-top: 0;"></div>
+    </div>
+    <div class="push" style="margin-top: 0;"></div>
+    <div class="fb-comments" data-href="http://apps.facebook.com/youquizzderocq/" data-width="470" data-num-posts="10"></div>
 </div>
 {% block javascripts %}
     {{ parent() }}
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 <script type="text/javascript">
-	FB.init({appId: "{{ fbAppId }}", status: true, cookie: true});
+	FB.init({appId: "{{ fb_app_id }}", status: true, cookie: true});
 
       function postToFeed(friendFbId) {
         // call the API
@@ -112,6 +114,14 @@
 
         FB.ui(obj, callback);
       }
+    </script>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/fr_FR/all.js#xfbml=1&appId=575560672464968";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
     </script>
     {% endjavascripts %}
 {% endblock %}

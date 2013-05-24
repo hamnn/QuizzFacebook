@@ -167,7 +167,7 @@ class QuizzResultRepository extends EntityRepository
 	return $arrayFinal;
     }
     
-    public function getFriendToNotif($quizzScore, $friendsId){
+    public function getFriendToNotif($quizzId, $quizzScore, $friendsId){
 	$query = $this->_em->createQueryBuilder();
         $query->select('quizzResult')
                 ->addSelect('user')
@@ -175,9 +175,10 @@ class QuizzResultRepository extends EntityRepository
                 ->leftJoin('quizzResult.user', 'user')
                 ->where('user.fbUid IN (:friendsId)')
                 ->andWhere('quizzResult.winPoints < (:winPoints)')
-                ->setParameters(array('winPoints' => $quizzScore, 'friendsId' => $friendsId));
+                ->andWhere('quizzResult.quizz = :quizzId')
+                ->setParameters(array('winPoints' => $quizzScore, 'friendsId' => $friendsId, 'quizzId' => $quizzId));
         
-        $friendsToNotif = $query->getQuery()->getResult();
+        return $query->getQuery()->getResult();
     } 
     
 }
