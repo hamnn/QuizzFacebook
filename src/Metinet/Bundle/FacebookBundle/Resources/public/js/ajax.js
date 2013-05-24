@@ -118,5 +118,23 @@
                     }
 		});
 	}
+
+                
+                $(".pagination a").click(function(){
+                        // on met le curseur de loading
+                        $("html").css("cursor", "progress");
+                        $.ajax({
+		    type : 'POST',
+		    url : $(this).attr("href"),
+		    dataType: 'json',
+		    success : function(data) {
+                                                $("#classementAmisPagination").html(data.reponse);
+                                                // on ermet le curseur normal
+                                                $("html").css("cursor", "auto");
+		    }
+		});
+                        // on évite de suivre le lien
+                        return false;
+                });
  
 })(jQuery)

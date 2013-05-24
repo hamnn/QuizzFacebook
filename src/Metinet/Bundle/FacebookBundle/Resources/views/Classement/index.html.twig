@@ -9,7 +9,8 @@
     {% javascripts '@MetinetFacebookBundle/Resources/public/js/preload.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
-    {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' %}
+    {% javascripts '@MetinetFacebookBundle/Resources/public/js/desc.js' 
+                           '@MetinetFacebookBundle/Resources/public/js/ajax.js' output='js/ajax.js' %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
 {% endblock %}
@@ -67,30 +68,31 @@
         </table>
         <br /><br /><br />
         <h3>Classement parmis mes amis :</h3>
-        <table>
-            <tr>
-                <th>Place</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
-                {# sorting of properties based on query components #}
-                <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'Id', 'user.id') }}</th>
-            </tr>
+        <div id="classementAmisPagination">
+            <table>
+    <tr>
+        <th>Place</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
+        {# sorting of properties based on query components #}
+        <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
+        <th>{{ knp_pagination_sortable(pagination, 'Id', 'user.id') }}</th>
+    </tr>
 
-            {# table body #}
-            {% for user in pagination %}
-            <tr {% if loop.index is odd %}class="color"{% endif %}>
-                <td>{{ user.getLastName() }}</td>
-                <td>{{ user.getFirstName() }}</td>
-                <td>{{ user.getPoints() }}</td>
-            </tr>
-            {% endfor %}
-        </table>
+    {# table body #}
+    {% for user in pagination %}
+    <tr {% if loop.index is odd %}class="color"{% endif %}>
+        <td>{{ user.getLastName() }}</td>
+        <td>{{ user.getFirstName() }}</td>
+        <td>{{ user.getPoints() }}</td>
+    </tr>
+    {% endfor %}
+</table>
 {# display navigation #}
-            <div class="navigation">
-    {{ knp_pagination_render(pagination) }}
-                </div>
-
+    <div class="navigation">
+{{ knp_pagination_render(pagination) }}
+        </div>
+        </div><!-- fin classement amis pagination -->
 
                 <a class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
                    </div>
