@@ -24,7 +24,7 @@ class ClassementController extends MetinetController {
         //+top10
         $arrayTop10 = $userRepository->getTop10();
      
-        $pagination = $this->getAmisPagination();
+        $pagination = $this->getPaginationAmis();
         return array(
           'pagination' => $pagination,
             'arrayUserListing' => $arrayUserListing,
@@ -40,7 +40,7 @@ class ClassementController extends MetinetController {
 */
 public function amisPaginationAction(){
   
-      $pagination = $this->getAmisPagination();
+      $pagination = $this->getPaginationAmis();
         // on génère la vue de la question à afficher
         $render = $this->renderView("MetinetFacebookBundle:Classement:amisPagination.html.twig",
 	    array(  "pagination" => $pagination));
@@ -52,7 +52,7 @@ public function amisPaginationAction(){
  /**
  * Fonction qui retourne l'objet pagination pour le classement des amis avec pagination
  */
- private function getAmisPagination(){
+ private function getPaginationAmis(){
         //friends
         $session = $this->getRequest()->getSession();
         $user = $session->get('user');
