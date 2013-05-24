@@ -55,19 +55,21 @@
         
         </div>
         <div id="contenu">
-            <p style="width: 500px; position: relative; left: 50%; margin-left: -235px; margin-bottom: 10px; font-size: 20px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
-            {% for quizzPromoted in quizzEnAvant %}
-                <div id="cadreDescQuizz">
-                    <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzPromoted.id }) }}"><div id="5" class="hover"></div></a>
-                    <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
-                    <a class="desc" id="desc5" href="#">
-                        <h3 class="desc" id="desc5">
-                            <p style="font-size: 30px; margin-top: -15px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
-                            <p>{{ quizzPromoted.shortDesc }}</p>
-                        </h3>
-                    </a>                 
-                </div>
-            {% endfor %}
+            {% if quizzEnAvant|length != 0 %}
+                <p style="width: 500px; position: relative; left: 50%; margin-left: -235px; margin-bottom: 10px; font-size: 20px; font-weight: bold;">Nous vous proposons d'essayer ce Quizz : </p>
+                {% for quizzPromoted in quizzEnAvant %}
+                    <div id="cadreDescQuizz">
+                        <a href="{{ path('quizz_frontDetails', { 'quizzId': quizzPromoted.id }) }}"><div id="5" class="hover"></div></a>
+                        <img id="5" src="{{ asset('/bundles/metinetfacebook/uploads/pictures/quizz/') }}{{ quizzPromoted.picture }}" alt="" />
+                        <a class="desc" id="desc5" href="#">
+                            <h3 class="desc" id="desc5">
+                                <p style="font-size: 30px; margin-top: -15px; font-weight: bold;">{{ quizzPromoted.title }}</p><br />
+                                <p>{{ quizzPromoted.shortDesc }}</p>
+                            </h3>
+                        </a>                 
+                    </div>
+                {% endfor %}
+            {% endif %}
             <div id="LAstQuizz">
                 <p style="margin-bottom: 10px; font-size: 20px; font-weight: bold;">Voici les 4 derniers Quizz disponibles : </p>
                 {% for quizzLast in derniersQuizz %}
