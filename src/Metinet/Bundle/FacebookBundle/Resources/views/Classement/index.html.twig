@@ -29,71 +29,75 @@
         </div>
     </div>
     {% set user = app.session.get('user') %}
-    <div id="blocProfil">
-        <div id="cadreimgUser"> <!-- 1383277319 --><!-- {{ user.fb_uid }} -->
-            <img id="imgUser" src="https://graph.facebook.com/{{ user.fb_uid }}/picture?type=square&width=150&height=150"/> 
-        </div>
-        <h2>Bonjour, <a id="profiler" target="_blank" href="http://www.facebook.com/{{ user.fb_uid }}">{{ user.firstname }}</a></h2>
-        <!-- <img src="{{ user.picture }}" alt="photo de {{ user.firstname }} {{ user.lastname }}" /> -->
-    </div>
     <div id="contenu">
-        <h3>Classement proche de vous :</h3>
-        <table>
-            <tr>
-                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
-            </tr>
-            {% for user in arrayUserListing %}
-            <tr>
-                <td>{{ user.getGeneralRank() }}</td>
-                <td>{{ user.getLastName() }}</td>
-                <td>{{ user.getFirstName() }}</td>
-                <td>{{ user.getPoints() }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <br /><br /><br />
-        <h3>Top 10 :</h3>
-        <table>
-            <tr>
-                <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
-            </tr>
-            {% for userTop10 in top10 %}
-            <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ userTop10.getLastName() }}</td>
-                <td>{{ userTop10.getFirstName() }}</td>
-                <td>{{ userTop10.getPoints() }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <br /><br /><br />
-        <h3>Classement parmis mes amis :</h3>
-        <div id="classementAmisPagination">
+        {% if arrayUserListing|length != 0 %}
+            <h3>Classement proche de vous :</h3>
             <table>
-    <tr>
-        <th>Place</th>
-        <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
-        <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
-        {# sorting of properties based on query components #}
-        <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
-        <th>{{ knp_pagination_sortable(pagination, 'Id', 'user.id') }}</th>
-    </tr>
+                <tr>
+                    <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
+                </tr>
+                {% for user in arrayUserListing %}
+                <tr>
+                    <td>{{ user.getGeneralRank() }}</td>
+                    <td>{{ user.getLastName() }}</td>
+                    <td>{{ user.getFirstName() }}</td>
+                    <td>{{ user.getPoints() }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+        
+        <br /><br /><br />
+        
+        {% if top10|length != 0 %}
+            <h3>Top 10 :</h3>
+            <table>
+                <tr>
+                    <th>Place</th><th>Nom</th><th>Prénom</th><th>Score général</th>
+                </tr>
+                {% for userTop10 in top10 %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ userTop10.getLastName() }}</td>
+                    <td>{{ userTop10.getFirstName() }}</td>
+                    <td>{{ userTop10.getPoints() }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+            
+        <br /><br /><br />
+        
+        {% if pagination|length != 0 %}
+            <h3>Classement parmis mes amis :</h3>
+            <div id="classementAmisPagination">
+                <table>
+                    <tr>
+                        <th>Place</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Nom', 'user.firstname') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Prénom', 'user.lastname') }}</th>
+                        {# sorting of properties based on query components #}
+                        <th>{{ knp_pagination_sortable(pagination, 'Points', 'user.points') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'Id', 'user.id') }}</th>
+                    </tr>
 
-    {# table body #}
-    {% for user in pagination %}
-    <tr {% if loop.index is odd %}class="color"{% endif %}>
-        <td>{{ user.getLastName() }}</td>
-        <td>{{ user.getFirstName() }}</td>
-        <td>{{ user.getPoints() }}</td>
-    </tr>
-    {% endfor %}
-</table>
-{# display navigation #}
-    <div class="navigation">
-{{ knp_pagination_render(pagination) }}
-        </div>
-        </div><!-- fin classement amis pagination -->
-
+                    {# table body #}
+                    {% for user in pagination %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>{{ user.getLastName() }}</td>
+                        <td>{{ user.getFirstName() }}</td>
+                        <td>{{ user.getPoints() }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                
+                {# display navigation #}
+                <div class="navigation">
+                    {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        <!-- fin classement amis pagination -->
+        {% endif %}
                 <a class="lienAccueil" href="{{ path('accueil') }}">Retour</a>
                    </div>
             <div class="push"></div>
